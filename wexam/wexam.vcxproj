@@ -86,10 +86,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeaderFile />
+      <AdditionalIncludeDirectories>G:\mighty project\wexam\dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>G:\mighty project\wexam\dependencies\glfw\lib-vc2022-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,6 +104,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>G:\mighty project\wexam\dependencies\gl3w;G:\mighty project\wexam\dependencies\glfw\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +144,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="wexam.cpp" />
+    <ClCompile Include="application\application.cpp" />
+    <ClCompile Include="gui\gui.cpp" />
+    <ClCompile Include="gui\imguimanager.cpp" />
+    <ClCompile Include="gui\imgui\backend\imgui_impl_glfw.cpp" />
+    <ClCompile Include="gui\imgui\backend\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="gui\imgui\imgui.cpp" />
+    <ClCompile Include="gui\imgui\imgui_demo.cpp" />
+    <ClCompile Include="gui\imgui\imgui_draw.cpp" />
+    <ClCompile Include="gui\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="gui\imgui\imgui_tables.cpp" />
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="application\application.h" />
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="gui\gui.h" />
+    <ClInclude Include="gui\imguimanager.h" />
+    <ClInclude Include="gui\imgui\backend\imgui_impl_glfw.h" />
+    <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3.h" />
+    <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="gui\imgui\imconfig.h" />
+    <ClInclude Include="gui\imgui\imgui.h" />
+    <ClInclude Include="gui\imgui\imgui_internal.h" />
+    <ClInclude Include="gui\imgui\imgui_stdlib.h" />
+    <ClInclude Include="gui\imgui\imstb_rectpack.h" />
+    <ClInclude Include="gui\imgui\imstb_textedit.h" />
+    <ClInclude Include="gui\interfaces\igui.h" />
+    <ClInclude Include="gui\interfaces\iimguimanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

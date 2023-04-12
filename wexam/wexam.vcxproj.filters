@@ -13,10 +13,117 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы ресурсов\application">
+      <UniqueIdentifier>{af745df3-de50-402a-b081-db3ecb681412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\application">
+      <UniqueIdentifier>{ecd48922-9959-4d37-b94e-b899251c6eb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\gui">
+      <UniqueIdentifier>{80971cb8-d820-444c-8370-4385c4f63766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\gui">
+      <UniqueIdentifier>{c41e596b-d08f-4d63-8fd3-53316d22316b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\gui\imgui">
+      <UniqueIdentifier>{1b10cc27-05c6-4c15-8f09-1e0e48cec0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\gui\imgui\backend">
+      <UniqueIdentifier>{c559f6db-db26-4673-82d1-0c1891c6955b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\gui\imgui">
+      <UniqueIdentifier>{54b57287-dfea-434a-9cf4-2a6bc1be5683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\gui\imgui\backend">
+      <UniqueIdentifier>{4daad607-6eb5-4522-af25-8c39853e9586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\gui\interfaces">
+      <UniqueIdentifier>{f3eaa62b-559c-4079-b709-cb1370454fcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="wexam.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="application\application.cpp">
+      <Filter>Исходные файлы\application</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_demo.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_draw.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_stdlib.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_tables.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
+      <Filter>Исходные файлы\gui\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\gui.cpp">
+      <Filter>Исходные файлы\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backend\imgui_impl_glfw.cpp">
+      <Filter>Исходные файлы\gui\imgui\backend</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backend\imgui_impl_opengl3.cpp">
+      <Filter>Исходные файлы\gui\imgui\backend</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imguimanager.cpp">
+      <Filter>Исходные файлы\gui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="application\application.h">
+      <Filter>Файлы ресурсов\application</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imconfig.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imgui.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imgui_internal.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imgui_stdlib.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\interfaces\igui.h">
+      <Filter>Файлы ресурсов\gui\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\gui.h">
+      <Filter>Файлы ресурсов\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backend\imgui_impl_glfw.h">
+      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3.h">
+      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\interfaces\iimguimanager.h">
+      <Filter>Файлы ресурсов\gui\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imguimanager.h">
+      <Filter>Файлы ресурсов\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.h">
+      <Filter>Файлы ресурсов</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_rectpack.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_textedit.h">
+      <Filter>Файлы ресурсов\gui\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3_loader.h">
+      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
