@@ -36,9 +36,6 @@ void ImGuiManager::NewFrame() {
 void ImGuiManager::Render() {
     // Rendering
     ImGui::Render();
-    int display_w, display_h;
-    glfwGetFramebufferSize(m_GLFWWindow, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

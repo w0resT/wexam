@@ -5,6 +5,11 @@
 #include <iostream>
 
 void Gui::Init() {
+    // Error callback func
+    glfwSetErrorCallback([](int error, const char* description) {
+        std::cerr << "[error] GLFW (" << error << "): " << description << std::endl;
+        });
+
 	// Initializing GLFW
     // TODO: Make assert
     if (!glfwInit()) {
@@ -35,12 +40,17 @@ void Gui::Init() {
     m_ptrImguiManager = std::make_unique<ImGuiManager>(m_GLFWWindow);
     m_ptrImguiManager->Init();
 
-    // Callback-function for GLFW
+    // Key Callback function
     glfwSetKeyCallback(m_GLFWWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         // Key 'Delete' for exit
         if (key == GLFW_KEY_DELETE) {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
         }
+        });
+
+    // Set window resize event handler
+    glfwSetWindowSizeCallback(m_GLFWWindow, [](GLFWwindow* window, int width, int height) {
+        glViewport(0, 0, width, height);
         });
 }
 
