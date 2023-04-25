@@ -13,17 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Файлы ресурсов\application">
-      <UniqueIdentifier>{af745df3-de50-402a-b081-db3ecb681412}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\application">
       <UniqueIdentifier>{ecd48922-9959-4d37-b94e-b899251c6eb6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\gui">
       <UniqueIdentifier>{80971cb8-d820-444c-8370-4385c4f63766}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы ресурсов\gui">
-      <UniqueIdentifier>{c41e596b-d08f-4d63-8fd3-53316d22316b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\gui\imgui">
       <UniqueIdentifier>{1b10cc27-05c6-4c15-8f09-1e0e48cec0f1}</UniqueIdentifier>
@@ -31,14 +25,47 @@
     <Filter Include="Исходные файлы\gui\imgui\backend">
       <UniqueIdentifier>{c559f6db-db26-4673-82d1-0c1891c6955b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов\gui\imgui">
+    <Filter Include="Исходные файлы\model">
+      <UniqueIdentifier>{82845dd8-6ecb-4dea-84e1-381fdd5076de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\controller">
+      <UniqueIdentifier>{f3b30690-a6bc-4ce9-993e-d3b2c7b5fd59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\application">
+      <UniqueIdentifier>{af745df3-de50-402a-b081-db3ecb681412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\gui">
+      <UniqueIdentifier>{c41e596b-d08f-4d63-8fd3-53316d22316b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\gui\imgui">
       <UniqueIdentifier>{54b57287-dfea-434a-9cf4-2a6bc1be5683}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов\gui\imgui\backend">
+    <Filter Include="Файлы заголовков\gui\imgui\backend">
       <UniqueIdentifier>{4daad607-6eb5-4522-af25-8c39853e9586}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов\gui\interfaces">
+    <Filter Include="Файлы заголовков\gui\interfaces">
       <UniqueIdentifier>{f3eaa62b-559c-4079-b709-cb1370454fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\model">
+      <UniqueIdentifier>{f57529e8-b576-40b1-b81f-a84c44efbe8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\model\interfaces">
+      <UniqueIdentifier>{b953e183-7e13-4cd0-8f61-46b90e0896c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\controller">
+      <UniqueIdentifier>{60af0c9b-fbfb-4b3b-9e5f-7e2e82f209fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\controller\interfaces">
+      <UniqueIdentifier>{aeba8634-c89f-42a3-9877-d84ff1a0f57c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\observer">
+      <UniqueIdentifier>{e77b2b2e-8e22-46a7-95a6-9ce9268dd35c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\observer\interfaces">
+      <UniqueIdentifier>{6024eb7b-ad13-4e7c-9d74-66a89907f57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\observer">
+      <UniqueIdentifier>{7d8e036d-e520-4ef7-ba75-858b0c133ede}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,52 +105,79 @@
     <ClCompile Include="gui\imguimanager.cpp">
       <Filter>Исходные файлы\gui</Filter>
     </ClCompile>
+    <ClCompile Include="controller\appcontroller.cpp">
+      <Filter>Исходные файлы\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="model\appmodel.cpp">
+      <Filter>Исходные файлы\model</Filter>
+    </ClCompile>
+    <ClCompile Include="observer\observer.cpp">
+      <Filter>Исходные файлы\observer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\application.h">
-      <Filter>Файлы ресурсов\application</Filter>
+      <Filter>Файлы заголовков\application</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imconfig.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui_internal.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui_stdlib.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\interfaces\igui.h">
-      <Filter>Файлы ресурсов\gui\interfaces</Filter>
+      <Filter>Файлы заголовков\gui\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="gui\gui.h">
-      <Filter>Файлы ресурсов\gui</Filter>
+      <Filter>Файлы заголовков\gui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\backend\imgui_impl_glfw.h">
-      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+      <Filter>Файлы заголовков\gui\imgui\backend</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3.h">
-      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+      <Filter>Файлы заголовков\gui\imgui\backend</Filter>
     </ClInclude>
     <ClInclude Include="gui\interfaces\iimguimanager.h">
-      <Filter>Файлы ресурсов\gui\interfaces</Filter>
+      <Filter>Файлы заголовков\gui\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="gui\imguimanager.h">
-      <Filter>Файлы ресурсов\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Файлы заголовков\gui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imstb_rectpack.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imstb_textedit.h">
-      <Filter>Файлы ресурсов\gui\imgui</Filter>
+      <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3_loader.h">
-      <Filter>Файлы ресурсов\gui\imgui\backend</Filter>
+      <Filter>Файлы заголовков\gui\imgui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="model\interfaces\iappmodel.h">
+      <Filter>Файлы заголовков\model\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\interfaces\iappcontroller.h">
+      <Filter>Файлы заголовков\controller\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\appcontroller.h">
+      <Filter>Файлы заголовков\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="model\appmodel.h">
+      <Filter>Файлы заголовков\model</Filter>
+    </ClInclude>
+    <ClInclude Include="observer\interfaces\iobserver.h">
+      <Filter>Файлы заголовков\observer\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="observer\observer.h">
+      <Filter>Файлы заголовков\observer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

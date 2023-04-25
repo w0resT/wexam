@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application\application.cpp" />
+    <ClCompile Include="controller\appcontroller.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="gui\imguimanager.cpp" />
     <ClCompile Include="gui\imgui\backend\imgui_impl_glfw.cpp" />
@@ -156,9 +157,13 @@
     <ClCompile Include="gui\imgui\imgui_tables.cpp" />
     <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="model\appmodel.cpp" />
+    <ClCompile Include="observer\observer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\application.h" />
+    <ClInclude Include="controller\appcontroller.h" />
+    <ClInclude Include="controller\interfaces\iappcontroller.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="gui\imguimanager.h" />
@@ -173,6 +178,10 @@
     <ClInclude Include="gui\imgui\imstb_textedit.h" />
     <ClInclude Include="gui\interfaces\igui.h" />
     <ClInclude Include="gui\interfaces\iimguimanager.h" />
+    <ClInclude Include="model\appmodel.h" />
+    <ClInclude Include="model\interfaces\iappmodel.h" />
+    <ClInclude Include="observer\interfaces\iobserver.h" />
+    <ClInclude Include="observer\observer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

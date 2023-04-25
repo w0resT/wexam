@@ -1,8 +1,8 @@
+#include <iostream>
+
 #include "../defines.h"
 #include "gui.h"
 #include "imguimanager.h"
-
-#include <iostream>
 
 void Gui::Init() {
     // Error callback func
@@ -13,7 +13,7 @@ void Gui::Init() {
 	// Initializing GLFW
     // TODO: Make assert
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
+        std::cerr << "[error] Failed to initialize GLFW" << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -26,7 +26,7 @@ void Gui::Init() {
 
     // TODO: Make assert 
     if (!m_GLFWWindow) {
-        std::cerr << "Failed to create window" << std::endl;
+        std::cerr << "[error] Failed to create window" << std::endl;
         glfwTerminate();
         std::exit(EXIT_FAILURE);
     }
@@ -56,7 +56,9 @@ void Gui::Init() {
 
 void Gui::Run() {
     // Main loop
-    while (!glfwWindowShouldClose(m_GLFWWindow)) {
+    while (!m_bShouldClose) {
+        m_bShouldClose = glfwWindowShouldClose(m_GLFWWindow);
+
         // Poll and handle events (inputs, window resize, etc.)
         glfwPollEvents();
 
@@ -64,7 +66,16 @@ void Gui::Run() {
         m_ptrImguiManager->NewFrame();
 
         // Showing the demo window
-        ImGui::ShowDemoWindow();
+        //ImGui::ShowDemoWindow();
+        if (ImGui::Begin("wxm_begin", nullptr)) {
+            ImGui::Text("Test");
+
+            if (ImGui::Button("Click for event")) {
+                NotifyObservers();
+                m_bShouldClose = true;
+            }
+        }
+        ImGui::End();
 
         // Rendering ImGui & Window
         m_ptrImguiManager->Render();
@@ -78,3 +89,4 @@ void Gui::Shutdown() {
     glfwDestroyWindow(m_GLFWWindow);
     glfwTerminate();
 }
+
