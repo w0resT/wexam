@@ -156,6 +156,11 @@
     <ClCompile Include="gui\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="gui\imgui\imgui_tables.cpp" />
     <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="gui\tabs\tabmanager.cpp" />
+    <ClCompile Include="gui\tabs\tab_info.cpp" />
+    <ClCompile Include="gui\tabs\tab_settings.cpp" />
+    <ClCompile Include="gui\tabs\tab_tests.cpp" />
+    <ClCompile Include="gui\tabs\tab_users.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model\appmodel.cpp" />
     <ClCompile Include="observer\observer.cpp" />
@@ -178,10 +183,20 @@
     <ClInclude Include="gui\imgui\imstb_textedit.h" />
     <ClInclude Include="gui\interfaces\igui.h" />
     <ClInclude Include="gui\interfaces\iimguimanager.h" />
+    <ClInclude Include="gui\interfaces\itabmanager.h" />
+    <ClInclude Include="gui\interfaces\itabview.h" />
+    <ClInclude Include="gui\tabs.h" />
+    <ClInclude Include="gui\tabs\tabmanager.h" />
+    <ClInclude Include="gui\tabs\tab_info.h" />
+    <ClInclude Include="gui\tabs\tab_settings.h" />
+    <ClInclude Include="gui\tabs\tab_tests.h" />
+    <ClInclude Include="gui\tabs\tab_users.h" />
     <ClInclude Include="model\appmodel.h" />
     <ClInclude Include="model\interfaces\iappmodel.h" />
     <ClInclude Include="observer\interfaces\iobserver.h" />
     <ClInclude Include="observer\observer.h" />
+    <ClInclude Include="resources\segoeui.h" />
+    <ClInclude Include="resources\segoeuib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

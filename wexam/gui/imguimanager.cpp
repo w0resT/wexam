@@ -6,13 +6,6 @@ void ImGuiManager::Init() {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;    
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_GLFWWindow, true);

@@ -67,6 +67,15 @@
     <Filter Include="Исходные файлы\observer">
       <UniqueIdentifier>{7d8e036d-e520-4ef7-ba75-858b0c133ede}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\gui\tabs">
+      <UniqueIdentifier>{8fa02059-a8a6-4a15-ae28-9e1a7d4ae869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\gui\tabs">
+      <UniqueIdentifier>{c2259b61-9d5e-4a49-9486-ebf4545f75cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\resources">
+      <UniqueIdentifier>{d1a049c0-1c40-472b-b722-b7a7bff65a45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -113,6 +122,21 @@
     </ClCompile>
     <ClCompile Include="observer\observer.cpp">
       <Filter>Исходные файлы\observer</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tabs\tabmanager.cpp">
+      <Filter>Исходные файлы\gui\tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tabs\tab_settings.cpp">
+      <Filter>Исходные файлы\gui\tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tabs\tab_info.cpp">
+      <Filter>Исходные файлы\gui\tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tabs\tab_users.cpp">
+      <Filter>Исходные файлы\gui\tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tabs\tab_tests.cpp">
+      <Filter>Исходные файлы\gui\tabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +202,36 @@
     </ClInclude>
     <ClInclude Include="observer\observer.h">
       <Filter>Файлы заголовков\observer</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\interfaces\itabview.h">
+      <Filter>Файлы заголовков\gui\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\interfaces\itabmanager.h">
+      <Filter>Файлы заголовков\gui\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs\tabmanager.h">
+      <Filter>Файлы заголовков\gui\tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs.h">
+      <Filter>Файлы заголовков\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs\tab_settings.h">
+      <Filter>Файлы заголовков\gui\tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs\tab_info.h">
+      <Filter>Файлы заголовков\gui\tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs\tab_users.h">
+      <Filter>Файлы заголовков\gui\tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tabs\tab_tests.h">
+      <Filter>Файлы заголовков\gui\tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\segoeui.h">
+      <Filter>Файлы заголовков\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\segoeuib.h">
+      <Filter>Файлы заголовков\resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
