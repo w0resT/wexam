@@ -76,6 +76,12 @@
     <Filter Include="Исходные файлы\gui\pages">
       <UniqueIdentifier>{c2259b61-9d5e-4a49-9486-ebf4545f75cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\gui\wrapper">
+      <UniqueIdentifier>{6e960d1c-3933-45c8-9bc0-1ccccc92799a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\gui\wrapper">
+      <UniqueIdentifier>{5894b9a9-d40a-486c-8137-6c97b1fe48b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -137,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="gui\pages\pagemanager.cpp">
       <Filter>Исходные файлы\gui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\wrapper\imguiwrapper.cpp">
+      <Filter>Исходные файлы\gui\wrapper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +241,12 @@
     </ClInclude>
     <ClInclude Include="gui\pages\pagemanager.h">
       <Filter>Файлы заголовков\gui\pages</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\interfaces\iimguiwrapper.h">
+      <Filter>Файлы заголовков\gui\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\wrapper\imguiwrapper.h">
+      <Filter>Файлы заголовков\gui\wrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

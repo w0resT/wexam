@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
-#include "ipageview.h"
+
+class IPageView;
 
 class IPageManager {
 public:

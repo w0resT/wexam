@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "../interfaces/ipagemanager.h"
+#include "../interfaces/ipageview.h"
 
 class PageManager : public IPageManager {
 public:

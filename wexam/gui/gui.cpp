@@ -4,6 +4,8 @@
 #include "gui.h"
 #include "imguimanager.h"
 
+#include "wrapper/imguiwrapper.h"
+
 #include "tabs.h"
 
 // Fonts
@@ -70,6 +72,9 @@ void Gui::Init() {
 
     // Creating and adding tabs to tab manager
     CreateTabs();
+
+    // Initializing imgui wrapper
+    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>();
 }
 
 void Gui::Run() {
@@ -105,12 +110,9 @@ void Gui::Shutdown() {
     glfwTerminate();
 }
 
-/*
- * TODO: Rename PageManager to PageManager and Tabs to Pages
- */
-
 void Gui::Draw() {
-    if (ImGui::Begin("wxm_begin", nullptr)) {
+    ImGui::SetNextWindowSize(m_ImGuiWrapper->GetWindowSize());
+    if (ImGui::Begin("wxm_begin", nullptr, m_ImGuiWrapper->GetWindowFlags())) {
         ImGui::Text("Test");
 
         ImGui::PushFont(m_Segoeui18);
