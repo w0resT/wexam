@@ -1,10 +1,10 @@
 #pragma once
-#include "tabs/tabmanager.h"
+#include "pages/pagemanager.h"
 
 // Tabs
-#include "tabs/tab_settings.h"
-#include "tabs/tab_info.h"
-#include "tabs/tab_tests.h"
-#include "tabs/tab_users.h"
+#include "pages/page_settings.h"
+#include "pages/page_info.h"
+#include "pages/page_tests.h"
+#include "pages/page_users.h"
 
 

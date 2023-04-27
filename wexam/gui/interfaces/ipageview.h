@@ -1,6 +1,6 @@
 #pragma once
 
-class ITabView {
+class IPageView {
 public:
 	virtual void Draw() = 0;
 };

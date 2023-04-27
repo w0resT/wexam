@@ -1,7 +1,7 @@
-#include "tab_tests.h"
+#include "page_tests.h"
 
 #include "../imguimanager.h"
 
-void TabTests::Draw() {
+void PageTests::Draw() {
 	ImGui::Text("Tab tests");
 }

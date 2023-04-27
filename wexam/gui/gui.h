@@ -8,7 +8,7 @@
 
 #include "../model/interfaces/iappmodel.h"
 
-#include "interfaces/itabmanager.h"
+#include "interfaces/ipagemanager.h"
 
 struct ImFont;
 
@@ -34,13 +34,11 @@ private:
 	GLFWwindow* m_GLFWWindow;
 	std::shared_ptr<IAppModel> m_Model;
 	std::unique_ptr<IImGuiManager> m_ImguiManager;
-	std::unique_ptr<ITabManager> m_TabManager;
+	std::unique_ptr<IPageManager> m_PageManager;
 
-private:
 	ImFont* m_Segoeui18;
 	ImFont* m_SegoeuiBold18;
 	ImFont* m_SegoeuiBold32;
 
-private:
 	bool m_bShouldClose;
 };

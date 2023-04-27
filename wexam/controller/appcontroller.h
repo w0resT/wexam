@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <mutex>
 
 #include "interfaces/iappcontroller.h"
 #include "../model/interfaces/iappmodel.h"
@@ -17,9 +18,13 @@ public:
 	virtual void OnDataChanged();
 
 private:
-	bool m_bShouldClose;
-
 	std::shared_ptr<IGui> m_Gui;
 	std::shared_ptr<IAppModel> m_Model;
+
+private:
+	bool m_bShouldClose;
+
+	std::mutex m_mutex;
+	std::condition_variable m_cv;
 
 };

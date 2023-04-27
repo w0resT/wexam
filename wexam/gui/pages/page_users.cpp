@@ -1,7 +1,7 @@
-#include "tab_users.h"
+#include "page_users.h"
 
 #include "../imguimanager.h"
 
-void TabUsers::Draw() {
+void PageUsers::Draw() {
 	ImGui::Text("Tab users");
 }

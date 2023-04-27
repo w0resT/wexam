@@ -1,7 +1,7 @@
-#include "tab_info.h"
+#include "page_info.h"
 
 #include "../imguimanager.h"
 
-void TabInfo::Draw() {
+void PageInfo::Draw() {
 	ImGui::Text("Tab info");
 }
