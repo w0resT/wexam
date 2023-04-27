@@ -5,7 +5,7 @@
 
 #include "GLFW/glfw3.h"
 
-#include "interfaces/iimguimanager.h"
+#include "../interfaces/gui/iimguimanager.h"
 
 class ImGuiManager : public IImGuiManager {
 public:

@@ -1,5 +1,6 @@
 #pragma once
-#include "../interfaces/iimguiwrapper.h"
+#include "../../interfaces/gui/iimguiwrapper.h"
+
 #include "../imgui/imgui.h"
 
 class ImGuiWrapper : public IImGuiWrapper {

@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 
-#include "../interfaces/ipageview.h"
-#include "../../model/interfaces/iappmodel.h"
+#include "../../interfaces/gui/ipageview.h"
+#include "../../interfaces/model/iappmodel.h"
 
 class PageTests : public IPageView {
 public:

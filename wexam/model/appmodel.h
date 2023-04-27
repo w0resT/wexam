@@ -1,5 +1,5 @@
 #pragma once
-#include "interfaces/iappmodel.h"
+#include "../interfaces/model/iappmodel.h"
 
 class AppModel : public IAppModel {
 public:

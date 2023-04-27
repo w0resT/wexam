@@ -1,5 +1,5 @@
 #pragma once
-#include "interfaces/iobserver.h"
+#include "../interfaces/iobserver.h"
 #include <set>
 
 class Observable : public IObservable {

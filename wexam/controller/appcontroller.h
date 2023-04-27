@@ -2,9 +2,9 @@
 #include <memory>
 #include <mutex>
 
-#include "interfaces/iappcontroller.h"
-#include "../model/interfaces/iappmodel.h"
-#include "../gui/interfaces/igui.h"
+#include "../interfaces/controller/iappcontroller.h"
+#include "../interfaces/model/iappmodel.h"
+#include "../interfaces/gui/igui.h"
 
 class AppController : public IAppController {
 public:

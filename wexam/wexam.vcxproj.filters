@@ -43,26 +43,14 @@
     <Filter Include="Файлы заголовков\gui\imgui\backend">
       <UniqueIdentifier>{4daad607-6eb5-4522-af25-8c39853e9586}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\gui\interfaces">
-      <UniqueIdentifier>{f3eaa62b-559c-4079-b709-cb1370454fcd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\model">
       <UniqueIdentifier>{f57529e8-b576-40b1-b81f-a84c44efbe8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\model\interfaces">
-      <UniqueIdentifier>{b953e183-7e13-4cd0-8f61-46b90e0896c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы заголовков\controller">
       <UniqueIdentifier>{60af0c9b-fbfb-4b3b-9e5f-7e2e82f209fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\controller\interfaces">
-      <UniqueIdentifier>{aeba8634-c89f-42a3-9877-d84ff1a0f57c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\observer">
       <UniqueIdentifier>{e77b2b2e-8e22-46a7-95a6-9ce9268dd35c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\observer\interfaces">
-      <UniqueIdentifier>{6024eb7b-ad13-4e7c-9d74-66a89907f57e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\observer">
       <UniqueIdentifier>{7d8e036d-e520-4ef7-ba75-858b0c133ede}</UniqueIdentifier>
@@ -81,6 +69,18 @@
     </Filter>
     <Filter Include="Исходные файлы\gui\wrapper">
       <UniqueIdentifier>{5894b9a9-d40a-486c-8137-6c97b1fe48b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces">
+      <UniqueIdentifier>{17162d1d-59c1-4089-a2b7-18565166bde8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces\gui">
+      <UniqueIdentifier>{d5d7e62b-c2bc-4ca1-b774-486229c33f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces\model">
+      <UniqueIdentifier>{b4c99b86-80a9-4987-b3e7-a4c6895a6102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces\controller">
+      <UniqueIdentifier>{67b4ca28-f5ae-4ba7-94d2-aa7fbeac71b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +164,6 @@
     <ClInclude Include="gui\imgui\imgui_stdlib.h">
       <Filter>Файлы заголовков\gui\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="gui\interfaces\igui.h">
-      <Filter>Файлы заголовков\gui\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="gui\gui.h">
       <Filter>Файлы заголовков\gui</Filter>
     </ClInclude>
@@ -175,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="gui\imgui\backend\imgui_impl_opengl3.h">
       <Filter>Файлы заголовков\gui\imgui\backend</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\interfaces\iimguimanager.h">
-      <Filter>Файлы заголовков\gui\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="gui\imguimanager.h">
       <Filter>Файлы заголовков\gui</Filter>
@@ -194,29 +188,14 @@
     <ClInclude Include="defines.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="model\interfaces\iappmodel.h">
-      <Filter>Файлы заголовков\model\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="controller\interfaces\iappcontroller.h">
-      <Filter>Файлы заголовков\controller\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="controller\appcontroller.h">
       <Filter>Файлы заголовков\controller</Filter>
     </ClInclude>
     <ClInclude Include="model\appmodel.h">
       <Filter>Файлы заголовков\model</Filter>
     </ClInclude>
-    <ClInclude Include="observer\interfaces\iobserver.h">
-      <Filter>Файлы заголовков\observer\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="observer\observer.h">
       <Filter>Файлы заголовков\observer</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\interfaces\ipageview.h">
-      <Filter>Файлы заголовков\gui\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\interfaces\ipagemanager.h">
-      <Filter>Файлы заголовков\gui\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="gui\tabs.h">
       <Filter>Файлы заголовков\gui</Filter>
@@ -242,11 +221,32 @@
     <ClInclude Include="gui\pages\pagemanager.h">
       <Filter>Файлы заголовков\gui\pages</Filter>
     </ClInclude>
-    <ClInclude Include="gui\interfaces\iimguiwrapper.h">
-      <Filter>Файлы заголовков\gui\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="gui\wrapper\imguiwrapper.h">
       <Filter>Файлы заголовков\gui\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\iobserver.h">
+      <Filter>Файлы заголовков\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\controller\iappcontroller.h">
+      <Filter>Файлы заголовков\interfaces\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\model\iappmodel.h">
+      <Filter>Файлы заголовков\interfaces\model</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\gui\igui.h">
+      <Filter>Файлы заголовков\interfaces\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\gui\iimguimanager.h">
+      <Filter>Файлы заголовков\interfaces\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\gui\iimguiwrapper.h">
+      <Filter>Файлы заголовков\interfaces\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\gui\ipagemanager.h">
+      <Filter>Файлы заголовков\interfaces\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\gui\ipageview.h">
+      <Filter>Файлы заголовков\interfaces\gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

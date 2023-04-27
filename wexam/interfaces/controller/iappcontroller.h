@@ -1,5 +1,5 @@
 #pragma once
-#include "../../observer/interfaces/iobserver.h"
+#include "../iobserver.h"
 
 class IAppController: public IObserver {
 public:

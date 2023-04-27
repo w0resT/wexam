@@ -169,7 +169,6 @@
   <ItemGroup>
     <ClInclude Include="application\application.h" />
     <ClInclude Include="controller\appcontroller.h" />
-    <ClInclude Include="controller\interfaces\iappcontroller.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="gui\imguimanager.h" />
@@ -182,11 +181,6 @@
     <ClInclude Include="gui\imgui\imgui_stdlib.h" />
     <ClInclude Include="gui\imgui\imstb_rectpack.h" />
     <ClInclude Include="gui\imgui\imstb_textedit.h" />
-    <ClInclude Include="gui\interfaces\igui.h" />
-    <ClInclude Include="gui\interfaces\iimguimanager.h" />
-    <ClInclude Include="gui\interfaces\iimguiwrapper.h" />
-    <ClInclude Include="gui\interfaces\ipagemanager.h" />
-    <ClInclude Include="gui\interfaces\ipageview.h" />
     <ClInclude Include="gui\pages\pagemanager.h" />
     <ClInclude Include="gui\pages\page_info.h" />
     <ClInclude Include="gui\pages\page_settings.h" />
@@ -194,9 +188,15 @@
     <ClInclude Include="gui\pages\page_users.h" />
     <ClInclude Include="gui\tabs.h" />
     <ClInclude Include="gui\wrapper\imguiwrapper.h" />
+    <ClInclude Include="interfaces\controller\iappcontroller.h" />
+    <ClInclude Include="interfaces\gui\igui.h" />
+    <ClInclude Include="interfaces\gui\iimguimanager.h" />
+    <ClInclude Include="interfaces\gui\iimguiwrapper.h" />
+    <ClInclude Include="interfaces\gui\ipagemanager.h" />
+    <ClInclude Include="interfaces\gui\ipageview.h" />
+    <ClInclude Include="interfaces\iobserver.h" />
+    <ClInclude Include="interfaces\model\iappmodel.h" />
     <ClInclude Include="model\appmodel.h" />
-    <ClInclude Include="model\interfaces\iappmodel.h" />
-    <ClInclude Include="observer\interfaces\iobserver.h" />
     <ClInclude Include="observer\observer.h" />
     <ClInclude Include="resources\segoeui.h" />
     <ClInclude Include="resources\segoeuib.h" />

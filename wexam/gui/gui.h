@@ -3,13 +3,11 @@
 
 #include "GLFW/glfw3.h"
 
-#include "interfaces/igui.h"
-#include "interfaces/iimguimanager.h"
-
-#include "../model/interfaces/iappmodel.h"
-
-#include "interfaces/ipagemanager.h"
-#include "interfaces/iimguiwrapper.h"
+#include "../interfaces/gui/igui.h"
+#include "../interfaces/gui/iimguimanager.h"
+#include "../interfaces/gui/ipagemanager.h"
+#include "../interfaces/gui/iimguiwrapper.h"
+#include "../interfaces/model/iappmodel.h"
 
 struct ImFont;
 
