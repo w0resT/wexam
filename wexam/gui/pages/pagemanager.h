@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <map>
 
 #include "../../interfaces/gui/ipagemanager.h"
 #include "../../interfaces/gui/ipageview.h"
@@ -9,9 +9,10 @@ public:
 	PageManager() {}
 	~PageManager() {}
 
-	void AddTab(std::unique_ptr<IPageView> tab) override;
+	void AddTab(std::unique_ptr<IPageView> tab, const GUIPages& page) override;
 	void Draw() override;
+	void Draw(const GUIPages& page) override;
 
 private:
-	std::vector<std::unique_ptr<IPageView>> m_tabs;
+	std::map<GUIPages, std::unique_ptr<IPageView>> m_tabs;
 };

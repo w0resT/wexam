@@ -6,7 +6,7 @@
 #include "../interfaces/gui/igui.h"
 #include "../interfaces/gui/iimguimanager.h"
 #include "../interfaces/gui/ipagemanager.h"
-#include "../interfaces/gui/iimguiwrapper.h"
+#include "../interfaces/gui/iguiwrapper.h"
 #include "../interfaces/model/iappmodel.h"
 
 struct ImFont;
@@ -35,7 +35,7 @@ private:
 	std::unique_ptr<IImGuiManager> m_ImguiManager;
 	std::unique_ptr<IPageManager> m_PageManager;
 
-	std::shared_ptr<IImGuiWrapper> m_ImGuiWrapper;
+	std::shared_ptr<IGUIWrapper> m_GUIWrapper;
 
 	ImFont* m_Segoeui18;
 	ImFont* m_SegoeuiBold18;

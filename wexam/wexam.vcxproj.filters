@@ -144,7 +144,7 @@
     <ClCompile Include="gui\pages\pagemanager.cpp">
       <Filter>Исходные файлы\gui\pages</Filter>
     </ClCompile>
-    <ClCompile Include="gui\wrapper\imguiwrapper.cpp">
+    <ClCompile Include="gui\wrapper\guiwrapper.cpp">
       <Filter>Исходные файлы\gui\wrapper</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,7 +221,7 @@
     <ClInclude Include="gui\pages\pagemanager.h">
       <Filter>Файлы заголовков\gui\pages</Filter>
     </ClInclude>
-    <ClInclude Include="gui\wrapper\imguiwrapper.h">
+    <ClInclude Include="gui\wrapper\guiwrapper.h">
       <Filter>Файлы заголовков\gui\wrapper</Filter>
     </ClInclude>
     <ClInclude Include="interfaces\iobserver.h">
@@ -239,7 +239,7 @@
     <ClInclude Include="interfaces\gui\iimguimanager.h">
       <Filter>Файлы заголовков\interfaces\gui</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\gui\iimguiwrapper.h">
+    <ClInclude Include="interfaces\gui\iguiwrapper.h">
       <Filter>Файлы заголовков\interfaces\gui</Filter>
     </ClInclude>
     <ClInclude Include="interfaces\gui\ipagemanager.h">

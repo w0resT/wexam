@@ -4,7 +4,7 @@
 #include "gui.h"
 #include "imguimanager.h"
 
-#include "wrapper/imguiwrapper.h"
+#include "wrapper/guiwrapper.h"
 
 #include "tabs.h"
 
@@ -74,7 +74,7 @@ void Gui::Init() {
     CreateTabs();
 
     // Initializing imgui wrapper
-    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>();
+    m_GUIWrapper = std::make_shared<GUIWrapper>();
 }
 
 void Gui::Run() {
@@ -111,8 +111,11 @@ void Gui::Shutdown() {
 }
 
 void Gui::Draw() {
-    ImGui::SetNextWindowSize(m_ImGuiWrapper->GetWindowSize());
-    if (ImGui::Begin("wxm_begin", nullptr, m_ImGuiWrapper->GetWindowFlags())) {
+    static const ImVec2 startPos(0.f, 0.f);
+
+    ImGui::SetNextWindowPos(startPos);
+    ImGui::SetNextWindowSize(m_GUIWrapper->GetWindowSize());
+    if (ImGui::Begin("##begin_main", nullptr, m_GUIWrapper->GetWindowFlags())) {
         ImGui::Text("Test");
 
         ImGui::PushFont(m_Segoeui18);
@@ -128,6 +131,8 @@ void Gui::Draw() {
         ImGui::PopFont();
         
         m_PageManager->Draw();
+
+        m_PageManager->Draw(m_GUIWrapper->GetCurrentDrawPage());
     }
     ImGui::End();
 }
@@ -141,10 +146,10 @@ void Gui::CreateTabs() {
     std::unique_ptr<IPageView> tabSettings = std::make_unique<PageSettings>(m_Model);
     std::unique_ptr<IPageView> tabInfo = std::make_unique<PageInfo>(m_Model);
 
-    m_PageManager->AddTab(std::move(tabTests));
-    m_PageManager->AddTab(std::move(tabUsers));
-    m_PageManager->AddTab(std::move(tabSettings));
-    m_PageManager->AddTab(std::move(tabInfo));
+    m_PageManager->AddTab(std::move(tabTests), GUIPages::Tests);
+    m_PageManager->AddTab(std::move(tabUsers), GUIPages::Users);
+    m_PageManager->AddTab(std::move(tabSettings), GUIPages::Settings);
+    m_PageManager->AddTab(std::move(tabInfo), GUIPages::Info);
 }
 
 void Gui::CreateFonts() {

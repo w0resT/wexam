@@ -10,6 +10,10 @@ void ImGuiManager::Init() {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_GLFWWindow, true);
     ImGui_ImplOpenGL3_Init(defines::GLSL_VERSION);
+
+    // Disable imgui.ini loading/saving
+    ImGuiIO& io = ImGui::GetIO();
+    io.IniFilename = NULL;
 }
 
 void ImGuiManager::Shutdown() {

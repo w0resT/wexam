@@ -161,7 +161,7 @@
     <ClCompile Include="gui\pages\page_settings.cpp" />
     <ClCompile Include="gui\pages\page_tests.cpp" />
     <ClCompile Include="gui\pages\page_users.cpp" />
-    <ClCompile Include="gui\wrapper\imguiwrapper.cpp" />
+    <ClCompile Include="gui\wrapper\guiwrapper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model\appmodel.cpp" />
     <ClCompile Include="observer\observer.cpp" />
@@ -187,11 +187,11 @@
     <ClInclude Include="gui\pages\page_tests.h" />
     <ClInclude Include="gui\pages\page_users.h" />
     <ClInclude Include="gui\tabs.h" />
-    <ClInclude Include="gui\wrapper\imguiwrapper.h" />
+    <ClInclude Include="gui\wrapper\guiwrapper.h" />
     <ClInclude Include="interfaces\controller\iappcontroller.h" />
     <ClInclude Include="interfaces\gui\igui.h" />
     <ClInclude Include="interfaces\gui\iimguimanager.h" />
-    <ClInclude Include="interfaces\gui\iimguiwrapper.h" />
+    <ClInclude Include="interfaces\gui\iguiwrapper.h" />
     <ClInclude Include="interfaces\gui\ipagemanager.h" />
     <ClInclude Include="interfaces\gui\ipageview.h" />
     <ClInclude Include="interfaces\iobserver.h" />
