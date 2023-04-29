@@ -8,6 +8,7 @@
 #include "../interfaces/gui/ipagemanager.h"
 #include "../interfaces/gui/iguiwrapper.h"
 #include "../interfaces/model/iappmodel.h"
+#include "../interfaces/localization/ilocalizationmanager.h"
 
 struct ImFont;
 
@@ -36,6 +37,8 @@ private:
 	std::unique_ptr<IPageManager> m_PageManager;
 
 	std::shared_ptr<IGUIWrapper> m_GUIWrapper;
+
+	std::unique_ptr<ILocalizationManager> m_LocalizationManager;
 
 	ImFont* m_Segoeui18;
 	ImFont* m_SegoeuiBold18;

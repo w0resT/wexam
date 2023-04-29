@@ -6,7 +6,9 @@
 
 #include "wrapper/guiwrapper.h"
 
-#include "tabs.h"
+#include "pages/pages.h"
+
+#include "../localization/localization_manager.h"
 
 // Fonts
 #include "../resources/segoeui.h"
@@ -73,8 +75,21 @@ void Gui::Init() {
     // Creating and adding tabs to tab manager
     CreateTabs();
 
-    // Initializing imgui wrapper
+    // Initializing gui wrapper
     m_GUIWrapper = std::make_shared<GUIWrapper>();
+
+    // TODO: make controller for it and move it outside form GUI
+    // Initializing localization manager
+    std::string fileName = ".\\resources\\localizations.lang";
+    std::unique_ptr<ILocalizationReader> reader = std::make_unique<LocalizationReader>();
+    std::unique_ptr<ILocalizationWriter> writer = std::make_unique<LocalizationWriter>();
+    m_LocalizationManager = std::make_unique<LocalizationManager>(std::move(reader), std::move(writer), fileName);
+
+    // Sets default language
+    m_LocalizationManager->SetLanguage("en");
+
+    // Get translations
+    m_LocalizationManager->LoadTranslation();
 }
 
 void Gui::Run() {
@@ -110,13 +125,15 @@ void Gui::Shutdown() {
     glfwTerminate();
 }
 
+// TODO: Add virtual destructor for each interfaces
+
 void Gui::Draw() {
     static const ImVec2 startPos(0.f, 0.f);
 
     ImGui::SetNextWindowPos(startPos);
     ImGui::SetNextWindowSize(m_GUIWrapper->GetWindowSize());
     if (ImGui::Begin("##begin_main", nullptr, m_GUIWrapper->GetWindowFlags())) {
-        ImGui::Text("Test");
+        ImGui::Text(m_LocalizationManager->GetTranslation("justTest").c_str());
 
         ImGui::PushFont(m_Segoeui18);
         ImGui::Text("Never gonna give you up");

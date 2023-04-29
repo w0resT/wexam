@@ -7,7 +7,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) {
 		app.Run();
 	}
 	catch (const std::exception& e) {
-		std::cerr << "[error] " << e.what();
+		std::cout << "[error] " << e.what();
 		return EXIT_FAILURE;
 	}
 

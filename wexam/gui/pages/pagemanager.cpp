@@ -5,7 +5,6 @@ void PageManager::AddTab(std::unique_ptr<IPageView> tab, const GUIPages& page) {
 }
 
 void PageManager::Draw() {
-	// TODO: add here GetCurrentDrawPage
 	for (const auto& tab : m_tabs) {
 		tab.second->Draw();
 	}

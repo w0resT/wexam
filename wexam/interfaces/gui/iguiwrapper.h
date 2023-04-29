@@ -14,4 +14,6 @@ public:
 
 	virtual void SetCurrentDrawPage(const GUIPages& page) = 0;
 	virtual GUIPages GetCurrentDrawPage() const = 0;
+
+	virtual ~IGUIWrapper() {}
 };

@@ -82,6 +82,15 @@
     <Filter Include="Файлы заголовков\interfaces\controller">
       <UniqueIdentifier>{67b4ca28-f5ae-4ba7-94d2-aa7fbeac71b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\localization">
+      <UniqueIdentifier>{6be47a3a-27a8-4e41-b386-76e258fff257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\localization">
+      <UniqueIdentifier>{672f1bbf-f528-4a94-a268-dfb9b69b4a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces\localization">
+      <UniqueIdentifier>{62df063d-2597-4165-a413-ea3fd555a881}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -147,6 +156,15 @@
     <ClCompile Include="gui\wrapper\guiwrapper.cpp">
       <Filter>Исходные файлы\gui\wrapper</Filter>
     </ClCompile>
+    <ClCompile Include="localization\localization_manager.cpp">
+      <Filter>Исходные файлы\localization</Filter>
+    </ClCompile>
+    <ClCompile Include="localization\localization_writer.cpp">
+      <Filter>Исходные файлы\localization</Filter>
+    </ClCompile>
+    <ClCompile Include="localization\localization_reader.cpp">
+      <Filter>Исходные файлы\localization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\application.h">
@@ -197,7 +215,7 @@
     <ClInclude Include="observer\observer.h">
       <Filter>Файлы заголовков\observer</Filter>
     </ClInclude>
-    <ClInclude Include="gui\tabs.h">
+    <ClInclude Include="gui\pages.h">
       <Filter>Файлы заголовков\gui</Filter>
     </ClInclude>
     <ClInclude Include="resources\segoeui.h">
@@ -247,6 +265,27 @@
     </ClInclude>
     <ClInclude Include="interfaces\gui\ipageview.h">
       <Filter>Файлы заголовков\interfaces\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="localization\localization_manager.h">
+      <Filter>Файлы заголовков\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\localization\ilocalizationreader.h">
+      <Filter>Файлы заголовков\interfaces\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\localization\ilocalizationwriter.h">
+      <Filter>Файлы заголовков\interfaces\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="localization\localization_writer.h">
+      <Filter>Файлы заголовков\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="localization\localization_reader.h">
+      <Filter>Файлы заголовков\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\localization\ilocalizationmanager.h">
+      <Filter>Файлы заголовков\interfaces\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\pages\pages.h">
+      <Filter>Файлы заголовков\gui\pages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

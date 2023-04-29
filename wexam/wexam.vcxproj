@@ -94,6 +94,9 @@
       <AdditionalLibraryDirectories>G:\mighty project\wexam\dependencies\glfw\lib-vc2022-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)resources" "$(SolutionDir)build\$(Configuration)\resources" /E /C /I /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -162,6 +165,9 @@
     <ClCompile Include="gui\pages\page_tests.cpp" />
     <ClCompile Include="gui\pages\page_users.cpp" />
     <ClCompile Include="gui\wrapper\guiwrapper.cpp" />
+    <ClCompile Include="localization\localization_manager.cpp" />
+    <ClCompile Include="localization\localization_reader.cpp" />
+    <ClCompile Include="localization\localization_writer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model\appmodel.cpp" />
     <ClCompile Include="observer\observer.cpp" />
@@ -182,11 +188,12 @@
     <ClInclude Include="gui\imgui\imstb_rectpack.h" />
     <ClInclude Include="gui\imgui\imstb_textedit.h" />
     <ClInclude Include="gui\pages\pagemanager.h" />
+    <ClInclude Include="gui\pages\pages.h" />
     <ClInclude Include="gui\pages\page_info.h" />
     <ClInclude Include="gui\pages\page_settings.h" />
     <ClInclude Include="gui\pages\page_tests.h" />
     <ClInclude Include="gui\pages\page_users.h" />
-    <ClInclude Include="gui\tabs.h" />
+    <ClInclude Include="gui\pages.h" />
     <ClInclude Include="gui\wrapper\guiwrapper.h" />
     <ClInclude Include="interfaces\controller\iappcontroller.h" />
     <ClInclude Include="interfaces\gui\igui.h" />
@@ -195,7 +202,13 @@
     <ClInclude Include="interfaces\gui\ipagemanager.h" />
     <ClInclude Include="interfaces\gui\ipageview.h" />
     <ClInclude Include="interfaces\iobserver.h" />
+    <ClInclude Include="interfaces\localization\ilocalizationmanager.h" />
+    <ClInclude Include="interfaces\localization\ilocalizationreader.h" />
+    <ClInclude Include="interfaces\localization\ilocalizationwriter.h" />
     <ClInclude Include="interfaces\model\iappmodel.h" />
+    <ClInclude Include="localization\localization_manager.h" />
+    <ClInclude Include="localization\localization_reader.h" />
+    <ClInclude Include="localization\localization_writer.h" />
     <ClInclude Include="model\appmodel.h" />
     <ClInclude Include="observer\observer.h" />
     <ClInclude Include="resources\segoeui.h" />
