@@ -10,10 +10,6 @@
 
 #include "../localization/localization_manager.h"
 
-// Fonts
-#include "../resources/segoeui.h"
-#include "../resources/segoeuib.h"
-
 void Gui::Init() {
     // Error callback func
     glfwSetErrorCallback([](int error, const char* description) {
@@ -80,10 +76,9 @@ void Gui::Init() {
 
     // TODO: make controller for it and move it outside form GUI
     // Initializing localization manager
-    std::string fileName = ".\\resources\\localizations.lang";
     std::unique_ptr<ILocalizationReader> reader = std::make_unique<LocalizationReader>();
     std::unique_ptr<ILocalizationWriter> writer = std::make_unique<LocalizationWriter>();
-    m_LocalizationManager = std::make_unique<LocalizationManager>(std::move(reader), std::move(writer), fileName);
+    m_LocalizationManager = std::make_unique<LocalizationManager>(std::move(reader), std::move(writer), (defines::RESOURCES_PATH + "localizations.lang"));
 
     // Sets default language
     m_LocalizationManager->SetLanguage("en");
@@ -125,8 +120,6 @@ void Gui::Shutdown() {
     glfwTerminate();
 }
 
-// TODO: Add virtual destructor for each interfaces
-
 void Gui::Draw() {
     static const ImVec2 startPos(0.f, 0.f);
 
@@ -154,7 +147,6 @@ void Gui::Draw() {
     ImGui::End();
 }
 
-// TODO: load fonts from /resources/
 void Gui::CreateTabs() {
     /*
     * TODO: TestsModel for tests, UsersModel for users
@@ -172,17 +164,15 @@ void Gui::CreateTabs() {
 
 void Gui::CreateFonts() {
     ImGuiIO& io = ImGui::GetIO();
+    const auto& glyphRanges = io.Fonts->GetGlyphRangesCyrillic();
 
-    m_Segoeui18 = io.Fonts->AddFontFromMemoryCompressedTTF(
-        fonts::segoeui_compressed_data, fonts::segoeui_compressed_size, 18.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+    m_Segoeui18 = io.Fonts->AddFontFromFileTTF((defines::RESOURCES_PATH + "segoeui.ttf").c_str(), 18.f, NULL, glyphRanges);
     IM_ASSERT(m_Segoeui18 != nullptr);
 
-    m_SegoeuiBold18 = io.Fonts->AddFontFromMemoryCompressedTTF(
-        fonts::segoeuib_compressed_data, fonts::segoeuib_compressed_size, 18.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+    m_SegoeuiBold18 = io.Fonts->AddFontFromFileTTF((defines::RESOURCES_PATH + "segoeuib.ttf").c_str(), 18.f, NULL, glyphRanges);
     IM_ASSERT(m_SegoeuiBold18 != nullptr);
 
-    m_SegoeuiBold32 = io.Fonts->AddFontFromMemoryCompressedTTF(
-        fonts::segoeuib_compressed_data, fonts::segoeuib_compressed_size, 32.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+    m_SegoeuiBold32 = io.Fonts->AddFontFromFileTTF((defines::RESOURCES_PATH + "segoeuib.ttf").c_str(), 32.f, NULL, glyphRanges);
     IM_ASSERT(m_SegoeuiBold32 != nullptr);
 }
 

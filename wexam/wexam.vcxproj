@@ -211,8 +211,6 @@
     <ClInclude Include="localization\localization_writer.h" />
     <ClInclude Include="model\appmodel.h" />
     <ClInclude Include="observer\observer.h" />
-    <ClInclude Include="resources\segoeui.h" />
-    <ClInclude Include="resources\segoeuib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,7 @@
+[en]
+begin_main = MainBegin and with
+justTest=ttest ad
+
+[ru]
+begin_main = MainBeginRU
+justTest=ttestRU

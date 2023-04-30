@@ -55,9 +55,6 @@
     <Filter Include="Исходные файлы\observer">
       <UniqueIdentifier>{7d8e036d-e520-4ef7-ba75-858b0c133ede}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\resources">
-      <UniqueIdentifier>{d1a049c0-1c40-472b-b722-b7a7bff65a45}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\gui\pages">
       <UniqueIdentifier>{8fa02059-a8a6-4a15-ae28-9e1a7d4ae869}</UniqueIdentifier>
     </Filter>
@@ -217,12 +214,6 @@
     </ClInclude>
     <ClInclude Include="gui\pages.h">
       <Filter>Файлы заголовков\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="resources\segoeui.h">
-      <Filter>Файлы заголовков\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="resources\segoeuib.h">
-      <Filter>Файлы заголовков\resources</Filter>
     </ClInclude>
     <ClInclude Include="gui\pages\page_info.h">
       <Filter>Файлы заголовков\gui\pages</Filter>

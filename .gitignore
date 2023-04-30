@@ -36,8 +36,8 @@ bld/
 # Imgui ini file
 imgui.ini
 
-# Localization resource
-*.lang
+# Local resources (used only in debug)
+wexam/resources
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
