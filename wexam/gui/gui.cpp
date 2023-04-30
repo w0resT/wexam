@@ -17,13 +17,13 @@
 void Gui::Init() {
     // Error callback func
     glfwSetErrorCallback([](int error, const char* description) {
-        std::cerr << "[error] GLFW (" << error << "): " << description << std::endl;
+        std::cout << "[error] GLFW (" << error << "): " << description << std::endl;
         });
 
 	// Initializing GLFW
     // TODO: Make assert
     if (!glfwInit()) {
-        std::cerr << "[error] Failed to initialize GLFW" << std::endl;
+        std::cout << "[error] Failed to initialize GLFW" << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -36,7 +36,7 @@ void Gui::Init() {
 
     // TODO: Make assert 
     if (!m_GLFWWindow) {
-        std::cerr << "[error] Failed to create window" << std::endl;
+        std::cout << "[error] Failed to create window" << std::endl;
         glfwTerminate();
         std::exit(EXIT_FAILURE);
     }
@@ -154,6 +154,7 @@ void Gui::Draw() {
     ImGui::End();
 }
 
+// TODO: load fonts from /resources/
 void Gui::CreateTabs() {
     /*
     * TODO: TestsModel for tests, UsersModel for users

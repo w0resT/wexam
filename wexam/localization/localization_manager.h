@@ -21,7 +21,7 @@ public:
 	void LoadTranslation() override;
 
 private:
-	std::map<std::string, std::map<std::string, std::string>> m_translations;
+	std::unordered_map<std::string, std::unordered_map<std::string, std::string>> m_translations;
 	std::string m_currentLanguage;
 
 	std::unique_ptr<ILocalizationReader> m_reader;

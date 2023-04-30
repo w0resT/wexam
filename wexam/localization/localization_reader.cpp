@@ -2,9 +2,8 @@
 #include <sstream>
 #include "localization_reader.h"
 
-std::map<std::string, std::map<std::string, std::string>> LocalizationReader::ReadTranslation(const std::string& filename) const
-{
-    std::map<std::string, std::map<std::string, std::string>> translation;
+std::unordered_map<std::string, std::unordered_map<std::string, std::string>> LocalizationReader::ReadTranslation(const std::string& filename) const {
+    std::unordered_map<std::string, std::unordered_map<std::string, std::string>> translation;
 
     std::ifstream file(filename);
     if (!file) {

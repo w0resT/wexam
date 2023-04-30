@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 
 #include "../../interfaces/gui/ipagemanager.h"
 #include "../../interfaces/gui/ipageview.h"
@@ -14,5 +14,5 @@ public:
 	void Draw(const GUIPages& page) override;
 
 private:
-	std::map<GUIPages, std::unique_ptr<IPageView>> m_tabs;
+	std::unordered_map<GUIPages, std::unique_ptr<IPageView>> m_tabs;
 };
