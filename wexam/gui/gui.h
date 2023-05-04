@@ -26,9 +26,12 @@ public:
 private:
 	void Draw();
 	void CreateTabs();
-
 	void CreateFonts();
 	void LoadStyle();
+
+	void DrawBottomBar();
+	void DrawLeftChild();
+	void DrawRightChild();
 
 private:
 	GLFWwindow* m_GLFWWindow;
@@ -38,7 +41,7 @@ private:
 
 	std::shared_ptr<IGUIWrapper> m_GUIWrapper;
 
-	std::unique_ptr<ILocalizationManager> m_LocalizationManager;
+	std::shared_ptr<ILocalizationManager> m_LocalizationManager;
 
 	ImFont* m_Segoeui18;
 	ImFont* m_SegoeuiBold18;

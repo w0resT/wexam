@@ -99,9 +99,6 @@
     <ClCompile Include="gui\imgui\imgui.cpp">
       <Filter>Исходные файлы\gui\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_demo.cpp">
-      <Filter>Исходные файлы\gui\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="gui\imgui\imgui_draw.cpp">
       <Filter>Исходные файлы\gui\imgui</Filter>
     </ClCompile>
@@ -277,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="gui\pages\pages.h">
       <Filter>Файлы заголовков\gui\pages</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\custom_imgui_features.h">
+      <Filter>Файлы заголовков\gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

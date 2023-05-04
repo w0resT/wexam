@@ -154,7 +154,6 @@
     <ClCompile Include="gui\imgui\backend\imgui_impl_glfw.cpp" />
     <ClCompile Include="gui\imgui\backend\imgui_impl_opengl3.cpp" />
     <ClCompile Include="gui\imgui\imgui.cpp" />
-    <ClCompile Include="gui\imgui\imgui_demo.cpp" />
     <ClCompile Include="gui\imgui\imgui_draw.cpp" />
     <ClCompile Include="gui\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="gui\imgui\imgui_tables.cpp" />
@@ -176,6 +175,7 @@
     <ClInclude Include="application\application.h" />
     <ClInclude Include="controller\appcontroller.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="gui\custom_imgui_features.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="gui\imguimanager.h" />
     <ClInclude Include="gui\imgui\backend\imgui_impl_glfw.h" />

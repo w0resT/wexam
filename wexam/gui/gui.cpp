@@ -1,14 +1,25 @@
+#if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <iostream>
+
+// output data + time
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 
 #include "../defines.h"
 #include "gui.h"
 #include "imguimanager.h"
+#include "custom_imgui_features.h"
 
 #include "wrapper/guiwrapper.h"
 
 #include "pages/pages.h"
 
 #include "../localization/localization_manager.h"
+
 
 void Gui::Init() {
     // Error callback func
@@ -23,9 +34,10 @@ void Gui::Init() {
         std::exit(EXIT_FAILURE);
     }
 
-    // GL 3.0
+    // GL 3.0 + not resizable 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     // Creating window
     m_GLFWWindow = glfwCreateWindow(defines::WINDOW_W, defines::WINDOW_H, defines::WINDOW_TITLE, nullptr, nullptr);
@@ -59,6 +71,20 @@ void Gui::Init() {
     m_ImguiManager = std::make_unique<ImGuiManager>(m_GLFWWindow);
     m_ImguiManager->Init();
 
+    // TODO: 
+    // - scan folder for .lang files (files lang's to store all .lang files)
+    // - make controller for it and move it outside form GUI
+    // Initializing localization manager
+    std::unique_ptr<ILocalizationReader> reader = std::make_unique<LocalizationReader>();
+    std::unique_ptr<ILocalizationWriter> writer = std::make_unique<LocalizationWriter>();
+    m_LocalizationManager = std::make_shared<LocalizationManager>(std::move(reader), std::move(writer), (defines::RESOURCES_PATH + "localizations.lang"));
+
+    // Sets default language
+    m_LocalizationManager->SetLanguage("en");
+
+    // Get translations
+    m_LocalizationManager->LoadTranslation();
+
     // Load style
     LoadStyle();
 
@@ -73,18 +99,6 @@ void Gui::Init() {
 
     // Initializing gui wrapper
     m_GUIWrapper = std::make_shared<GUIWrapper>();
-
-    // TODO: make controller for it and move it outside form GUI
-    // Initializing localization manager
-    std::unique_ptr<ILocalizationReader> reader = std::make_unique<LocalizationReader>();
-    std::unique_ptr<ILocalizationWriter> writer = std::make_unique<LocalizationWriter>();
-    m_LocalizationManager = std::make_unique<LocalizationManager>(std::move(reader), std::move(writer), (defines::RESOURCES_PATH + "localizations.lang"));
-
-    // Sets default language
-    m_LocalizationManager->SetLanguage("en");
-
-    // Get translations
-    m_LocalizationManager->LoadTranslation();
 }
 
 void Gui::Run() {
@@ -97,9 +111,6 @@ void Gui::Run() {
 
         // Updating ImGui
         m_ImguiManager->NewFrame();
-
-        // Showing the demo window
-        //ImGui::ShowDemoWindow();
 
         // Showing main window
         Draw();
@@ -120,29 +131,23 @@ void Gui::Shutdown() {
     glfwTerminate();
 }
 
+// 	Localization: add file for storage names from lang (so we don't need to edit each str after changes)
 void Gui::Draw() {
     static const ImVec2 startPos(0.f, 0.f);
 
     ImGui::SetNextWindowPos(startPos);
     ImGui::SetNextWindowSize(m_GUIWrapper->GetWindowSize());
     if (ImGui::Begin("##begin_main", nullptr, m_GUIWrapper->GetWindowFlags())) {
-        ImGui::Text(m_LocalizationManager->GetTranslation("justTest").c_str());
+        // Left side
+        DrawLeftChild();
 
-        ImGui::PushFont(m_Segoeui18);
-        ImGui::Text("Never gonna give you up");
-        ImGui::PopFont();
+        ImGui::SameLine();
 
-        ImGui::PushFont(m_SegoeuiBold18);
-        ImGui::Text("Never gonna give you up");
-        ImGui::PopFont();
+        // Right side
+        DrawRightChild();
 
-        ImGui::PushFont(m_SegoeuiBold32);
-        ImGui::Text("Never gonna give you up");
-        ImGui::PopFont();
-        
-        m_PageManager->Draw();
-
-        m_PageManager->Draw(m_GUIWrapper->GetCurrentDrawPage());
+        // Bottom; should be last
+        DrawBottomBar();
     }
     ImGui::End();
 }
@@ -151,10 +156,11 @@ void Gui::CreateTabs() {
     /*
     * TODO: TestsModel for tests, UsersModel for users
     */
-    std::unique_ptr<IPageView> tabTests = std::make_unique<PageTests>(m_Model);
-    std::unique_ptr<IPageView> tabUsers = std::make_unique<PageUsers>(m_Model);
-    std::unique_ptr<IPageView> tabSettings = std::make_unique<PageSettings>(m_Model);
-    std::unique_ptr<IPageView> tabInfo = std::make_unique<PageInfo>(m_Model);
+
+    std::unique_ptr<IPageView> tabTests = std::make_unique<PageTests>(m_LocalizationManager, m_Model);
+    std::unique_ptr<IPageView> tabUsers = std::make_unique<PageUsers>(m_LocalizationManager, m_Model);
+    std::unique_ptr<IPageView> tabSettings = std::make_unique<PageSettings>(m_LocalizationManager);
+    std::unique_ptr<IPageView> tabInfo = std::make_unique<PageInfo>(m_LocalizationManager);
 
     m_PageManager->AddTab(std::move(tabTests), GUIPages::Tests);
     m_PageManager->AddTab(std::move(tabUsers), GUIPages::Users);
@@ -177,23 +183,126 @@ void Gui::CreateFonts() {
 }
 
 void Gui::LoadStyle() {
-    ImGui::StyleColorsDark();
-
     auto& style = ImGui::GetStyle();
     auto& color = style.Colors;
 
+    //color[ImGuiCol_WindowBg] = ImVec4(0.075f, 0.086f, 0.106f, 1.000f);
     color[ImGuiCol_Tab] = color[ImGuiCol_WindowBg];
     color[ImGuiCol_TabHovered] = ImVec4(0.259f, 0.588f, 0.980f, 0.392f);
 
-    style.FramePadding = ImVec2(1, 2);
+    style.FramePadding = ImVec2(4, 2);
     style.FrameRounding = 3;
     style.WindowBorderSize = 0;
     style.WindowPadding = ImVec2(1, 5);
-    style.WindowRounding = 7;
+    style.WindowRounding = 0;
     style.ScrollbarRounding = 3;
     style.ScrollbarSize = 14;
     style.GrabRounding = 2;
     style.ChildBorderSize = 0;
     style.ItemSpacing = ImVec2(8, 5);
+}
+
+void Gui::DrawBottomBar() {
+    using namespace std::literals;
+
+    const auto gradient_size = ImVec2(1000, 20);
+    const auto now = std::chrono::system_clock::now();
+    const auto t_c = std::chrono::system_clock::to_time_t(now - 24h);
+
+    std::stringstream ssTime;
+    std::stringstream ssGroup;
+
+    ssTime << m_LocalizationManager->GetTranslation("bottomBarData") << ": " << std::put_time(std::localtime(&t_c), "%F %T\n");
+    ssGroup << m_LocalizationManager->GetTranslation("bottomBarLoggedInAs") << ": " << m_LocalizationManager->GetTranslation("admin");
+
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    const ImVec2 p = ImGui::GetWindowPos();  
+
+    const ImVec2 p1 = ImVec2(p.x + gradient_size.x, p.y + gradient_size.y + 565);
+    const ImVec4 col1(0.000f, 0.412f, 1.000f, 0.392f);
+    const ImVec4 col2(0.000f, 0.631f, 0.820f, 0.392f);
+
+    const ImVec2 p_min = ImVec2(p.x, p.y + 560);
+    const ImVec2 p_max = p1;
+
+    const float posText_y = p.y + gradient_size.y + 542.f;
+    const ImVec2 posTextTime = ImVec2(p.x + gradient_size.x - 5 - ImGui::CalcTextSize(ssTime.str().c_str()).x, posText_y);
+    const ImVec2 posTextGroup = ImVec2(p.x + 5, posText_y);
+
+    draw_list->AddRectFilledMultiColor(p_min, p_max, ImColor(col1), ImColor(col2), ImColor(col2), ImColor(col1));
+    draw_list->AddText(posTextTime, ImGui::GetColorU32(ImGuiCol_Text), ssTime.str().c_str());
+    draw_list->AddText(ImVec2(p.x + 5, p.y + gradient_size.y + 542), ImGui::GetColorU32(ImGuiCol_Text), ssGroup.str().c_str());
+}
+
+void Gui::DrawLeftChild() {
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    const ImVec2 p = ImGui::GetWindowPos();
+
+    const ImGuiWindowFlags childFlags = 0;
+
+    const ImVec2 leftTopChildSize(ImGui::GetContentRegionAvail().x * 0.2f, 70);
+
+    ImGui::BeginChild("##child_left_top", leftTopChildSize); {
+        static int circle_size = 50;
+        static int circle_offset = 10;
+
+        ImGui::SetCursorPos(ImVec2(9, 5));
+        draw_list->AddCircleFilled(ImVec2(p.x + circle_offset + circle_size * 0.5f, p.y + circle_offset + circle_size * 0.5f), 46 * 0.5f, ImColor(100, 150, 255), 0);
+
+        ImGui::PushFont(m_SegoeuiBold18);
+        ImGui::SetCursorPos(ImVec2(65, 14));
+        ImGui::Text("Account name"); // m_Auth->GetAccountName();
+        ImGui::PopFont();
+
+        ImGui::SetCursorPos(ImVec2(65, 29));
+        ImGui::Text(m_LocalizationManager->GetTranslation("localAccount").c_str());
+
+        ImGui::SetCursorPos(ImVec2(0, 65));
+        ImGui::Separator();
+    }
+    ImGui::EndChild();
+
+    const ImVec2 leftChildSize(ImGui::GetContentRegionAvail().x * 0.2f, ImGui::GetContentRegionAvail().y * 0.92f);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.05f, 0.5f));
+    ImGui::BeginChild("##child_left", leftChildSize, false, childFlags); {
+
+        const ImVec2 selectableSize = ImVec2(ImGui::GetContentRegionAvail().x, 48);
+        const ImGuiSelectableFlags selectableFlags = ImGuiSelectableFlags_None;
+
+        static auto cur_pos = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cur_pos.x + 15, cur_pos.y + 10));
+
+        // Draw pages
+        ImGui::BeginGroup();
+        for (int i = 0; i < static_cast<int>(GUIPages::MAX); ++i) {
+            const bool isSelected = m_PageManager->GetCurrentPage() == static_cast<GUIPages>(i);
+            const auto tabName = m_PageManager->GetPageName(static_cast<GUIPages>(i));
+            if (ImGui::SelectableTab(m_LocalizationManager->GetTranslation(tabName).c_str(), isSelected, selectableFlags, selectableSize)) {
+                m_PageManager->SetCurrentPage(static_cast<GUIPages>(i));
+            }
+        }
+        ImGui::EndGroup();
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar(1);
+}
+
+void Gui::DrawRightChild() {
+    const auto& curTabName = m_LocalizationManager->GetTranslation(m_PageManager->GetCurrentPageName());
+    const ImGuiWindowFlags childFlags = 0;
+
+    ImGui::SetCursorPos(ImVec2(230, 10));
+    ImGui::BeginChild("##child_right", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y * 0.928f), false, childFlags); {
+
+        ImGui::PushFont(m_SegoeuiBold32);
+        ImGui::Text(curTabName.c_str());
+        ImGui::PopFont();
+
+        //ImGui::NewLine();
+
+        m_PageManager->Draw(m_PageManager->GetCurrentPage());
+    }
+    ImGui::EndChild();
 }
 

@@ -1,7 +1,23 @@
 [en]
-begin_main = MainBegin and with
-justTest=ttest ad
+tabNameSettings = Settings
+tabNameUsers = Users
+tabNameTests = Tests
+tabNameInfo = Info
+localAccount = Local account
+bottomBarData = Data 
+bottomBarLoggedInAs = Logged in as
+admin = Administrator
+user = User
+settingsLanguage = Language
 
 [ru]
-begin_main = MainBeginRU
-justTest=ttestRU
+tabNameSettings = Настройки
+tabNameUsers = Пользователи
+tabNameTests = Тесты
+tabNameInfo = Информация
+localAccount = Локальный аккаунт
+bottomBarData = Дата
+bottomBarLoggedInAs = Вы вышли как
+admin = Администратор
+user = Пользователь
+settingsLanguage = Язык системы

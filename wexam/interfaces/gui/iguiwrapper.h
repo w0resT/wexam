@@ -12,8 +12,5 @@ public:
 	virtual void SetWindowFlags(const ImGuiWindowFlags& flags) = 0;
 	virtual ImGuiWindowFlags GetWindowFlags() const = 0;
 
-	virtual void SetCurrentDrawPage(const GUIPages& page) = 0;
-	virtual GUIPages GetCurrentDrawPage() const = 0;
-
 	virtual ~IGUIWrapper() {}
 };
