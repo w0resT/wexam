@@ -131,7 +131,9 @@ void Gui::Shutdown() {
     glfwTerminate();
 }
 
-// 	Localization: add file for storage names from lang (so we don't need to edit each str after changes)
+// TODO:
+//  - Add nullptr check everywhere when using constructor with arg
+// 	- Localization: add file for storage names from lang (so we don't need to edit each str after changes)
 void Gui::Draw() {
     static const ImVec2 startPos(0.f, 0.f);
 

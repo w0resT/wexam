@@ -1,12 +1,12 @@
 #include "pagemanager.h"
 
 PageManager::PageManager() {
-	// TODO: 
-	// - add and use AddTabName instead hardcode
 	m_tabNames[GUIPages::Tests] = "tabNameTests";
 	m_tabNames[GUIPages::Users] = "tabNameUsers";
 	m_tabNames[GUIPages::Settings] = "tabNameSettings";
 	m_tabNames[GUIPages::Info] = "tabNameInfo";
+
+	m_curPage = GUIPages::Tests;
 }
 
 void PageManager::AddTab(std::unique_ptr<IPageView> tab, const GUIPages& page) {

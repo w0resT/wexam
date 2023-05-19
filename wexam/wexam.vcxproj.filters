@@ -88,6 +88,24 @@
     <Filter Include="Файлы заголовков\interfaces\localization">
       <UniqueIdentifier>{62df063d-2597-4165-a413-ea3fd555a881}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\interfaces\tsystem">
+      <UniqueIdentifier>{89c7f944-86d2-4f4b-bf76-39d581c42e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\tsystem">
+      <UniqueIdentifier>{340427c6-7496-4a91-aff5-ded05de0b3f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\tsystem">
+      <UniqueIdentifier>{9214e4bd-f0e1-4bc5-8df0-b32d207b822c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\interfaces\security">
+      <UniqueIdentifier>{668c1e3e-5537-4c18-82b4-f14da044fafe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\security">
+      <UniqueIdentifier>{cf590787-3cca-4605-a76b-79533ac0d81a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\security">
+      <UniqueIdentifier>{08bbc7dc-bf0d-4928-addc-b91dea05b5a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -158,6 +176,30 @@
     </ClCompile>
     <ClCompile Include="localization\localization_reader.cpp">
       <Filter>Исходные файлы\localization</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\question_with_free_answer.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\question_with_options.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\test.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\testrepository.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\testresult.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="security\aes_text_cipher.cpp">
+      <Filter>Исходные файлы\security</Filter>
+    </ClCompile>
+    <ClCompile Include="tsystem\testmanager.cpp">
+      <Filter>Исходные файлы\tsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="security\totp_generator.cpp">
+      <Filter>Исходные файлы\security</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +319,57 @@
     </ClInclude>
     <ClInclude Include="gui\custom_imgui_features.h">
       <Filter>Файлы заголовков\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\tsystem\itestrepository.h">
+      <Filter>Файлы заголовков\interfaces\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\tsystem\itest.h">
+      <Filter>Файлы заголовков\interfaces\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\tsystem\iquestion.h">
+      <Filter>Файлы заголовков\interfaces\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\tsystem\itestresult.h">
+      <Filter>Файлы заголовков\interfaces\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\question_with_options.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\question_with_free_answer.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\test.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\testrepository.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\testresult.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\security\itextcipher.h">
+      <Filter>Файлы заголовков\interfaces\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\aes_text_cipher.h">
+      <Filter>Файлы заголовков\security</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\tsystem\itestmanager.h">
+      <Filter>Файлы заголовков\interfaces\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="tsystem\testmanager.h">
+      <Filter>Файлы заголовков\tsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="security\byte_order_converter.h">
+      <Filter>Файлы заголовков\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\base32_encoder.h">
+      <Filter>Файлы заголовков\security</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\security\itotp.h">
+      <Filter>Файлы заголовков\interfaces\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\totp_generator.h">
+      <Filter>Файлы заголовков\security</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

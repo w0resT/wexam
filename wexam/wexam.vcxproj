@@ -86,16 +86,17 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>G:\mighty project\wexam\dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\mighty project\wexam\dependencies\glfw\include;G:\mighty project\wexam\dependencies\openssl-x86-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>G:\mighty project\wexam\dependencies\glfw\lib-vc2022-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>G:\mighty project\wexam\dependencies\glfw\lib-vc2022-32;G:\mighty project\wexam\dependencies\openssl-x86-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)resources" "$(SolutionDir)build\$(Configuration)\resources" /E /C /I /Y</Command>
+      <Command>xcopy "$(SolutionDir)resources" "$(SolutionDir)build\$(Configuration)\resources" /E /C /I /Y
+copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -170,6 +171,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model\appmodel.cpp" />
     <ClCompile Include="observer\observer.cpp" />
+    <ClCompile Include="security\aes_text_cipher.cpp" />
+    <ClCompile Include="security\totp_generator.cpp" />
+    <ClCompile Include="tsystem\question_with_free_answer.cpp" />
+    <ClCompile Include="tsystem\question_with_options.cpp" />
+    <ClCompile Include="tsystem\test.cpp" />
+    <ClCompile Include="tsystem\testmanager.cpp" />
+    <ClCompile Include="tsystem\testrepository.cpp" />
+    <ClCompile Include="tsystem\testresult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\application.h" />
@@ -206,11 +215,28 @@
     <ClInclude Include="interfaces\localization\ilocalizationreader.h" />
     <ClInclude Include="interfaces\localization\ilocalizationwriter.h" />
     <ClInclude Include="interfaces\model\iappmodel.h" />
+    <ClInclude Include="interfaces\security\itextcipher.h" />
+    <ClInclude Include="interfaces\security\itotp.h" />
+    <ClInclude Include="interfaces\tsystem\iquestion.h" />
+    <ClInclude Include="interfaces\tsystem\itest.h" />
+    <ClInclude Include="interfaces\tsystem\itestmanager.h" />
+    <ClInclude Include="interfaces\tsystem\itestrepository.h" />
+    <ClInclude Include="interfaces\tsystem\itestresult.h" />
     <ClInclude Include="localization\localization_manager.h" />
     <ClInclude Include="localization\localization_reader.h" />
     <ClInclude Include="localization\localization_writer.h" />
     <ClInclude Include="model\appmodel.h" />
     <ClInclude Include="observer\observer.h" />
+    <ClInclude Include="security\aes_text_cipher.h" />
+    <ClInclude Include="security\base32_encoder.h" />
+    <ClInclude Include="security\byte_order_converter.h" />
+    <ClInclude Include="security\totp_generator.h" />
+    <ClInclude Include="tsystem\question_with_free_answer.h" />
+    <ClInclude Include="tsystem\question_with_options.h" />
+    <ClInclude Include="tsystem\test.h" />
+    <ClInclude Include="tsystem\testmanager.h" />
+    <ClInclude Include="tsystem\testrepository.h" />
+    <ClInclude Include="tsystem\testresult.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
