@@ -46,7 +46,7 @@ public:
 	virtual std::shared_ptr<IQuestion> FindQuestionById(unsigned int id) const = 0;
 
 	// Delete a question at the specified index
-	virtual void DeleteQuestion(unsigned int index) = 0;
+	virtual void RemoveQuestion(unsigned int index) = 0;
 
 	// Edit a question at the specified index
 	virtual void EditQuestion(unsigned int index, const std::string& question) = 0;

@@ -150,6 +150,7 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
   <ItemGroup>
     <ClCompile Include="application\application.cpp" />
     <ClCompile Include="controller\appcontroller.cpp" />
+    <ClCompile Include="FileBrowser\ImGuiFileBrowser.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="gui\imguimanager.cpp" />
     <ClCompile Include="gui\imgui\backend\imgui_impl_glfw.cpp" />
@@ -184,6 +185,8 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClInclude Include="application\application.h" />
     <ClInclude Include="controller\appcontroller.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="FileBrowser\Dirent\dirent.h" />
+    <ClInclude Include="FileBrowser\ImGuiFileBrowser.h" />
     <ClInclude Include="gui\custom_imgui_features.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="gui\imguimanager.h" />

@@ -6,7 +6,7 @@
 #include "question_with_free_answer.h"
 #include "question_with_options.h"
 
-inline void TestManager::ImportTests( const std::string& filename, std::shared_ptr<ITestRepository> repository, bool useDecrypt, bool needCorAnswers, bool needUserAnswers ) {
+void TestManager::ImportTests( const std::string& filename, std::shared_ptr<ITestRepository> repository, bool useDecrypt, bool needCorAnswers, bool needUserAnswers ) {
 	// Open the file for reading
 	std::ifstream file( filename, std::ios::binary );
 	if ( !file.is_open() ) {
@@ -46,7 +46,7 @@ inline void TestManager::ImportTests( const std::string& filename, std::shared_p
 	file.close();
 }
 
-inline void TestManager::ExportTests( const std::string& filename, std::shared_ptr<ITestRepository> repository, bool useEncrypt, bool needCorAnswers, bool needUserAnswers ) {
+void TestManager::ExportTests( const std::string& filename, std::shared_ptr<ITestRepository> repository, bool useEncrypt, bool needCorAnswers, bool needUserAnswers ) {
 	// Open the file for writing
 	std::ofstream file( filename, std::ios::binary );
 	if ( !file.is_open() ) {

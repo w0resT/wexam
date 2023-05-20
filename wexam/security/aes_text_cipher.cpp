@@ -6,7 +6,7 @@
 // Error C4996 '': Since OpenSSL 3.0
 #pragma warning(disable : 4996)
 
-inline AesTextCipher::AesTextCipher( const std::string& key ) : m_key( key ) {
+AesTextCipher::AesTextCipher( const std::string& key ) : m_key( key ) {
     if ( key.length() != AES_BLOCK_SIZE ) {
         throw std::invalid_argument( "Key length must be 128 bits!" );
     }

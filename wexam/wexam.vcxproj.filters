@@ -106,6 +106,12 @@
     <Filter Include="Исходные файлы\security">
       <UniqueIdentifier>{08bbc7dc-bf0d-4928-addc-b91dea05b5a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\FileBrowser">
+      <UniqueIdentifier>{7fb652a4-95c3-460f-b88a-0c27a356d655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\FileBrowser">
+      <UniqueIdentifier>{2c307d9e-54a0-4828-af1e-8e410c3ea727}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -200,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="security\totp_generator.cpp">
       <Filter>Исходные файлы\security</Filter>
+    </ClCompile>
+    <ClCompile Include="FileBrowser\ImGuiFileBrowser.cpp">
+      <Filter>Исходные файлы\FileBrowser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +379,12 @@
     </ClInclude>
     <ClInclude Include="security\totp_generator.h">
       <Filter>Файлы заголовков\security</Filter>
+    </ClInclude>
+    <ClInclude Include="FileBrowser\ImGuiFileBrowser.h">
+      <Filter>Файлы заголовков\FileBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="FileBrowser\Dirent\dirent.h">
+      <Filter>Файлы заголовков\FileBrowser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

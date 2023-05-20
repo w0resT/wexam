@@ -131,7 +131,7 @@ public:
 	 * @param idx The index of the question to be deleted.
 	 * @throws std::out_of_range if the index is invalid.
 	 */
-	void DeleteQuestion( unsigned int idx ) override;
+	void RemoveQuestion( unsigned int idx ) override;
 
 	/**
 	 * Edit the text of a question in the test by its index.

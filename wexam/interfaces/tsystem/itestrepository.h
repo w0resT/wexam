@@ -35,4 +35,7 @@ public:
 
 	// Get the number of tests in the repository
 	virtual unsigned int GetTestCount() const = 0;
+
+	// Clear all data (inc tests etc)
+	virtual void Clear() = 0;
 };

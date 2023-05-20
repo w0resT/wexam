@@ -14,12 +14,12 @@ void PageSettings::Draw() {
 
     if (ImGui::BeginTabBar("##UITab", tabFlags)) {
 
-        if (ImGui::BeginTabItem("Language")) {
+        if (ImGui::BeginTabItem( m_LocalizationManager->GetTranslation( "language" ).c_str() )) {
             ImGui::NewLine();
             style.FramePadding = FramePadding;
             style.ItemInnerSpacing = ItemInnerSpacing;
 
-            ImGui::SeparatorText("Main");
+            ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "main" ).c_str() );
 
             // TODO:
             // - Get available languages from m_LocalizationManager not hardcode
@@ -45,12 +45,12 @@ void PageSettings::Draw() {
         style.FramePadding = ImVec2(20, 8);
         style.ItemInnerSpacing = ImVec2(10, 4);
 
-        if (ImGui::BeginTabItem("Sizes")) {
+        if (ImGui::BeginTabItem( m_LocalizationManager->GetTranslation( "sizes" ).c_str() )) {
             ImGui::NewLine();
             style.FramePadding = FramePadding;
             style.ItemInnerSpacing = ItemInnerSpacing;
 
-            ImGui::SeparatorText("Main");
+            ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "main" ).c_str() );
             //if (ImGui::ShowStyleSelector("Themes##Selector")) {
             //    // Load our settings
             //    m_Gui->ReloadStyle();
@@ -107,13 +107,13 @@ void PageSettings::Draw() {
         style.FramePadding = ImVec2(20, 8);
         style.ItemInnerSpacing = ImVec2(10, 4);
 
-        if (ImGui::BeginTabItem("Colors")) {
+        if (ImGui::BeginTabItem( m_LocalizationManager->GetTranslation( "colors" ).c_str() )) {
             ImGui::NewLine();
             style.FramePadding = FramePadding;
             style.ItemInnerSpacing = ItemInnerSpacing;
 
             static ImGuiTextFilter filter;
-            filter.Draw("Filter colors", ImGui::GetFontSize() * 16);
+            filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 16);
 
             ImGui::SameLine(540);
 

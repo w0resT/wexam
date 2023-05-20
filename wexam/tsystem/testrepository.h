@@ -70,6 +70,11 @@ public:
 	 */
 	void ModifyTest( const std::shared_ptr<ITest>& test ) override;
 
+	/**
+	* Clearing all data.
+	*/
+	void Clear() override;
+
 private:
 	std::vector<std::shared_ptr<ITest>> m_tests;	// A container storing shared pointers to Test objects
 };
