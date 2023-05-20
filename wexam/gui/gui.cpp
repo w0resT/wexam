@@ -22,6 +22,9 @@
 #include "../tsystem/testmanager.h"
 
 #include "../security/aes_text_cipher.h"
+#include "../security/totp_generator.h"
+#include "../security/base32_encoder.h"
+#include "../security/byte_order_converter.h"
 
 #include "../localization/localization_manager.h"
 
@@ -106,6 +109,11 @@ void Gui::Init() {
     // Initializing gui wrapper
     m_GUIWrapper = std::make_shared<GUIWrapper>();
 
+    // Initilizing TOTP and stuff
+    std::unique_ptr<Base32Encoder> encoder = std::make_unique<Base32Encoder>();
+    m_TOTP = std::make_unique<TOTPGenerator>();
+    m_key = "helloworld";
+
     // Load style
     LoadStyle();
 
@@ -127,8 +135,14 @@ void Gui::Run() {
         // Updating ImGui
         m_ImguiManager->NewFrame();
 
-        // Showing main window
-        Draw();
+        // Unauthorized
+        if ( m_bSwitchAccout ) {
+            DrawAuthPage();
+        }
+        else {
+            // Showing main window
+            Draw();
+        }
 
         // Rendering ImGui & Window
         m_ImguiManager->Render();
@@ -155,13 +169,18 @@ void Gui::Draw() {
     ImGui::SetNextWindowPos( startPos );
     ImGui::SetNextWindowSize( m_GUIWrapper->GetWindowSize() );
     if ( ImGui::Begin( "##begin_main", nullptr, m_GUIWrapper->GetWindowFlags() ) ) {
-        // Left side
-        DrawLeftChild();
+        if ( m_bIsAdmin ) {
+            // Left side
+            DrawLeftChild();
 
-        ImGui::SameLine();
+            ImGui::SameLine();
 
-        // Right side
-        DrawRightChild();
+            // Right side
+            DrawRightChild();
+        }
+        else if ( m_bIsUser ) {
+
+        }
 
         // Bottom; should be last
         DrawBottomBar();
@@ -209,6 +228,7 @@ void Gui::LoadStyle() {
 
     style.FramePadding = ImVec2( 4, 2 );
     style.FrameRounding = 3;
+    style.PopupRounding = 3;
     style.WindowBorderSize = 0;
     style.WindowPadding = ImVec2( 1, 5 );
     style.WindowRounding = 0;
@@ -217,6 +237,106 @@ void Gui::LoadStyle() {
     style.GrabRounding = 2;
     style.ChildBorderSize = 0;
     style.ItemSpacing = ImVec2( 8, 5 );
+}
+
+// TOOD:
+// - Clear this func
+// - add translation
+void Gui::DrawAuthPage() {
+    static std::string userCode;
+    static std::unique_ptr<ByteOrderConverter> convertor = std::make_unique<ByteOrderConverter>();
+    static int password_attemps = 0;
+
+    auto& style = ImGui::GetStyle();
+    auto prev_window_padding = style.WindowPadding;
+
+    style.WindowPadding = ImVec2( 5, 5 );
+
+    ImGui::OpenPopup( "Authorization" );
+
+    // Always center this window when appearing
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 center = viewport->GetCenter();
+    ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
+    ImGui::SetNextWindowSize( ImVec2( 300, 295 ) );
+    if ( ImGui::BeginPopupModal( "Authorization", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+
+        std::stringstream ss_admin_label;
+        if ( password_attemps != 0 ) {
+            ss_admin_label << "Login [" << password_attemps << "/" << 3 << "]";
+        }
+        else {
+            ss_admin_label << "Login";
+        }
+
+        ImGui::SeparatorText( "Admin account" );
+        ImGui::TextWrapped( "Enter the secret code to login as admininstator:" );
+
+        ImGui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ImGui::InputText( "##auth_totp_code", &userCode );
+        // Disable login after 3 attempts
+        bool need_disable_login = password_attemps >= 3;
+        if ( need_disable_login ) {
+            ImGui::BeginDisabled();
+        }
+        if ( ImGui::Button( ss_admin_label.str().c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 30)) ) {
+            // Get the current time
+            auto currentTime = std::chrono::system_clock::now();
+
+            // Calculate the timestamp by converting the duration since the epoch to seconds and dividing by 30
+            auto timestamp = std::chrono::duration_cast< std::chrono::seconds >( currentTime.time_since_epoch() ).count() / 30;
+
+            auto totp = m_TOTP->Generate( m_key, convertor->convertToBigEndian( timestamp ) );
+
+            if ( totp == userCode ) {
+                m_bSwitchAccout = false;
+                m_bIsAdmin = true;
+
+                password_attemps = 0;
+            }
+            else {
+                ImGui::OpenPopup( "Incorrect code" );
+                password_attemps++;
+            }
+
+            userCode.clear();
+        }
+
+        // Disable login after 3 attempts
+        if ( need_disable_login ) {
+            ImGui::EndDisabled();
+        }
+
+        ImGui::SeparatorText( "Regular account" );
+
+        ImGui::TextWrapped( "Login with a regular account" );
+
+        if ( ImGui::Button( "Student", ImVec2( ImGui::GetContentRegionAvail().x, 30 ) ) ) {
+            m_bSwitchAccout = false;
+            m_bIsUser = true;
+
+            userCode.clear();
+        }
+
+        ImGui::SeparatorText("Exiting the program");
+
+        if ( ImGui::Button( "Exit", ImVec2( ImGui::GetContentRegionAvail().x, 30 ) ) ) {
+            m_bShouldClose = true;
+        }
+
+        ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
+        if ( ImGui::BeginPopupModal( "Incorrect code", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+            ImGui::Text( "Incorrect code" );
+            if ( ImGui::Button( "Ok", ImVec2( -1, 30 ) ) )
+                ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+        }
+
+
+        ImGui::EndPopup();
+    }
+
+    style.WindowPadding = prev_window_padding;
 }
 
 void Gui::DrawBottomBar() {
@@ -302,7 +422,8 @@ void Gui::DrawLeftChild() {
 
         ImGui::SetCursorPos( ImVec2( cur_pos.x + 15, cur_pos.y + 385 ) );
         if ( ImGui::Button( "Logout", ImVec2(182, 40) ) ) {
-
+            m_bSwitchAccout = true;
+            m_bIsAdmin = false;
         }
 
         ImGui::SetCursorPos( ImVec2( cur_pos.x + 15, cur_pos.y + 430 ) );

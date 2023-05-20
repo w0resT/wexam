@@ -11,5 +11,5 @@ public:
      * @param tokenLength The length of the generated TOTP token (default: 6).
      * @return The generated TOTP as a string.
      */
-    std::string generateTOTP( const std::string& secret, uint64_t timestamp, int tokenLength = 6 );
+    std::string Generate( const std::string& secret, uint64_t timestamp, int tokenLength = 6 ) override;
 };

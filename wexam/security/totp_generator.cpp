@@ -2,7 +2,7 @@
 #include <openssl/sha.h>
 #include "totp_generator.h"
 
-inline std::string TOTPGenerator::generateTOTP( const std::string& secret, uint64_t timestamp, int tokenLength ) {
+std::string TOTPGenerator::Generate( const std::string& secret, uint64_t timestamp, int tokenLength ) {
     // Create the HMAC-SHA1 hash
     unsigned char hmacResult[ SHA_DIGEST_LENGTH ];
     unsigned int hmacLen;

@@ -11,7 +11,6 @@ namespace FD {
 	imgui_addons::ImGuiFileBrowser file_dialog;
 }
 
-// TODO: add localize stuff
 // TODO: add try catch
 void PageTests::Draw() {
 	// Translate enum class types to string
@@ -55,7 +54,6 @@ void PageTests::Draw() {
 	static bool show_test_editor = false;
 
 	if ( show_main_page ) {
-
 		if ( ImGui::BeginTable( "##table_tests_main", 2, ImGuiTableFlags_NoSavedSettings ) ) {
 			// First columns - test list
 			ImGui::TableNextColumn();
@@ -65,40 +63,35 @@ void PageTests::Draw() {
 			filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
 
 			if ( ImGui::BeginTable( "##table_main_tests", 1, flags, outer_size_value ) ) {
-				//ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
-				//ImGui::TableSetupColumn( "ID", ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_WidthFixed ); // Make the first column not hideable to match our use of TableSetupScrollFreeze()
-				//ImGui::TableSetupColumn( "Title" );
-				//ImGui::TableHeadersRow();
-
 				// Retrieve and print the test details
 				for ( auto& testPtr : m_Repository->GetTests() ) {
-					if ( testPtr ) {
-						if ( !filter.PassFilter( testPtr->GetTitle().c_str() ) )
+					if ( !testPtr ) {
+						continue;
+					}
+
+					if ( !filter.PassFilter( testPtr->GetTitle().c_str() ) ) {
+						continue;
+					}
+
+					auto test_id = testPtr->GetId();
+
+					ImGui::TableNextRow();
+					ImGui::PushID( test_id );
+
+					for ( int column = 0; column < 1; column++ ) {
+						const bool item_is_selected = ( current_test_id == test_id );
+
+						if ( !ImGui::TableSetColumnIndex( column ) && column > 0 )
 							continue;
 
-						auto test_id = testPtr->GetId();
-
-						ImGui::TableNextRow();
-						ImGui::PushID( test_id );
-
-						for ( int column = 0; column < 1; column++ ) {
-							const bool item_is_selected = ( current_test_id == test_id );
-
-							if ( !ImGui::TableSetColumnIndex( column ) && column > 0 )
-								continue;
-							//if ( column == 0 )
-							//	ImGui::Text( "%d", test_id );
-							//else if ( column == 1 ) {
-							if ( ImGui::Selectable( testPtr->GetTitle().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
-								current_test_id = test_id;
-							}
-							//}
-
-							if ( item_is_selected )
-								ImGui::SetItemDefaultFocus();
+						if ( ImGui::Selectable( testPtr->GetTitle().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+							current_test_id = test_id;
 						}
-						ImGui::PopID();
+
+						if ( item_is_selected )
+							ImGui::SetItemDefaultFocus();
 					}
+					ImGui::PopID();
 				}
 
 				ImGui::EndTable();
@@ -115,11 +108,10 @@ void PageTests::Draw() {
 			ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( 0.774f, 1.0f, 0.400f, 0.600f ) );
 			if ( ImGui::Button( m_LocalizationManager->GetTranslation( "addNewTest" ).c_str(), button_size ) ) {
 				// Get higher test ID for adding new test (higher_id + 1)
-				auto tests = m_Repository->GetTests();
 				unsigned int higher_test_id = 0;
-				for ( auto it = tests.begin(); it != tests.end(); ++it ) {
-					if ( ( *it )->GetId() > higher_test_id ) {
-						higher_test_id = ( *it )->GetId();
+				for ( const auto& test : m_Repository->GetTests() ) {
+					if ( test && test->GetId() > higher_test_id ) {
+						higher_test_id = test->GetId();
 					}
 				}
 
@@ -150,11 +142,10 @@ void PageTests::Draw() {
 			if ( ImGui::Button( m_LocalizationManager->GetTranslation( "removeTest" ).c_str(), button_size ) ) {
 				m_Repository->RemoveTest( current_test_id );
 
-				auto tests = m_Repository->GetTests();
 				unsigned int higher_test_id = 0;
-				for ( auto it = tests.begin(); it != tests.end(); ++it ) {
-					if ( ( *it )->GetId() > higher_test_id ) {
-						higher_test_id = ( *it )->GetId();
+				for ( const auto& test : m_Repository->GetTests() ) {
+					if ( test && test->GetId() > higher_test_id ) {
+						higher_test_id = test->GetId();
 					}
 				}
 
@@ -164,8 +155,6 @@ void PageTests::Draw() {
 				else {
 					current_test_id = -1;
 				}
-				//bufTitle.clear();
-				//bufDesc.clear();
 			}
 			ImGui::PopStyleColor( 3 );
 
@@ -215,22 +204,29 @@ void PageTests::Draw() {
 			if ( ImGui::Button( m_LocalizationManager->GetTranslation( "import" ).c_str(), ImVec2(119, 25) ) ) {
 				ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "importTest" ).c_str() );
 			}
+
 			ImGui::SameLine();
+
 			if ( ImGui::Button( m_LocalizationManager->GetTranslation( "export" ).c_str(), ImVec2( 119, 25 ) ) ) {
 				ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "exportTest" ).c_str() );
 			}
 			
-			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importTest" ).c_str(), imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2( 700, 310 ), ".wxm" ) ) {
+			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importTest" ).c_str(), 
+												 imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, 
+												 ImVec2( 700, 310 ), ".wxm" ) ) {
 				if ( removeCurRepos ) {
 					m_Repository->Clear();
 				}
+
 				filePath = FD::file_dialog.selected_path;
-				m_Manager->ImportTests( FD::file_dialog.selected_path, m_Repository, needDecrypt, needCorAns, false );
+				m_Manager->ImportTests( filePath, m_Repository, needDecrypt, needCorAns, false );
 			}
 
-			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "exportTest" ).c_str(), imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, ImVec2( 700, 310 ), ".wxm" ) ) {
+			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "exportTest" ).c_str(), 
+												 imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, 
+												 ImVec2( 700, 310 ), ".wxm" ) ) {
 				filePath = FD::file_dialog.selected_path;
-				m_Manager->ExportTests( FD::file_dialog.selected_path, m_Repository, needDecrypt, needCorAns, false );
+				m_Manager->ExportTests( filePath, m_Repository, needDecrypt, needCorAns, false );
 			}
 
 			ImGui::EndTable();

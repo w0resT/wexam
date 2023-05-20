@@ -11,13 +11,17 @@
 #include "../interfaces/tsystem/itestrepository.h"
 #include "../interfaces/tsystem/itestmanager.h"
 #include "../interfaces/localization/ilocalizationmanager.h"
+#include "../interfaces/security/itotp.h"
 
 struct ImFont;
 
 class Gui : public IGui{
 public:
-	Gui(std::shared_ptr<IAppModel> _model) : m_GLFWWindow(nullptr), m_Model(std::move(_model)),
-		m_Segoeui18(nullptr), m_SegoeuiBold18(nullptr), m_SegoeuiBold32(nullptr), m_bShouldClose(false) {}
+	Gui( std::shared_ptr<IAppModel> _model ) :
+		m_GLFWWindow( nullptr ), m_Model( std::move( _model ) ),
+		m_Segoeui18( nullptr ), m_SegoeuiBold18( nullptr ), m_SegoeuiBold32( nullptr ),
+		m_bShouldClose( false ), m_bSwitchAccout( true ),
+		m_bIsAdmin( false ), m_bIsUser( false ) {}
 
 	~Gui() {}
 
@@ -31,6 +35,7 @@ private:
 	void CreateFonts();
 	void LoadStyle();
 
+	void DrawAuthPage();
 	void DrawBottomBar();
 	void DrawLeftChild();
 	void DrawRightChild();
@@ -45,9 +50,15 @@ private:
 	std::shared_ptr<ITestManager> m_TestManager;
 	std::shared_ptr<ILocalizationManager> m_LocalizationManager;
 
+	std::shared_ptr<ITOTP> m_TOTP;
+	std::string m_key;
+
 	ImFont* m_Segoeui18;
 	ImFont* m_SegoeuiBold18;
 	ImFont* m_SegoeuiBold32;
 
 	bool m_bShouldClose;
+	bool m_bSwitchAccout;
+	bool m_bIsAdmin;
+	bool m_bIsUser;
 };
