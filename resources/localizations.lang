@@ -69,6 +69,10 @@ exit = Exit
 logout = Logout
 startTest = Start test
 inputName = Enter a name manually
+finish = Finish
+answer = Answer
+test = Test
+questionsCount = Questions
 
 [ru]
 tabNameSettings = Настройки
@@ -141,3 +145,7 @@ exit = Выход
 logout = Смена учетной записи
 startTest = Начать тест
 inputName = Ввести имя вручную
+finish = Завершить
+answer = Ответ
+test = Тест
+questionsCount = Количество вопросов

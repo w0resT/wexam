@@ -644,7 +644,7 @@ void Gui::DrawStudentPage() {
 
         if ( ImGui::BeginTable( "##table_student_main_settings", 2, ImGuiTableFlags_NoSavedSettings ) ) {
             ImGui::TableNextColumn();
-            ImGui::SeparatorText( "Tests import" );
+            ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "importTest" ).c_str() );
             ImGui::Checkbox( m_LocalizationManager->GetTranslation( "useEncryption" ).c_str(), &needDecrypt );
             ImGui::Checkbox( m_LocalizationManager->GetTranslation( "removeCurTest" ).c_str(), &removeCurReposTest );
 
@@ -653,7 +653,7 @@ void Gui::DrawStudentPage() {
             }
 
             ImGui::TableNextColumn();
-            ImGui::SeparatorText( "Students import" );
+            ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "importStudents" ).c_str() );
             ImGui::Checkbox( m_LocalizationManager->GetTranslation( "removeCurUsers" ).c_str(), &removeCurReposUser );
             if ( ImGui::Button( m_LocalizationManager->GetTranslation( "importStudents" ).c_str(), ImVec2( 180, 30 ) ) ) {
                 ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "importStudents" ).c_str() );
@@ -726,9 +726,9 @@ void Gui::DrawStudentPage() {
         if ( ImGui::BeginTable( "##table_test_page_head", 2, ImGuiTableFlags_NoSavedSettings ) ) {
             ImGui::TableNextColumn();
 
-            std::string strCurTest = "Test: " + cur_test->GetTitle();
-            std::string strDescription = "Description: " + cur_test->GetDescription();
-            std::string strQuestCount = "Quiestions: " + std::to_string( cur_test->GetQuestionCount() );
+            std::string strCurTest = m_LocalizationManager->GetTranslation( "test" ) + ": " + cur_test->GetTitle();
+            std::string strDescription = m_LocalizationManager->GetTranslation( "description" ) + ": " + cur_test->GetDescription();
+            std::string strQuestCount = m_LocalizationManager->GetTranslation( "questionsCount" ) + ": " + std::to_string( cur_test->GetQuestionCount() );
 
             ImGui::PushFont( m_SegoeuiBold32 );
             ImGui::TextWrapped( strCurTest.c_str() );
@@ -773,7 +773,8 @@ void Gui::DrawStudentPage() {
                 
                 ImGui::PushID( cur_question->GetId() );
                 if ( cur_question->GetQuestionType() == QuestionType::FreeAnswer ) {
-                    ImGui::InputTextWithHint( "Answer", "Answer", &answerBuffer[ i ] );
+                    ImGui::InputTextWithHint( m_LocalizationManager->GetTranslation( "answer" ).c_str(), 
+                                              m_LocalizationManager->GetTranslation( "answer" ).c_str(), &answerBuffer[ i ] );
                 }
                 else if ( cur_question->GetQuestionType() == QuestionType::AnswerOptions ) {
                     for ( int j = 0; j < cur_question->GetAnswerOptions().size(); ++j ) {
@@ -803,13 +804,13 @@ void Gui::DrawStudentPage() {
             ImGui::EndTable();
         }
 
-        if ( ImGui::Button( "Finish", button_size ) ) {
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "finish" ).c_str(), button_size ) ) {
             ImGui::OpenPopup( "Test Completion");
         }
 
         ImGui::SameLine();
 
-        if ( ImGui::Button( "Back", button_size ) ) {
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "back" ).c_str(), button_size ) ) {
             ImGui::OpenPopup( "Return to main page" );
         }
 
