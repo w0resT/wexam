@@ -25,9 +25,6 @@
     <Filter Include="Исходные файлы\gui\imgui\backend">
       <UniqueIdentifier>{c559f6db-db26-4673-82d1-0c1891c6955b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\model">
-      <UniqueIdentifier>{82845dd8-6ecb-4dea-84e1-381fdd5076de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\controller">
       <UniqueIdentifier>{f3b30690-a6bc-4ce9-993e-d3b2c7b5fd59}</UniqueIdentifier>
     </Filter>
@@ -42,9 +39,6 @@
     </Filter>
     <Filter Include="Файлы заголовков\gui\imgui\backend">
       <UniqueIdentifier>{4daad607-6eb5-4522-af25-8c39853e9586}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\model">
-      <UniqueIdentifier>{f57529e8-b576-40b1-b81f-a84c44efbe8e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы заголовков\controller">
       <UniqueIdentifier>{60af0c9b-fbfb-4b3b-9e5f-7e2e82f209fc}</UniqueIdentifier>
@@ -66,9 +60,6 @@
     </Filter>
     <Filter Include="Файлы заголовков\interfaces\gui">
       <UniqueIdentifier>{d5d7e62b-c2bc-4ca1-b774-486229c33f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\interfaces\model">
-      <UniqueIdentifier>{b4c99b86-80a9-4987-b3e7-a4c6895a6102}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы заголовков\interfaces\controller">
       <UniqueIdentifier>{67b4ca28-f5ae-4ba7-94d2-aa7fbeac71b3}</UniqueIdentifier>
@@ -152,9 +143,6 @@
     </ClCompile>
     <ClCompile Include="controller\appcontroller.cpp">
       <Filter>Исходные файлы\controller</Filter>
-    </ClCompile>
-    <ClCompile Include="model\appmodel.cpp">
-      <Filter>Исходные файлы\model</Filter>
     </ClCompile>
     <ClCompile Include="observer\observer.cpp">
       <Filter>Исходные файлы\observer</Filter>
@@ -263,9 +251,6 @@
     <ClInclude Include="controller\appcontroller.h">
       <Filter>Файлы заголовков\controller</Filter>
     </ClInclude>
-    <ClInclude Include="model\appmodel.h">
-      <Filter>Файлы заголовков\model</Filter>
-    </ClInclude>
     <ClInclude Include="observer\observer.h">
       <Filter>Файлы заголовков\observer</Filter>
     </ClInclude>
@@ -292,9 +277,6 @@
     </ClInclude>
     <ClInclude Include="interfaces\controller\iappcontroller.h">
       <Filter>Файлы заголовков\interfaces\controller</Filter>
-    </ClInclude>
-    <ClInclude Include="interfaces\model\iappmodel.h">
-      <Filter>Файлы заголовков\interfaces\model</Filter>
     </ClInclude>
     <ClInclude Include="interfaces\gui\igui.h">
       <Filter>Файлы заголовков\interfaces\gui</Filter>
