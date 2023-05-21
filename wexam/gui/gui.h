@@ -7,7 +7,6 @@
 #include "../interfaces/gui/igui.h"
 #include "../interfaces/gui/iimguimanager.h"
 #include "../interfaces/gui/ipagemanager.h"
-#include "../interfaces/gui/iguiwrapper.h"
 #include "../interfaces/model/iappmodel.h"
 #include "../interfaces/tsystem/itestrepository.h"
 #include "../interfaces/tsystem/itestmanager.h"
@@ -49,7 +48,6 @@ private:
 	std::shared_ptr<IAppModel> m_Model;
 	std::unique_ptr<IImGuiManager> m_ImguiManager;
 	std::unique_ptr<IPageManager> m_PageManager;
-	std::shared_ptr<IGUIWrapper> m_GUIWrapper;
 	std::shared_ptr<ITestRepository> m_TestRepository;
 	std::shared_ptr<ITestManager> m_TestManager;
 	std::shared_ptr<IStudentRepository> m_UserRepository;

@@ -14,8 +14,6 @@
 #include "imguimanager.h"
 #include "custom_imgui_features.h"
 
-#include "wrapper/guiwrapper.h"
-
 #include "pages/pages.h"
 
 #include "../tsystem/question_with_free_answer.h"
@@ -114,9 +112,6 @@ void Gui::Init() {
     // Initializing tab manager
     m_PageManager = std::make_unique<PageManager>();
 
-    // Initializing gui wrapper
-    m_GUIWrapper = std::make_shared<GUIWrapper>();
-
     // Initializing user repository
     m_UserRepository = std::make_shared<StudentRepository>();
 
@@ -181,9 +176,11 @@ void Gui::Draw() {
     static const ImVec2 startPos( 0.f, 0.f );
 
     ImGui::SetNextWindowPos( startPos );
-    ImGui::SetNextWindowSize( m_GUIWrapper->GetWindowSize() );
+    ImGui::SetNextWindowSize( ImVec2( defines::WINDOW_W, defines::WINDOW_H ) );
     ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, m_bIsUser ? ImVec2( 5, 5 ) : ImVec2(1, 5) );
-    if ( ImGui::Begin( "##begin_main", nullptr, m_GUIWrapper->GetWindowFlags() ) ) {
+    if ( ImGui::Begin( "##begin_main", nullptr, 
+                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | 
+                       ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize ) ) {
         if ( m_bIsAdmin ) {
             // Left side
             DrawLeftChild();
@@ -574,7 +571,6 @@ void Gui::DrawStudentPage() {
 
                 ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "availableUsers" ).c_str() );
                 filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
-                //ImGui::Separator();
 
                 if ( ImGui::BeginTable( "##table_student_main_users", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.525f ) ) ) {
                     ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible

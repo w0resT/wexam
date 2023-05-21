@@ -165,7 +165,6 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClCompile Include="gui\pages\page_settings.cpp" />
     <ClCompile Include="gui\pages\page_tests.cpp" />
     <ClCompile Include="gui\pages\page_users.cpp" />
-    <ClCompile Include="gui\wrapper\guiwrapper.cpp" />
     <ClCompile Include="localization\localization_manager.cpp" />
     <ClCompile Include="localization\localization_reader.cpp" />
     <ClCompile Include="localization\localization_writer.cpp" />
@@ -209,11 +208,9 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClInclude Include="gui\pages\page_tests.h" />
     <ClInclude Include="gui\pages\page_users.h" />
     <ClInclude Include="gui\pages.h" />
-    <ClInclude Include="gui\wrapper\guiwrapper.h" />
     <ClInclude Include="interfaces\controller\iappcontroller.h" />
     <ClInclude Include="interfaces\gui\igui.h" />
     <ClInclude Include="interfaces\gui\iimguimanager.h" />
-    <ClInclude Include="interfaces\gui\iguiwrapper.h" />
     <ClInclude Include="interfaces\gui\ipagemanager.h" />
     <ClInclude Include="interfaces\gui\ipageview.h" />
     <ClInclude Include="interfaces\iobserver.h" />
