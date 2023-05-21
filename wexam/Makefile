@@ -5,7 +5,7 @@ RESOURCES = ../resources
 OUTPUT_BUILD = ../build
 OUTPUT_BIN = ../bin
 
-EXE = wexem
+EXE = wexam
 APP_DIR = application
 CONTRL_DIR = controller
 FILEBR_DIR = FileBrowser
