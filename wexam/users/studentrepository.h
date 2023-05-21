@@ -52,6 +52,8 @@ public:
 	 */
 	std::shared_ptr<IStudent> FindStudentById( const unsigned int id ) const override;
 
+	std::shared_ptr<IStudent> FindStudentByName( const std::string& name ) const override;
+
 	/**
 	 * Clears the student repository, removing all students.
 	 */

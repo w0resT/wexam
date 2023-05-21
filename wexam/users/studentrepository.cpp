@@ -35,6 +35,15 @@ std::shared_ptr<IStudent> StudentRepository::FindStudentById( const unsigned int
 	return nullptr; // Student not found
 }
 
+std::shared_ptr<IStudent> StudentRepository::FindStudentByName( const std::string& name ) const {
+	for ( const auto& student : m_students ) {
+		if ( student->GetName() == name ) {
+			return student;
+		}
+	}
+	return nullptr; // Student not found
+}
+
 void StudentRepository::Clear() {
 	m_students.clear();
 }

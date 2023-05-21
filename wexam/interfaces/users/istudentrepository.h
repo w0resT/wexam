@@ -27,6 +27,9 @@ public:
 	// Finds a student in the repository by their ID.
 	virtual std::shared_ptr<IStudent> FindStudentById( const unsigned int id ) const = 0;
 
+	// Finds a student in the repository by their name.
+	virtual std::shared_ptr<IStudent> FindStudentByName( const std::string& name ) const = 0;
+
 	// Clears the repository, removing all students.
 	virtual void Clear() = 0;
 };

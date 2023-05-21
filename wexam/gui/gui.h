@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <unordered_map>
 
 #include "GLFW/glfw3.h"
 
@@ -41,6 +42,7 @@ private:
 	void DrawBottomBar();
 	void DrawLeftChild();
 	void DrawRightChild();
+	void DrawStudentPage();
 
 private:
 	GLFWwindow* m_GLFWWindow;
@@ -53,6 +55,8 @@ private:
 	std::shared_ptr<IStudentRepository> m_UserRepository;
 	std::shared_ptr<IUserManager> m_UserManager;
 	std::shared_ptr<ILocalizationManager> m_LocalizationManager;
+
+	std::unordered_map<std::string, std::shared_ptr<ITest>> m_PassedTest;
 
 	std::shared_ptr<ITOTP> m_TOTP;
 	std::string m_key;

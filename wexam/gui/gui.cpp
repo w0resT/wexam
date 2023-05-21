@@ -18,8 +18,12 @@
 
 #include "pages/pages.h"
 
+#include "../tsystem/question_with_free_answer.h"
+#include "../tsystem/question_with_options.h"
 #include "../tsystem/testrepository.h"
 #include "../tsystem/testmanager.h"
+#include "../tsystem/testresult.h"
+#include "../tsystem/test.h"
 
 #include "../users/studentrepository.h"
 #include "../users/usermanager.h"
@@ -30,6 +34,8 @@
 #include "../security/byte_order_converter.h"
 
 #include "../localization/localization_manager.h"
+
+#include "../FileBrowser/ImGuiFileBrowser.h"
 
 void Gui::Init() {
     // Error callback func
@@ -176,6 +182,7 @@ void Gui::Draw() {
 
     ImGui::SetNextWindowPos( startPos );
     ImGui::SetNextWindowSize( m_GUIWrapper->GetWindowSize() );
+    ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, m_bIsUser ? ImVec2( 5, 5 ) : ImVec2(1, 5) );
     if ( ImGui::Begin( "##begin_main", nullptr, m_GUIWrapper->GetWindowFlags() ) ) {
         if ( m_bIsAdmin ) {
             // Left side
@@ -187,13 +194,14 @@ void Gui::Draw() {
             DrawRightChild();
         }
         else if ( m_bIsUser ) {
-
+            DrawStudentPage();
         }
 
         // Bottom; should be last
         DrawBottomBar();
     }
     ImGui::End();
+    ImGui::PopStyleVar();
 }
 
 void Gui::CreateTabs() {
@@ -244,17 +252,13 @@ void Gui::LoadStyle() {
 }
 
 // TOOD:
-// - Clear this func
 // - add translation
 void Gui::DrawAuthPage() {
     static std::string userCode;
     static std::unique_ptr<ByteOrderConverter> convertor = std::make_unique<ByteOrderConverter>();
-    static int password_attemps = 0;
+    static int password_attempts = 0;
 
-    auto& style = ImGui::GetStyle();
-    auto prev_window_padding = style.WindowPadding;
-
-    style.WindowPadding = ImVec2( 5, 5 );
+    ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, ImVec2( 5, 5 ) );
 
     ImGui::OpenPopup( "Authorization" );
 
@@ -263,70 +267,53 @@ void Gui::DrawAuthPage() {
     ImVec2 center = viewport->GetCenter();
     ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
     ImGui::SetNextWindowSize( ImVec2( 300, 295 ) );
-    if ( ImGui::BeginPopupModal( "Authorization", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
-
-        std::stringstream ss_admin_label;
-        if ( password_attemps != 0 ) {
-            ss_admin_label << "Login [" << password_attemps << "/" << 3 << "]";
-        }
-        else {
-            ss_admin_label << "Login";
-        }
+    if ( ImGui::BeginPopupModal( "Authorization", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+        std::string admin_label = password_attempts != 0 ? "Login [" + std::to_string( password_attempts ) + "/3]" : "Login";
 
         ImGui::SeparatorText( "Admin account" );
         ImGui::TextWrapped( "Enter the secret code to login as admininstator:" );
 
         ImGui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::InputText( "##auth_totp_code", &userCode );
-        // Disable login after 3 attempts
-        bool need_disable_login = password_attemps >= 3;
-        if ( need_disable_login ) {
+
+        bool need_disable_login = password_attempts >= 3;
+        if ( need_disable_login )
             ImGui::BeginDisabled();
-        }
-        if ( ImGui::Button( ss_admin_label.str().c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 30)) ) {
-            // Get the current time
+
+        if ( ImGui::Button( admin_label.c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 30)) ) {
             auto currentTime = std::chrono::system_clock::now();
-
-            // Calculate the timestamp by converting the duration since the epoch to seconds and dividing by 30
             auto timestamp = std::chrono::duration_cast< std::chrono::seconds >( currentTime.time_since_epoch() ).count() / 30;
-
             auto totp = m_TOTP->Generate( m_key, convertor->convertToBigEndian( timestamp ) );
 
             if ( totp == userCode ) {
                 m_bSwitchAccout = false;
                 m_bIsAdmin = true;
-
-                password_attemps = 0;
+                password_attempts = 0;
             }
             else {
                 ImGui::OpenPopup( "Incorrect code" );
-                password_attemps++;
+                password_attempts++;
             }
 
             userCode.clear();
         }
 
-        // Disable login after 3 attempts
-        if ( need_disable_login ) {
+        if ( need_disable_login ) 
             ImGui::EndDisabled();
-        }
 
         ImGui::SeparatorText( "Regular account" );
-
         ImGui::TextWrapped( "Login with a regular account" );
 
         if ( ImGui::Button( "Student", ImVec2( ImGui::GetContentRegionAvail().x, 30 ) ) ) {
             m_bSwitchAccout = false;
             m_bIsUser = true;
-
             userCode.clear();
         }
 
         ImGui::SeparatorText("Exiting the program");
 
-        if ( ImGui::Button( "Exit", ImVec2( ImGui::GetContentRegionAvail().x, 30 ) ) ) {
+        if ( ImGui::Button( "Exit", ImVec2( ImGui::GetContentRegionAvail().x, 30 ) ) ) 
             m_bShouldClose = true;
-        }
 
         ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
         if ( ImGui::BeginPopupModal( "Incorrect code", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
@@ -336,11 +323,10 @@ void Gui::DrawAuthPage() {
             ImGui::EndPopup();
         }
 
-
         ImGui::EndPopup();
     }
 
-    style.WindowPadding = prev_window_padding;
+    ImGui::PopStyleVar();
 }
 
 void Gui::DrawBottomBar() {
@@ -436,7 +422,7 @@ void Gui::DrawLeftChild() {
         }
     }
     ImGui::EndChild();
-    ImGui::PopStyleVar( 1 );
+    ImGui::PopStyleVar();
 }
 
 void Gui::DrawRightChild() {
@@ -449,10 +435,514 @@ void Gui::DrawRightChild() {
         ImGui::Text( curTabName.c_str() );
         ImGui::PopFont();
 
-        //ImGui::NewLine();
-
         m_PageManager->Draw( m_PageManager->GetCurrentPage() );
     }
     ImGui::EndChild();
+}
+
+void Gui::DrawStudentPage() {
+    static bool show_main_page = true;
+    static bool show_test_page = false;
+    static bool show_result_page = false;
+
+    static bool finish_clear_exit = false;
+    static bool finish_clear_test = false;
+
+    static int current_test_id = -1;
+    static int current_user_id = -1;
+
+    static bool useInput = false;
+    static std::string bufName;
+    
+    static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable
+        | ImGuiTableFlags_Hideable | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY
+        | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody
+        | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_PadOuterX;
+
+    //static ImVec2 outer_size_value = ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.71f );
+    static ImVec2 button_size = ImVec2( 247, 25 );
+
+    static std::vector<std::string> answerBuffer;
+
+    if ( show_main_page ) {
+
+        if ( ImGui::BeginTable( "##table_student_main", 2, ImGuiTableFlags_NoSavedSettings ) ) {
+            // First columns - test list
+            ImGui::TableNextColumn();
+
+            ImGui::PushFont( m_SegoeuiBold32 );
+            ImGui::Text( m_LocalizationManager->GetTranslation( "availableTests" ).c_str() );
+            ImGui::PopFont();
+            ImGui::NewLine();
+            
+            static ImGuiTextFilter filter_tests;
+            ImGui::PushID( "test_search" );
+            filter_tests.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
+            ImGui::PopID();
+
+            if ( ImGui::BeginTable( "##table_student_main_tests", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.525f ) ) ) {
+                ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
+                ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "title" ).c_str() );
+                ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "description" ).c_str() );
+                ImGui::TableHeadersRow();
+
+                // Retrieve and print the test details
+                for ( auto& testPtr : m_TestRepository->GetTests() ) {
+                    if ( !testPtr ) {
+                        continue;
+                    }
+
+                    if ( !filter_tests.PassFilter( testPtr->GetTitle().c_str() ) ) {
+                        continue;
+                    }
+
+                    auto test_id = testPtr->GetId();
+
+                    ImGui::TableNextRow();
+                    ImGui::PushID( test_id );
+
+                    for ( int column = 0; column < 2; column++ ) {
+                        const bool item_is_selected = ( current_test_id == test_id );
+
+                        if ( !ImGui::TableSetColumnIndex( column ) && column > 0 )
+                            continue;
+
+                        if ( column == 0 ) {
+                            if ( ImGui::Selectable( testPtr->GetTitle().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+                                // Double click - unselect
+                                if ( current_test_id == test_id ) {
+                                    current_test_id = -1;
+                                }
+                                else {
+                                    current_test_id = test_id;
+                                }
+                            }
+                        }
+                        else if ( column == 1 ) {
+                            if ( ImGui::Selectable( testPtr->GetDescription().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+                                // Double click - unselect
+                                if ( current_test_id == test_id ) {
+                                    current_test_id = -1;
+                                }
+                                else {
+                                    current_test_id = test_id;
+                                }
+                            }
+                        }
+
+                        if ( item_is_selected )
+                            ImGui::SetItemDefaultFocus();
+                    }
+                    ImGui::PopID();
+                }
+
+                ImGui::EndTable();
+            }
+
+            // Second columns - test settings
+            ImGui::TableNextColumn();
+            ImGui::PushFont( m_SegoeuiBold32 );
+            ImGui::Text( m_LocalizationManager->GetTranslation( "testManagement" ).c_str() );
+            ImGui::PopFont();
+            ImGui::NewLine();
+
+            bool need_disable_button = current_test_id <= 0 
+                || ( useInput ? bufName.empty() : current_user_id <= 0 ) 
+                || !m_TestRepository->FindTestById(current_test_id)->GetQuestionCount();
+
+            if ( need_disable_button )
+                ImGui::BeginDisabled();
+
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "startTest" ).c_str(), ImVec2( ImGui::GetFontSize() * 18, 25) ) ) {
+                show_test_page = true;
+                show_main_page = false;
+            }
+
+            if ( need_disable_button )
+                ImGui::EndDisabled();
+
+            //ImGui::Checkbox( m_LocalizationManager->GetTranslation( "inputName" ).c_str(), &useInput );
+
+            if ( useInput ) {
+                // bufName
+                if ( ImGui::InputTextWithHint( m_LocalizationManager->GetTranslation( "name" ).c_str(),
+                                               m_LocalizationManager->GetTranslation( "studentsName" ).c_str(), &bufName ) ) {
+                }
+            }
+            else {
+                static ImGuiTextFilter filter;
+
+                ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "availableUsers" ).c_str() );
+                filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
+                //ImGui::Separator();
+
+                if ( ImGui::BeginTable( "##table_student_main_users", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.525f ) ) ) {
+                    ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
+                    ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "name" ).c_str() );
+                    ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "group" ).c_str() );
+                    ImGui::TableHeadersRow();
+
+                    // Retrieve and print the test details
+                    for ( auto& userPtr : m_UserRepository->GetStudents() ) {
+                        if ( !userPtr ) {
+                            continue;
+                        }
+
+                        if ( !filter.PassFilter( userPtr->GetName().c_str() ) ) {
+                            continue;
+                        }
+
+                        auto test_id = userPtr->GetId();
+
+                        ImGui::TableNextRow();
+                        ImGui::PushID( test_id );
+
+                        for ( int column = 0; column < 2; column++ ) {
+                            const bool item_is_selected = ( current_user_id == test_id );
+
+                            if ( !ImGui::TableSetColumnIndex( column ) && column > 0 )
+                                continue;
+
+                            if ( column == 0 ) {
+                                if ( ImGui::Selectable( userPtr->GetName().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+                                    // Double click - unselect
+                                    if ( current_user_id == test_id ) {
+                                        current_user_id = -1;
+                                    }
+                                    else {
+                                        current_user_id = test_id;
+                                    }
+                                }
+                            }
+                            else if ( column == 1 ) {
+                                if ( ImGui::Selectable( userPtr->GetGroup().c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+                                    // Double click - unselect
+                                    if ( current_user_id == test_id ) {
+                                        current_user_id = -1;
+                                    }
+                                    else {
+                                        current_user_id = test_id;
+                                    }
+                                }
+                            }
+
+                            if ( item_is_selected )
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::PopID();
+                    }
+
+                    ImGui::EndTable();
+                }
+            }
+
+            ImGui::EndTable();
+        }
+
+        ImGui::Separator();
+
+        static bool needDecrypt = false;
+        static bool removeCurReposTest = true;
+        static bool removeCurReposUser = true;
+        static imgui_addons::ImGuiFileBrowser file_dialog;
+
+        if ( ImGui::BeginTable( "##table_student_main_settings", 2, ImGuiTableFlags_NoSavedSettings ) ) {
+            ImGui::TableNextColumn();
+            ImGui::SeparatorText( "Tests import" );
+            ImGui::Checkbox( m_LocalizationManager->GetTranslation( "useEncryption" ).c_str(), &needDecrypt );
+            ImGui::Checkbox( m_LocalizationManager->GetTranslation( "removeCurTest" ).c_str(), &removeCurReposTest );
+
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "importTest" ).c_str(), ImVec2( 180, 30 ) ) ) {
+                ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "importTest" ).c_str() );
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::SeparatorText( "Students import" );
+            ImGui::Checkbox( m_LocalizationManager->GetTranslation( "removeCurUsers" ).c_str(), &removeCurReposUser );
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "importStudents" ).c_str(), ImVec2( 180, 30 ) ) ) {
+                ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "importStudents" ).c_str() );
+            }  
+
+            if ( file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importTest" ).c_str(),
+                                             imgui_addons::ImGuiFileBrowser::DialogMode::OPEN,
+                                             ImVec2( 700, 310 ), ".wxm" ) ) {
+                if ( removeCurReposTest ) {
+                    m_TestRepository->Clear();
+                }
+
+                m_TestManager->ImportTests( file_dialog.selected_path, m_TestRepository, needDecrypt, true, false );
+            }
+
+            if ( file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importStudents" ).c_str(),
+                                             imgui_addons::ImGuiFileBrowser::DialogMode::OPEN,
+                                             ImVec2( 700, 310 ), ".wxm" ) ) {
+                if ( removeCurReposUser ) {
+                    m_UserRepository->Clear();
+                }
+
+                m_UserManager->ImportUsers( file_dialog.selected_path, m_UserRepository );
+            }
+
+            ImGui::EndTable();
+        }
+
+        ImGui::Separator();
+
+        const char* items[] = { "English", "Russia" };
+        static int item_current = 0;
+        ImGui::SetNextItemWidth( 250 );
+        if ( ImGui::Combo( m_LocalizationManager->GetTranslation( "settingsLanguage" ).c_str(), &item_current, items, IM_ARRAYSIZE( items ) ) ) {
+            switch ( item_current ) {
+            case 0:
+                m_LocalizationManager->SetLanguage( "en" );
+                break;
+            case 1:
+                m_LocalizationManager->SetLanguage( "ru" );
+                break;
+            default:
+                break;
+            }
+        }
+
+        ImGui::SameLine( 626 );
+
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "logout" ).c_str(), ImVec2( 180, 30 ) ) ) {
+            m_bSwitchAccout = true;
+            m_bIsUser = false;
+        }
+
+        ImGui::SameLine();
+
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "exit" ).c_str(), ImVec2( 180, 30 ) ) ) {
+            m_bShouldClose = true;
+        }
+
+    }
+    else if ( show_test_page ) {
+        auto cur_test = m_TestRepository->FindTestById( current_test_id );
+        assert( cur_test && "Bad current test id");
+
+        auto cur_student = m_UserRepository->FindStudentById( current_user_id );
+        assert( cur_student && "Bad current student id" );
+
+        std::shared_ptr<ITest> completed_test = std::make_shared<Test>( cur_test );
+
+        if ( ImGui::BeginTable( "##table_test_page_head", 2, ImGuiTableFlags_NoSavedSettings ) ) {
+            ImGui::TableNextColumn();
+
+            std::string strCurTest = "Test: " + cur_test->GetTitle();
+            std::string strDescription = "Description: " + cur_test->GetDescription();
+            std::string strQuestCount = "Quiestions: " + std::to_string( cur_test->GetQuestionCount() );
+
+            ImGui::PushFont( m_SegoeuiBold32 );
+            ImGui::TextWrapped( strCurTest.c_str() );
+            ImGui::PopFont();
+
+            ImGui::PushFont( m_SegoeuiBold18 );
+            ImGui::TextWrapped( strDescription.c_str() );
+            ImGui::TextWrapped( strQuestCount.c_str() );
+            ImGui::PopFont();
+
+            ImGui::TableNextColumn();
+
+            if ( useInput ) {
+                ImGui::Text( bufName.c_str() );
+            }
+            else {
+                ImGui::Text( cur_student->GetName().c_str() );
+                ImGui::Text( cur_student->GetGroup().c_str() );
+            }
+
+
+            ImGui::EndTable();
+        }
+
+        ImGui::Separator();
+        ImGui::NewLine();
+        ImGui::Separator();
+
+        if ( ImGui::BeginTable( "##table_test_page_main", 1, ImGuiTableFlags_NoSavedSettings, ImVec2(0, 400) ) ) {
+            ImGui::TableNextColumn();
+
+            answerBuffer.resize( cur_test->GetQuestionCount() );
+
+            for ( int i = 0; i < cur_test->GetQuestionCount(); ++i ) {
+                auto cur_question = cur_test->GetQuestion( i );
+
+                std::string strCurQuest = std::to_string( i + 1 ) + ". " + cur_question->GetQuestion();
+
+                ImGui::PushFont( m_SegoeuiBold18 );
+                ImGui::TextWrapped( strCurQuest.c_str() );
+                ImGui::PopFont();
+                
+                ImGui::PushID( cur_question->GetId() );
+                if ( cur_question->GetQuestionType() == QuestionType::FreeAnswer ) {
+                    ImGui::InputTextWithHint( "Answer", "Answer", &answerBuffer[ i ] );
+                }
+                else if ( cur_question->GetQuestionType() == QuestionType::AnswerOptions ) {
+                    for ( int j = 0; j < cur_question->GetAnswerOptions().size(); ++j ) {
+                        const auto& opt = cur_question->GetAnswerOption( j );
+                        const bool item_is_selected = ( answerBuffer[i] == opt );
+
+                        std::string strOpt = "     " + std::to_string(j + 1) + ") " + opt;
+                        if ( ImGui::Selectable( strOpt.c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap) ) {
+                            // Double click - unselect
+                            if ( answerBuffer[i] == opt ) {
+                                answerBuffer[ i ].clear();
+                            }
+                            else {
+                                answerBuffer[ i ] = opt;
+                            }
+                        }
+
+                        if ( item_is_selected )
+                            ImGui::SetItemDefaultFocus();     
+                    }
+                }
+                ImGui::PopID();
+
+                ImGui::Separator();
+            }
+
+            ImGui::EndTable();
+        }
+
+        if ( ImGui::Button( "Finish", button_size ) ) {
+            ImGui::OpenPopup( "Test Completion");
+        }
+
+        ImGui::SameLine();
+
+        if ( ImGui::Button( "Back", button_size ) ) {
+            ImGui::OpenPopup( "Return to main page" );
+        }
+
+        if ( finish_clear_test ) {
+            // Sets user answers
+            for ( int i = 0; i < completed_test->GetQuestionCount(); ++i ) {
+                completed_test->GetQuestion( i )->SetUserAnswer( answerBuffer[ i ] );
+            }
+
+            std::string strName = useInput ? bufName : cur_student->GetName();
+            m_PassedTest[ strName ] = completed_test;
+
+            bufName.clear();
+            answerBuffer.clear();
+
+            show_test_page = false;
+            show_main_page = false;
+            show_result_page = true;
+
+            finish_clear_test = false;
+        }
+
+        if ( finish_clear_exit ) {
+            bufName.clear();
+            answerBuffer.clear();
+
+            show_test_page = false;
+            show_result_page = false;
+            show_main_page = true;
+
+            finish_clear_exit = false;
+        }
+    }
+    else if ( show_result_page ) {
+        auto cur_test = m_TestRepository->FindTestById( current_test_id );
+        assert( cur_test && "Bad current test id" );
+
+        auto cur_student = m_UserRepository->FindStudentById( current_user_id );
+        assert( cur_student && "Bad current student id" );
+
+        static bool show_result = true;
+
+        for ( const auto& question : cur_test->GetQuestions() ) {
+            if ( !question->HasCorrectAnswer() ) {
+                show_result = false;
+            }
+        }
+
+        if ( show_result ) {
+            std::shared_ptr<ITestResult> result = std::make_shared<TestResult>( cur_test );
+            result->EvaluateTest();
+
+            std::string strCurTest = "Test: " + cur_test->GetTitle() + ", ID: " + std::to_string( cur_test->GetId() );
+            std::string strDescription = "Description: " + cur_test->GetDescription();
+            std::string strTotalQuest = "Total Questions: " + std::to_string(result->GetTotalQuestions());
+            std::string strCorAnswers = "Correct Answers: " + std::to_string( result->GetCorrectAnswers());
+            std::string strIncorAnswers = "Incorrect Answers: " + std::to_string( result->GetIncorrectAnswers());
+            std::string strUnanswered = "Unanswered Questions: " + std::to_string( result->GetUnansweredQuestions());
+            std::string strTotal = "Total score: " + std::to_string( static_cast<int>(result->GetScore()) ) + "%%";
+
+            ImGui::PushFont( m_SegoeuiBold32 );
+            ImGui::TextWrapped( cur_student->GetName().c_str());
+            ImGui::Separator();
+            ImGui::TextWrapped( strCurTest.c_str() );
+            ImGui::PopFont();
+
+            ImGui::PushFont( m_SegoeuiBold18 );
+            ImGui::TextWrapped( strDescription.c_str() );
+            ImGui::PopFont();
+
+            ImGui::Separator();
+
+            ImGui::TextWrapped( strTotalQuest.c_str() );
+            ImGui::TextWrapped( strCorAnswers.c_str() );
+            ImGui::TextWrapped( strIncorAnswers.c_str() );
+            ImGui::TextWrapped( strUnanswered.c_str() );
+            ImGui::TextWrapped( strTotal.c_str() );
+        }
+        else {
+            ImGui::Text( "Test finished" );
+        }
+
+        ImGui::Separator();
+
+        if ( ImGui::Button( "Return to main page", button_size ) ) {
+            current_test_id = -1;
+            current_user_id = -1;
+
+            show_test_page = false;
+            show_main_page = true;
+            show_result_page = false;
+
+            show_result = true;
+        }
+    }
+
+    // Always center this window when appearing
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 center = viewport->GetCenter();
+    ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
+    ImGui::SetNextWindowSize( ImVec2( 300, 0 ) );
+    if ( ImGui::BeginPopupModal( "Test Completion", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+        ImGui::TextWrapped( "Are you sure you want to complete the test?" );
+        if ( ImGui::Button( "Yes", ImVec2( -1, 30 ) ) ) {
+            finish_clear_test = true;
+            ImGui::CloseCurrentPopup();
+        }
+        
+        if ( ImGui::Button( "Cancel", ImVec2( -1, 30 ) ) ) {
+            finish_clear_test = false;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+
+    ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
+    ImGui::SetNextWindowSize( ImVec2( 300, 0 ) );
+    if ( ImGui::BeginPopupModal( "Return to main page", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+        ImGui::TextWrapped( "Are you sure you want to return to the main page?" );
+        if ( ImGui::Button( "Yes", ImVec2( -1, 30 ) ) ) {
+            finish_clear_exit = true;
+            ImGui::CloseCurrentPopup();
+        }
+        
+        if ( ImGui::Button( "Cancel", ImVec2( -1, 30 ) ) ) {
+            finish_clear_exit = false;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
 }
 

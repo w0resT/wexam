@@ -15,8 +15,8 @@ public:
 	 *
 	 * @param test The test to be copied.
 	 */
-	Test( const Test& test )
-		: m_id( test.GetId() ), m_title( test.GetTitle() ), m_description( test.GetDescription() ) {}
+	Test( const std::shared_ptr<ITest>& test )
+		: m_id( test->GetId() ), m_title( test->GetTitle() ), m_description( test->GetDescription() ), m_questions( test->GetQuestions() ) {}
 
 	/**
 	 * Constructor with parameters. Creates a new test with the specified ID, title, and description.
