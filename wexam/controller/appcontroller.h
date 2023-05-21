@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <mutex>
+#include <condition_variable>
 
 #include "../interfaces/controller/iappcontroller.h"
 #include "../interfaces/gui/igui.h"

@@ -1,14 +1,13 @@
 #include <fstream>
 #include <sstream>
+#include <assert.h>
 #include "localization_reader.h"
 
 std::unordered_map<std::string, std::unordered_map<std::string, std::string>> LocalizationReader::ReadTranslation(const std::string& filename) const {
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> translation;
 
     std::ifstream file(filename);
-    if (!file) {
-        throw std::runtime_error("Failed to open file");
-    }
+    assert(file && "Filed to open file");
 
     std::string line;
     std::string currentLang;

@@ -1,6 +1,7 @@
 #CXX = g++
 #CXX = clang++
 
+RESOURCES = ../resources
 OUTPUT_BUILD = ../build
 OUTPUT_BIN = ../bin
 
@@ -35,7 +36,7 @@ UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++17
-CXXFLAGS += -I$(APP_DIR) -I$(CONTRL_DIR) -I$(FILEBR_DIR) -I$(FILEBR_DIR)/Dirent 
+CXXFLAGS += -I$(APP_DIR) -I$(CONTRL_DIR) -I$(FILEBR_DIR) 
 CXXFLAGS += -I$(GUI_DIR) -I$(GUI_DIR)/imgui -I$(GUI_DIR)/imgui/backend -I$(GUI_DIR)/pages 
 CXXFLAGS += -I$(INTRFS_DIR) -I$(INTRFS_DIR)/controller -I$(INTRFS_DIR)/gui -I$(INTRFS_DIR)/localization -I$(INTRFS_DIR)/security -I$(INTRFS_DIR)/tsystem -I$(INTRFS_DIR)/users
 CXXFLAGS += -I$(LOCALIZ_DIR) -I$(OBS_DIR) -I$(SECURITY_DIR) -I$(TSYSTEM_DIR) -I$(USERS_DIR)
@@ -50,7 +51,7 @@ LIBS =
 ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux"
 	LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3`
-	LIBS += L/usr/lib -lssl -lcrypto
+	LIBS += -L/usr/lib -lssl -lcrypto
 
 	CXXFLAGS += `pkg-config --cflags glfw3`
 	CXXFLAGS += -I/usr/include
@@ -111,6 +112,7 @@ endif
 all: $(EXE)
 	mkdir -p $(OUTPUT_BIN)
 	mv $(OBJS) $(OUTPUT_BIN)
+	cp -R $(RESOURCES) $(OUTPUT_BUILD)
 	@echo Build complete for $(ECHO_MESSAGE)
 
 $(EXE): $(OBJS)

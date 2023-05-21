@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "studentrepository.h"
 
 void StudentRepository::AddStudent( const std::shared_ptr<IStudent>& student ) {

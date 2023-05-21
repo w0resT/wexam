@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "testrepository.h"
 
 void TestRepository::AddTest( const std::shared_ptr<ITest>& test ) {

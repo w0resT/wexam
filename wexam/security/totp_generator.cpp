@@ -1,5 +1,6 @@
 #include <openssl/hmac.h>
 #include <openssl/sha.h>
+#include <cmath>
 #include "totp_generator.h"
 
 std::string TOTPGenerator::Generate( const std::string& secret, uint64_t timestamp, int tokenLength ) {
@@ -19,7 +20,7 @@ std::string TOTPGenerator::Generate( const std::string& secret, uint64_t timesta
         ( hmacResult[ offset + 3 ] & 0xff );
 
     // Apply the modulo operator to truncate the hash
-    uint32_t token = truncatedHash % static_cast< uint32_t >( pow( 10, tokenLength ) );
+    uint32_t token = truncatedHash % static_cast< uint32_t >( std::pow( 10, tokenLength ) );
 
     // Convert the token to a string and pad it with leading zeros if necessary
     std::string totp = std::to_string( token );
