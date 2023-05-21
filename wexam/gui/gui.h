@@ -12,6 +12,8 @@
 #include "../interfaces/tsystem/itestmanager.h"
 #include "../interfaces/localization/ilocalizationmanager.h"
 #include "../interfaces/security/itotp.h"
+#include "../interfaces/users/istudentrepository.h"
+#include "../interfaces/users/iusermanager.h"
 
 struct ImFont;
 
@@ -48,6 +50,8 @@ private:
 	std::shared_ptr<IGUIWrapper> m_GUIWrapper;
 	std::shared_ptr<ITestRepository> m_TestRepository;
 	std::shared_ptr<ITestManager> m_TestManager;
+	std::shared_ptr<IStudentRepository> m_UserRepository;
+	std::shared_ptr<IUserManager> m_UserManager;
 	std::shared_ptr<ILocalizationManager> m_LocalizationManager;
 
 	std::shared_ptr<ITOTP> m_TOTP;

@@ -7,9 +7,9 @@
 
 #include "../../FileBrowser/ImGuiFileBrowser.h"
 
-namespace FD {
-	imgui_addons::ImGuiFileBrowser file_dialog;
-}
+//namespace FD {
+//	imgui_addons::ImGuiFileBrowser file_dialog;
+//}
 
 // TODO: add try catch
 void PageTests::Draw() {
@@ -63,6 +63,10 @@ void PageTests::Draw() {
 			filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
 
 			if ( ImGui::BeginTable( "##table_main_tests", 1, flags, outer_size_value ) ) {
+				ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
+				ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "title" ).c_str() );
+				ImGui::TableHeadersRow();
+
 				// Retrieve and print the test details
 				for ( auto& testPtr : m_Repository->GetTests() ) {
 					if ( !testPtr ) {
@@ -101,7 +105,8 @@ void PageTests::Draw() {
 			ImGui::TableNextColumn();
 			ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "testManagement" ).c_str() );
 
-			ImGui::InputText( m_LocalizationManager->GetTranslation( "title" ).c_str(), &bufTitle );
+			ImGui::InputTextWithHint( m_LocalizationManager->GetTranslation( "title" ).c_str(), 
+									  m_LocalizationManager->GetTranslation( "testName" ).c_str(), &bufTitle );
 
 			ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0.474f, 0.957f, 0.100f, 0.500f ) );
 			ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( 0.674f, 1.0f, 0.300f, 0.550f ) );
@@ -189,13 +194,12 @@ void PageTests::Draw() {
 			ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "importexport" ).c_str() );
 
 			static std::string filePath;
-
 			static bool needDecrypt = false;
 			static bool needCorAns = true;
 			static bool removeCurRepos = true;
+			static imgui_addons::ImGuiFileBrowser file_dialog;
 
 			ImGui::Checkbox( m_LocalizationManager->GetTranslation( "useEncryption" ).c_str(), &needDecrypt );
-			ImGui::SameLine();
 			ImGui::Checkbox( m_LocalizationManager->GetTranslation( "addCorAnswers" ).c_str(), &needCorAns );
 			ImGui::Checkbox( m_LocalizationManager->GetTranslation( "removeCurTest" ).c_str(), &removeCurRepos );
 
@@ -211,21 +215,21 @@ void PageTests::Draw() {
 				ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "exportTest" ).c_str() );
 			}
 			
-			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importTest" ).c_str(), 
+			if ( file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "importTest" ).c_str(), 
 												 imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, 
 												 ImVec2( 700, 310 ), ".wxm" ) ) {
 				if ( removeCurRepos ) {
 					m_Repository->Clear();
 				}
 
-				filePath = FD::file_dialog.selected_path;
+				filePath = file_dialog.selected_path;
 				m_Manager->ImportTests( filePath, m_Repository, needDecrypt, needCorAns, false );
 			}
 
-			if ( FD::file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "exportTest" ).c_str(), 
+			if ( file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "exportTest" ).c_str(), 
 												 imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, 
 												 ImVec2( 700, 310 ), ".wxm" ) ) {
-				filePath = FD::file_dialog.selected_path;
+				filePath = file_dialog.selected_path;
 				m_Manager->ExportTests( filePath, m_Repository, needDecrypt, needCorAns, false );
 			}
 

@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "../../interfaces/gui/ipageview.h"
-//#include "../../interfaces/model/iappmodel.h"
 #include "../../interfaces/localization/ilocalizationmanager.h"
 #include "../../interfaces/tsystem/itestrepository.h"
 #include "../../interfaces/tsystem/itestmanager.h"

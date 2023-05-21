@@ -21,13 +21,15 @@
 #include "../tsystem/testrepository.h"
 #include "../tsystem/testmanager.h"
 
+#include "../users/studentrepository.h"
+#include "../users/usermanager.h"
+
 #include "../security/aes_text_cipher.h"
 #include "../security/totp_generator.h"
 #include "../security/base32_encoder.h"
 #include "../security/byte_order_converter.h"
 
 #include "../localization/localization_manager.h"
-
 
 void Gui::Init() {
     // Error callback func
@@ -100,7 +102,7 @@ void Gui::Init() {
     static const std::string aes_key = "0123456789abcdef";
     std::unique_ptr<ITextCipher> aes_cipher = std::make_unique<AesTextCipher>( aes_key );
 
-    // Initializing tests manager
+    // Initializing test manager
     m_TestManager = std::make_shared<TestManager>( std::move( aes_cipher ) );
 
     // Initializing tab manager
@@ -108,6 +110,12 @@ void Gui::Init() {
 
     // Initializing gui wrapper
     m_GUIWrapper = std::make_shared<GUIWrapper>();
+
+    // Initializing user repository
+    m_UserRepository = std::make_shared<StudentRepository>();
+
+    // Initializing user manager
+    m_UserManager = std::make_shared<UserManager>();
 
     // Initilizing TOTP and stuff
     std::unique_ptr<Base32Encoder> encoder = std::make_unique<Base32Encoder>();
@@ -189,12 +197,8 @@ void Gui::Draw() {
 }
 
 void Gui::CreateTabs() {
-    /*
-    * TODO: TestsModel for tests, UsersModel for users
-    */
-
     std::unique_ptr<IPageView> tabTests = std::make_unique<PageTests>( m_LocalizationManager, m_TestRepository, m_TestManager );
-    std::unique_ptr<IPageView> tabUsers = std::make_unique<PageUsers>( m_LocalizationManager, m_Model );
+    std::unique_ptr<IPageView> tabUsers = std::make_unique<PageUsers>( m_LocalizationManager, m_UserRepository, m_UserManager );
     std::unique_ptr<IPageView> tabSettings = std::make_unique<PageSettings>( m_LocalizationManager );
     std::unique_ptr<IPageView> tabInfo = std::make_unique<PageInfo>( m_LocalizationManager );
 
@@ -350,7 +354,7 @@ void Gui::DrawBottomBar() {
     std::stringstream ssGroup;
 
     ssTime << m_LocalizationManager->GetTranslation( "bottomBarData" ) << ": " << std::put_time( std::localtime( &t_c ), "%F %T\n" );
-    ssGroup << m_LocalizationManager->GetTranslation( "bottomBarLoggedInAs" ) << ": " << m_LocalizationManager->GetTranslation( "admin" );
+    ssGroup << m_LocalizationManager->GetTranslation( "bottomBarLoggedInAs" ) << ": " << m_LocalizationManager->GetTranslation( m_bIsAdmin ? "admin" : "user" );
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     const ImVec2 p = ImGui::GetWindowPos();
@@ -421,13 +425,13 @@ void Gui::DrawLeftChild() {
         ImGui::EndGroup();
 
         ImGui::SetCursorPos( ImVec2( cur_pos.x + 15, cur_pos.y + 385 ) );
-        if ( ImGui::Button( "Logout", ImVec2(182, 40) ) ) {
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "logout" ).c_str(), ImVec2( 182, 40 ) ) ) {
             m_bSwitchAccout = true;
             m_bIsAdmin = false;
         }
 
         ImGui::SetCursorPos( ImVec2( cur_pos.x + 15, cur_pos.y + 430 ) );
-        if ( ImGui::Button( "Exit", ImVec2( 182, 40 ) ) ) {
+        if ( ImGui::Button( m_LocalizationManager->GetTranslation( "exit" ).c_str(), ImVec2( 182, 40 ) ) ) {
             m_bShouldClose = true;
         }
     }

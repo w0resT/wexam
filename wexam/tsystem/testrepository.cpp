@@ -2,7 +2,7 @@
 #include "testrepository.h"
 
 void TestRepository::AddTest( const std::shared_ptr<ITest>& test ) {
-	m_tests.push_back( test );
+	m_tests.emplace_back( test );
 }
 
 void TestRepository::AddTests( const std::vector<std::shared_ptr<ITest>>& tests ) {
@@ -46,9 +46,9 @@ void TestRepository::RemoveTest( unsigned int id ) {
 }
 
 void TestRepository::ModifyTest( const std::shared_ptr<ITest>& test ) {
-	auto it = std::find_if( m_tests.begin(), m_tests.end(), [ test ] ( const std::shared_ptr<ITest>& storedTest ) {
-		return storedTest->GetId() == test->GetId();
-							} );
+	auto it = std::find_if( m_tests.begin(), m_tests.end(), 
+							[ test ] ( const std::shared_ptr<ITest>& storedTest ) 
+							{ return storedTest->GetId() == test->GetId(); } );
 
 	if ( it != m_tests.end() ) {
 		*it = test;

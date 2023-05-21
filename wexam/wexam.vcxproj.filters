@@ -112,6 +112,15 @@
     <Filter Include="Файлы заголовков\FileBrowser">
       <UniqueIdentifier>{2c307d9e-54a0-4828-af1e-8e410c3ea727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\interfaces\users">
+      <UniqueIdentifier>{a55c9f96-34e1-4623-be8e-c2ee831ec9d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\users">
+      <UniqueIdentifier>{66e10ebf-3373-42cd-9452-d31571f8b853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\users">
+      <UniqueIdentifier>{173b2e55-c4fa-46d6-8b90-0e645a8a0b18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -209,6 +218,15 @@
     </ClCompile>
     <ClCompile Include="FileBrowser\ImGuiFileBrowser.cpp">
       <Filter>Исходные файлы\FileBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="users\usermanager.cpp">
+      <Filter>Исходные файлы\users</Filter>
+    </ClCompile>
+    <ClCompile Include="users\student.cpp">
+      <Filter>Исходные файлы\users</Filter>
+    </ClCompile>
+    <ClCompile Include="users\studentrepository.cpp">
+      <Filter>Исходные файлы\users</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +403,24 @@
     </ClInclude>
     <ClInclude Include="FileBrowser\Dirent\dirent.h">
       <Filter>Файлы заголовков\FileBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\users\istudent.h">
+      <Filter>Файлы заголовков\interfaces\users</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\users\istudentrepository.h">
+      <Filter>Файлы заголовков\interfaces\users</Filter>
+    </ClInclude>
+    <ClInclude Include="users\student.h">
+      <Filter>Файлы заголовков\users</Filter>
+    </ClInclude>
+    <ClInclude Include="users\studentrepository.h">
+      <Filter>Файлы заголовков\users</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces\users\iusermanager.h">
+      <Filter>Файлы заголовков\interfaces\users</Filter>
+    </ClInclude>
+    <ClInclude Include="users\usermanager.h">
+      <Filter>Файлы заголовков\users</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

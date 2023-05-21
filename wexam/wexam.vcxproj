@@ -180,6 +180,9 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClCompile Include="tsystem\testmanager.cpp" />
     <ClCompile Include="tsystem\testrepository.cpp" />
     <ClCompile Include="tsystem\testresult.cpp" />
+    <ClCompile Include="users\student.cpp" />
+    <ClCompile Include="users\studentrepository.cpp" />
+    <ClCompile Include="users\usermanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\application.h" />
@@ -225,6 +228,9 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClInclude Include="interfaces\tsystem\itestmanager.h" />
     <ClInclude Include="interfaces\tsystem\itestrepository.h" />
     <ClInclude Include="interfaces\tsystem\itestresult.h" />
+    <ClInclude Include="interfaces\users\istudent.h" />
+    <ClInclude Include="interfaces\users\istudentrepository.h" />
+    <ClInclude Include="interfaces\users\iusermanager.h" />
     <ClInclude Include="localization\localization_manager.h" />
     <ClInclude Include="localization\localization_reader.h" />
     <ClInclude Include="localization\localization_writer.h" />
@@ -240,6 +246,9 @@ copy "G:\mighty project\wexam\dependencies\openssl-x86-windows\bin\libcrypto-3.d
     <ClInclude Include="tsystem\testmanager.h" />
     <ClInclude Include="tsystem\testrepository.h" />
     <ClInclude Include="tsystem\testresult.h" />
+    <ClInclude Include="users\student.h" />
+    <ClInclude Include="users\studentrepository.h" />
+    <ClInclude Include="users\usermanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
