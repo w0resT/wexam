@@ -40,5 +40,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, std::string>> Lo
         }
     }
 
+    file.close();
+
     return translation;
 }

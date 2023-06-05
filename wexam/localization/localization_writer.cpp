@@ -14,4 +14,6 @@ void LocalizationWriter::WriteTranslation(const std::unordered_map<std::string, 
 		}
 		file << std::endl;
 	}
+
+	file.close();
 }
