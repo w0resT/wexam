@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wexam", "wexam\wexam.vcxproj", "{2A792FDE-682E-4211-AEEC-4DE7FD16A397}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "tests\UnitTests.vcxproj", "{5D0E6ED4-18EA-4378-90A2-C05846E0E634}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{2A792FDE-682E-4211-AEEC-4DE7FD16A397}.Release|x64.Build.0 = Release|x64
 		{2A792FDE-682E-4211-AEEC-4DE7FD16A397}.Release|x86.ActiveCfg = Release|Win32
 		{2A792FDE-682E-4211-AEEC-4DE7FD16A397}.Release|x86.Build.0 = Release|Win32
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Debug|x64.ActiveCfg = Debug|x64
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Debug|x64.Build.0 = Debug|x64
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Debug|x86.ActiveCfg = Debug|Win32
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Debug|x86.Build.0 = Debug|Win32
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Release|x64.ActiveCfg = Release|x64
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Release|x64.Build.0 = Release|x64
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Release|x86.ActiveCfg = Release|Win32
+		{5D0E6ED4-18EA-4378-90A2-C05846E0E634}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

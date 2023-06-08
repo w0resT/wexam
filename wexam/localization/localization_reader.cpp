@@ -7,7 +7,11 @@ std::unordered_map<std::string, std::unordered_map<std::string, std::string>> Lo
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> translation;
 
     std::ifstream file(filename);
-    assert(file && "Filed to open file");
+
+    // Does the file open
+    if ( !file ) {
+        throw std::ofstream::failure( "Failed to open file" );
+    }
 
     std::string line;
     std::string currentLang;
