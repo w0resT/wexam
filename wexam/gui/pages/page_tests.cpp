@@ -566,6 +566,7 @@ void PageTests::Draw() {
 
 				qt_current_idx = 0;
 				question_opt_current_idx = -1;
+				current_question_id = -1;
 				prev_question_opt_idx = -1;
 			}
 
