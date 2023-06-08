@@ -77,10 +77,12 @@ void PageUsers::Draw() {
 
 		// Updating stuff on switching users
 		if ( prev_student_id != current_student_id ) {
-			auto cur_student = m_Repository->FindStudentById( current_student_id );
-			if ( cur_student ) {
-				bufName = cur_student->GetName();
-				bufGroup = cur_student->GetGroup();
+			if ( current_student_id >= 0 ) {
+				auto cur_student = m_Repository->FindStudentById( current_student_id );
+				if ( cur_student ) {
+					bufName = cur_student->GetName();
+					bufGroup = cur_student->GetGroup();
+				}
 			}
 
 			prev_student_id = current_student_id;
@@ -92,17 +94,21 @@ void PageUsers::Draw() {
 
 		if ( ImGui::InputTextWithHint( m_LocalizationManager->GetTranslation( "name" ).c_str(), 
 									   m_LocalizationManager->GetTranslation( "studentsName" ).c_str(), &bufName) ) {
-			auto cur_student = m_Repository->FindStudentById( current_student_id );
-			if ( cur_student ) {
-				cur_student->SetName( bufName );
+			if ( current_student_id >= 0 ) {
+				auto cur_student = m_Repository->FindStudentById( current_student_id );
+				if ( cur_student ) {
+					cur_student->SetName( bufName );
+				}
 			}
 		}
 
 		if ( ImGui::InputTextWithHint( m_LocalizationManager->GetTranslation( "group" ).c_str(), 
 									   m_LocalizationManager->GetTranslation( "studentsGroup" ).c_str(), &bufGroup) ) {
-			auto cur_student = m_Repository->FindStudentById( current_student_id );
-			if ( cur_student ) {
-				cur_student->SetGroup( bufGroup );
+			if ( current_student_id >= 0 ) {
+				auto cur_student = m_Repository->FindStudentById( current_student_id );
+				if ( cur_student ) {
+					cur_student->SetGroup( bufGroup );
+				}
 			}
 		}
 

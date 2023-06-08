@@ -7,10 +7,12 @@ void StudentRepository::AddStudent( const std::shared_ptr<IStudent>& student ) {
 		throw std::invalid_argument( "Invalid student pointer" );
 	}
 
-	for ( const auto& existingStudent : m_students ) {
-		if ( existingStudent->GetId() == student->GetId() ) {
-			throw std::runtime_error( "Duplicate student found" );
-		}
+	auto it = std::find_if( m_students.begin(), m_students.end(),
+							[ & ] ( const std::shared_ptr<IStudent>& existingStudent ) {
+								return existingStudent->GetId() == student->GetId(); } );
+
+	if ( it != m_students.end() ) {
+		throw std::runtime_error( "Duplicate student found" );
 	}
 
 	m_students.emplace_back( student );
@@ -56,11 +58,14 @@ std::shared_ptr<IStudent> StudentRepository::FindStudentById( const unsigned int
 		throw std::logic_error( "No students found in the repository" );
 	}
 
-	for ( const auto& student : m_students ) {
-		if ( student->GetId() == id ) {
-			return student;
-		}
+	auto it = std::find_if( m_students.begin(), m_students.end(),
+							[ & ] ( const std::shared_ptr<IStudent>& student ) {
+								return student->GetId() == id; } );
+
+	if ( it != m_students.end() ) {
+		return *it;
 	}
+
 	return nullptr; // Student not found
 }
 
@@ -69,11 +74,14 @@ std::shared_ptr<IStudent> StudentRepository::FindStudentByName( const std::strin
 		throw std::logic_error( "No students found in the repository" );
 	}
 
-	for ( const auto& student : m_students ) {
-		if ( student->GetName() == name ) {
-			return student;
-		}
+	auto it = std::find_if( m_students.begin(), m_students.end(),
+							[ & ] ( const std::shared_ptr<IStudent>& student ) {
+								return student->GetName() == name; } );
+
+	if ( it != m_students.end() ) {
+		return *it;
 	}
+
 	return nullptr; // Student not found
 }
 

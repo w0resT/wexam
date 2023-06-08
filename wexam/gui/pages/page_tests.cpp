@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "page_tests.h"
 
 #include "../imguimanager.h"
@@ -179,10 +180,12 @@ void PageTests::Draw() {
 				show_test_editor = true;
 				show_main_page = false;
 
-				auto cur_test = m_Repository->FindTestById( current_test_id );
-				if ( cur_test ) {
-					bufTitle = cur_test->GetTitle();
-					bufDesc = cur_test->GetDescription();
+				if ( current_test_id >= 0 ) {
+					auto cur_test = m_Repository->FindTestById( current_test_id );
+					if ( cur_test ) {
+						bufTitle = cur_test->GetTitle();
+						bufDesc = cur_test->GetDescription();
+					}
 				}
 			}
 			ImGui::PopStyleColor( 3 );
@@ -241,8 +244,14 @@ void PageTests::Draw() {
 		static int question_opt_current_idx = -1;
 		static int prev_question_opt_idx = -1;
 
+		if ( current_test_id < 0 ) {
+			throw std::logic_error( "Current test id is less than zero" );
+		}
+
 		auto cur_test = m_Repository->FindTestById( current_test_id );
-		assert( cur_test && "Failed to add a new question: test id error" );
+		if ( !cur_test ) {
+			throw std::runtime_error( "Bad current test id" );
+		}
 
 		if ( ImGui::BeginTable( "##table_tests_editor", 2, ImGuiTableFlags_NoSavedSettings ) ) {
 			// First column - question list
@@ -300,26 +309,27 @@ void PageTests::Draw() {
 
 			// Updating buffer for question
 			if ( prev_question_id != current_question_id ) {
-				auto question = cur_test->FindQuestionById( current_question_id );
-				if ( question ) {
-					bufQuestion = question->GetQuestion();
-					bufCorrectAnswer = question->GetCorrectAnswer();
+				if ( current_question_id >= 0 ) {
+					auto question = cur_test->FindQuestionById( current_question_id );
+					if ( question ) {
+						bufQuestion = question->GetQuestion();
+						bufCorrectAnswer = question->GetCorrectAnswer();
 
-					if ( question->GetQuestionType() == QuestionType::FreeAnswer ) {
-						qt_current_idx = 0;
-						question_opts.clear();
-					}
-					else if ( question->GetQuestionType() == QuestionType::AnswerOptions ) {
-						qt_current_idx = 1;
-						question_opts = question->GetAnswerOptions();
-					}
-					else {
-						assert( "Unknown question type" );
-					}
+						if ( question->GetQuestionType() == QuestionType::FreeAnswer ) {
+							qt_current_idx = 0;
+							question_opts.clear();
+						}
+						else if ( question->GetQuestionType() == QuestionType::AnswerOptions ) {
+							qt_current_idx = 1;
+							question_opts = question->GetAnswerOptions();
+						}
+						else {
+							throw std::logic_error( "Unknown question type" );
+						}
 
-					bufQuestionOpt.clear();
+						bufQuestionOpt.clear();
 
-					
+					}
 				}
 
 				prev_question_id = current_question_id;
@@ -339,36 +349,40 @@ void PageTests::Draw() {
 
 			ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "questionsEditing" ).c_str() );
 			if ( ImGui::InputText( m_LocalizationManager->GetTranslation( "questionTitle" ).c_str(), &bufQuestion ) ) {
-				auto question = cur_test->FindQuestionById( current_question_id );
-				if ( question ) {
-					question->SetQuestion( bufQuestion );
+				if ( current_question_id >= 0 ) {
+					auto question = cur_test->FindQuestionById( current_question_id );
+					if ( question ) {
+						question->SetQuestion( bufQuestion );
+					}
 				}
 			}
 
 			if ( ImGui::Combo( m_LocalizationManager->GetTranslation( "questionType" ).c_str(), &qt_current_idx, "Free answer\0Answer with options\0\0" ) ) {
 				// Replacing test for switching types
-				auto cur_question = cur_test->FindQuestionById( current_question_id );
-				if ( cur_question ) {
-					// Obj for new question
-					std::shared_ptr<IQuestion> new_question;
+				if ( current_question_id >= 0 ) {
+					auto cur_question = cur_test->FindQuestionById( current_question_id );
+					if ( cur_question ) {
+						// Obj for new question
+						std::shared_ptr<IQuestion> new_question;
 
-					// Free answer
-					if ( qt_current_idx == 0 ) {
-						new_question = std::make_shared<QuestionWithFreeAnswer>();
-						question_opts.clear();
+						// Free answer
+						if ( qt_current_idx == 0 ) {
+							new_question = std::make_shared<QuestionWithFreeAnswer>();
+							question_opts.clear();
+						}
+						// Answer with options
+						else if ( qt_current_idx == 1 ) {
+							new_question = std::make_shared<QuestionWithAnswerOptions>();
+						}
+
+						new_question->SetId( cur_question->GetId() );
+						new_question->SetQuestion( cur_question->GetQuestion() );
+						new_question->SetCorrectAnswer( cur_question->GetCorrectAnswer() );
+
+						// Replacing
+						cur_test->RemoveQuestion( cur_question->GetId() );
+						cur_test->AddQuestion( new_question );
 					}
-					// Answer with options
-					else if ( qt_current_idx == 1 ) {
-						new_question = std::make_shared<QuestionWithAnswerOptions>();
-					}
-
-					new_question->SetId( cur_question->GetId() );
-					new_question->SetQuestion( cur_question->GetQuestion() );
-					new_question->SetCorrectAnswer( cur_question->GetCorrectAnswer() );
-
-					// Replacing
-					cur_test->RemoveQuestion( cur_question->GetId() );
-					cur_test->AddQuestion( new_question );
 				}
 			}
 
@@ -378,9 +392,11 @@ void PageTests::Draw() {
 			}
 
 			if ( ImGui::InputText( m_LocalizationManager->GetTranslation( "correctAnswer" ).c_str(), &bufCorrectAnswer ) ) {
-				auto cur_question = cur_test->FindQuestionById( current_question_id );
-				if ( cur_question ) {
-					cur_question->SetCorrectAnswer( bufCorrectAnswer );
+				if ( current_question_id >= 0 ) {
+					auto cur_question = cur_test->FindQuestionById( current_question_id );
+					if ( cur_question ) {
+						cur_question->SetCorrectAnswer( bufCorrectAnswer );
+					}
 				}
 			}
 
@@ -460,94 +476,104 @@ void PageTests::Draw() {
 
 			ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "answerEditing" ).c_str() );
 			// Answer with options
-			auto cur_question = cur_test->FindQuestionById( current_question_id );
-			if ( cur_question && cur_question->GetQuestionType() == QuestionType::AnswerOptions ) {
+			if ( current_question_id >= 0 ) {
+				auto cur_question = cur_test->FindQuestionById( current_question_id );
+				if ( cur_question && cur_question->GetQuestionType() == QuestionType::AnswerOptions ) {
 
-				// Check if the answer option was changed
-				if ( question_opt_current_idx > -1 && prev_question_opt_idx != question_opt_current_idx ) {
-					assert( !question_opts.empty() && "Question options were empty!" );
+					// Check if the answer option was changed
+					if ( question_opt_current_idx > -1 && prev_question_opt_idx != question_opt_current_idx ) {
+						assert( !question_opts.empty() && "Question options were empty!" );
 
-					bufQuestionOpt = question_opts[ question_opt_current_idx ];
+						bufQuestionOpt = question_opts[ question_opt_current_idx ];
 
-					prev_question_opt_idx = question_opt_current_idx;
-				}
+						prev_question_opt_idx = question_opt_current_idx;
+					}
 
-				if ( ImGui::InputText( m_LocalizationManager->GetTranslation( "answerOption" ).c_str(), &bufQuestionOpt ) ) {
-					if ( question_opt_current_idx > -1 && !question_opts.empty() ) {
-						question_opts[ question_opt_current_idx ] = bufQuestionOpt;
-						auto cur_question = cur_test->FindQuestionById( current_question_id );
-						if ( cur_question ) {
-							cur_question->SetAnswerOptions( question_opts );
+					if ( ImGui::InputText( m_LocalizationManager->GetTranslation( "answerOption" ).c_str(), &bufQuestionOpt ) ) {
+						if ( question_opt_current_idx > -1 && !question_opts.empty() ) {
+							question_opts[ question_opt_current_idx ] = bufQuestionOpt;
+							if ( current_question_id >= 0 ) {
+								auto cur_question = cur_test->FindQuestionById( current_question_id );
+								if ( cur_question ) {
+									cur_question->SetAnswerOptions( question_opts );
+								}
+							}
 						}
 					}
-				}
 
-				ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0.474f, 0.957f, 0.100f, 0.500f ) );
-				ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( 0.674f, 1.0f, 0.300f, 0.550f ) );
-				ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( 0.774f, 1.0f, 0.400f, 0.600f ) );
-				if ( ImGui::Button( m_LocalizationManager->GetTranslation( "addAnswer" ).c_str(), ImVec2( 119, 25 ) ) ) {
-					bufQuestionOpt = "Question option #" + std::to_string( question_opts.size() );
-					question_opts.push_back( bufQuestionOpt );
-					auto cur_question = cur_test->FindQuestionById( current_question_id );
-					if ( cur_question ) {
-						cur_question->SetAnswerOptions( question_opts );
+					ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0.474f, 0.957f, 0.100f, 0.500f ) );
+					ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( 0.674f, 1.0f, 0.300f, 0.550f ) );
+					ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( 0.774f, 1.0f, 0.400f, 0.600f ) );
+					if ( ImGui::Button( m_LocalizationManager->GetTranslation( "addAnswer" ).c_str(), ImVec2( 119, 25 ) ) ) {
+						bufQuestionOpt = "Question option #" + std::to_string( question_opts.size() );
+						question_opts.push_back( bufQuestionOpt );
+
+						if ( current_question_id >= 0 ) {
+							auto cur_question = cur_test->FindQuestionById( current_question_id );
+							if ( cur_question ) {
+								cur_question->SetAnswerOptions( question_opts );
+							}
+						}
+
+						bufQuestionOpt.clear();
 					}
-					bufQuestionOpt.clear();
-				}
-				ImGui::PopStyleColor( 3 );
+					ImGui::PopStyleColor( 3 );
 
-				ImGui::SameLine();
+					ImGui::SameLine();
 
-				ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0.943f, 0.304f, 0.215f, 0.500f ) );
-				ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( 1.0f, 0.504f, 0.415f, 0.550f ) );
-				ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( 1.0f, 0.604f, 0.515f, 0.600f ) );
+					ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0.943f, 0.304f, 0.215f, 0.500f ) );
+					ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( 1.0f, 0.504f, 0.415f, 0.550f ) );
+					ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( 1.0f, 0.604f, 0.515f, 0.600f ) );
 
-				bool need_disable_rm_opt = question_opt_current_idx < 0;
-				if ( need_disable_rm_opt ) {
-					ImGui::BeginDisabled();
-				}
-
-				if ( ImGui::Button( m_LocalizationManager->GetTranslation( "removeAnswer" ).c_str(), ImVec2( 119, 25 ) ) ) {
-					question_opts.erase( question_opts.begin() + question_opt_current_idx );
-					auto cur_question = cur_test->FindQuestionById( current_question_id );
-					if ( cur_question ) {
-						cur_question->SetAnswerOptions( question_opts );
-					}
-					
-					// Get higher question ID for the new question (higher_id + 1)
-					auto higher_answer_opt = question_opts.size() - 1;
-
-					if ( higher_answer_opt >= 0 ) {
-						question_opt_current_idx = higher_answer_opt;
-					}
-					else {
-						question_opt_current_idx = -1;
+					bool need_disable_rm_opt = question_opt_current_idx < 0;
+					if ( need_disable_rm_opt ) {
+						ImGui::BeginDisabled();
 					}
 
-					bufQuestionOpt.clear();
-				}
+					if ( ImGui::Button( m_LocalizationManager->GetTranslation( "removeAnswer" ).c_str(), ImVec2( 119, 25 ) ) ) {
+						question_opts.erase( question_opts.begin() + question_opt_current_idx );
+						if ( current_question_id >= 0 ) {
+							auto cur_question = cur_test->FindQuestionById( current_question_id );
+							if ( cur_question ) {
+								cur_question->SetAnswerOptions( question_opts );
+							}
+						}
 
-				if ( need_disable_rm_opt ) {
-					ImGui::EndDisabled();
-				}
+						// Get higher question ID for the new question (higher_id + 1)
+						auto higher_answer_opt = question_opts.size() - 1;
 
-				ImGui::PopStyleColor( 3 );
+						if ( higher_answer_opt >= 0 ) {
+							question_opt_current_idx = higher_answer_opt;
+						}
+						else {
+							question_opt_current_idx = -1;
+						}
 
-				// add answer option, remove answer option
-				if ( ImGui::BeginListBox( m_LocalizationManager->GetTranslation( "answerOptions" ).c_str(), ImVec2(0, 100) ) ) {
-					for ( int n = 0; n < question_opts.size(); n++ ) {
-						const bool is_selected = ( question_opt_current_idx == n );
-						ImGui::PushID( std::string( std::string( "##answer_opt" ) + std::to_string( n ) ).c_str() );
-						if ( ImGui::Selectable( question_opts[ n ].c_str(), is_selected) )
-							question_opt_current_idx = n;
-
-						// Set the initial focus when opening the combo
-						if ( is_selected )
-							ImGui::SetItemDefaultFocus();
-
-						ImGui::PopID();
+						bufQuestionOpt.clear();
 					}
-					ImGui::EndListBox();
+
+					if ( need_disable_rm_opt ) {
+						ImGui::EndDisabled();
+					}
+
+					ImGui::PopStyleColor( 3 );
+
+					// add answer option, remove answer option
+					if ( ImGui::BeginListBox( m_LocalizationManager->GetTranslation( "answerOptions" ).c_str(), ImVec2( 0, 100 ) ) ) {
+						for ( int n = 0; n < question_opts.size(); n++ ) {
+							const bool is_selected = ( question_opt_current_idx == n );
+							ImGui::PushID( std::string( std::string( "##answer_opt" ) + std::to_string( n ) ).c_str() );
+							if ( ImGui::Selectable( question_opts[ n ].c_str(), is_selected ) )
+								question_opt_current_idx = n;
+
+							// Set the initial focus when opening the combo
+							if ( is_selected )
+								ImGui::SetItemDefaultFocus();
+
+							ImGui::PopID();
+						}
+						ImGui::EndListBox();
+					}
 				}
 			}
 
@@ -567,6 +593,7 @@ void PageTests::Draw() {
 				qt_current_idx = 0;
 				question_opt_current_idx = -1;
 				current_question_id = -1;
+				prev_question_id = -1;
 				prev_question_opt_idx = -1;
 			}
 

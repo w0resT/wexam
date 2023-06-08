@@ -51,6 +51,10 @@ void Test::AddQuestion( std::shared_ptr<IQuestion> question ) {
 }
 
 std::shared_ptr<IQuestion> Test::GetQuestion( unsigned int idx ) const {
+	if ( m_questions.empty() ) {
+		throw std::logic_error( "No questions in the test" );
+	}
+
 	if ( idx < m_questions.size() )
 		return m_questions[ idx ];
 	throw std::out_of_range( "Invalid question index" );
@@ -61,25 +65,36 @@ std::vector<std::shared_ptr<IQuestion>> Test::GetQuestions() const {
 }
 
 std::shared_ptr<IQuestion> Test::FindQuestionById( unsigned int id ) const {
-	for ( const auto& question : m_questions ) {
-		if ( question->GetId() == id ) {
-			return question;
-		}
+	if ( m_questions.empty() ) {
+		throw std::logic_error( "No questions in the test" );
 	}
+
+	auto it = std::find_if( m_questions.begin(), m_questions.end(),
+							[ & ] ( const std::shared_ptr<IQuestion>& question ) { 
+								return question->GetId() == id; } );
+
+	if ( it != m_questions.end() ) {
+		return *it;
+	}
+
 	return nullptr; // Test not found
 }
 
 void Test::RemoveQuestion( unsigned int id ) {
-	for ( auto it = m_questions.begin(); it != m_questions.end(); ++it ) {
-		if ( ( *it )->GetId() == id ) {
-			m_questions.erase( it );
-			return;
-		}
+	if ( m_questions.empty() ) {
+		throw std::logic_error( "No questions in the test" );
 	}
-	throw std::invalid_argument( "Question not found" );
+
+	m_questions.erase( std::remove_if( m_questions.begin(), m_questions.end(),
+									  [ & ] ( const std::shared_ptr<IQuestion>& question ) { return question->GetId() == id; } ),
+					   m_questions.end() );
 }
 
 void Test::EditQuestion( unsigned int idx, const std::string& question ) {
+	if ( m_questions.empty() ) {
+		throw std::logic_error( "No questions in the test" );
+	}
+
 	if ( idx < m_questions.size() )
 		m_questions[ idx ]->SetQuestion( question );
 	else
@@ -87,6 +102,10 @@ void Test::EditQuestion( unsigned int idx, const std::string& question ) {
 }
 
 void Test::EditQuestion( unsigned int idx, const std::string& question, const std::vector<std::string>& answerOptions ) {
+	if ( m_questions.empty() ) {
+		throw std::logic_error( "No questions in the test" );
+	}
+
 	if ( idx < m_questions.size() ) {
 		m_questions[ idx ]->SetQuestion( question );
 		m_questions[ idx ]->SetAnswerOptions( answerOptions );

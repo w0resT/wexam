@@ -7,10 +7,12 @@ void TestRepository::AddTest( const std::shared_ptr<ITest>& test ) {
 		throw std::invalid_argument( "Invalid test pointer" );
 	}
 
-	for ( const auto& existingTest : m_tests ) {
-		if ( existingTest->GetId() == test->GetId() ) {
-			throw std::runtime_error( "Duplicate test found" );
-		}
+	auto it = std::find_if( m_tests.begin(), m_tests.end(),
+							[ & ] ( const std::shared_ptr<ITest>& existingTest ) { 
+								return existingTest->GetId() == test->GetId(); } );
+
+	if ( it != m_tests.end() ) {
+		throw std::runtime_error( "Duplicate test found" );
 	}
 
 	m_tests.emplace_back( test );
@@ -52,22 +54,26 @@ std::shared_ptr<ITest> TestRepository::FindTestById( unsigned int id ) const {
 		throw std::logic_error( "No tests found in the repository" );
 	}
 
-	for ( const auto& test : m_tests ) {
-		if ( test->GetId() == id ) {
-			return test;
-		}
+	auto it = std::find_if( m_tests.begin(), m_tests.end(),
+							[ & ] ( const std::shared_ptr<ITest>& test ) {
+								return test->GetId() == id; } );
+
+	if ( it != m_tests.end() ) {
+		return *it;
 	}
+
 	return nullptr; // Test not found
 }
 
 void TestRepository::RemoveTest( unsigned int id ) {
-	for ( auto it = m_tests.begin(); it != m_tests.end(); ++it ) {
-		if ( ( *it )->GetId() == id ) {
-			m_tests.erase( it );
-			return;
-		}
+	if ( m_tests.empty() ) {
+		throw std::logic_error( "No tests found in the repository" );
 	}
-	throw std::invalid_argument( "Test not found" );
+
+	m_tests.erase( std::remove_if( m_tests.begin(), m_tests.end(),
+									  [ & ] ( const std::shared_ptr<ITest>& test ) { 
+									   return test->GetId() == id; } ),
+				   m_tests.end() );
 }
 
 void TestRepository::ModifyTest( const std::shared_ptr<ITest>& test ) {

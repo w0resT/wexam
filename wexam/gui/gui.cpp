@@ -715,11 +715,23 @@ void Gui::DrawStudentPage() {
 
     }
     else if ( show_test_page ) {
+        if ( current_test_id < 0 ) {
+            throw std::logic_error( "Current test id is less than zero" );
+        }
+
+        if ( current_user_id < 0 ) {
+            throw std::logic_error( "Current user id is less than zero" );
+        }
+
         auto cur_test = m_TestRepository->FindTestById( current_test_id );
-        assert( cur_test && "Bad current test id");
+        if ( !cur_test ) {
+            throw std::runtime_error( "Bad current test id" );
+        }
 
         auto cur_student = m_UserRepository->FindStudentById( current_user_id );
-        assert( cur_student && "Bad current student id" );
+        if ( !cur_student ) {
+            throw std::runtime_error( "Bad current student id" );
+        }
 
         std::shared_ptr<ITest> completed_test = std::make_shared<Test>( cur_test );
 
@@ -845,11 +857,23 @@ void Gui::DrawStudentPage() {
         }
     }
     else if ( show_result_page ) {
+        if ( current_test_id < 0 ) {
+            throw std::logic_error( "Current test id is less than zero" );
+        }
+
+        if ( current_user_id < 0 ) {
+            throw std::logic_error( "Current user id is less than zero" );
+        }
+
         auto cur_test = m_TestRepository->FindTestById( current_test_id );
-        assert( cur_test && "Bad current test id" );
+        if ( !cur_test ) {
+            throw std::runtime_error( "Bad current test id" );
+        }
 
         auto cur_student = m_UserRepository->FindStudentById( current_user_id );
-        assert( cur_student && "Bad current student id" );
+        if ( !cur_student ) {
+            throw std::runtime_error( "Bad current student id" );
+        }
 
         static bool show_result = true;
 
