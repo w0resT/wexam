@@ -165,10 +165,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="LocalizationReaderTest.cpp" />
-    <ClCompile Include="LocalizationWriterTest.cpp" />
+    <ClCompile Include="LocalizationManagerTest.cpp" />
     <ClCompile Include="StudentRepositoryTest.cpp" />
+    <ClCompile Include="TestManagerTest.cpp" />
     <ClCompile Include="TOTPGeneratorTest.cpp" />
+    <ClCompile Include="UserManagerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\wexam\wexam.vcxproj">

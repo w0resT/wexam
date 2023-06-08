@@ -13,25 +13,22 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Исходные файлы\localization">
-      <UniqueIdentifier>{7f59b7b9-bcc9-4d9f-9991-497fa0454529}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\users">
-      <UniqueIdentifier>{985896dd-1042-4e0d-818d-cee87ffd5e40}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TOTPGeneratorTest.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="LocalizationWriterTest.cpp">
-      <Filter>Исходные файлы\localization</Filter>
-    </ClCompile>
-    <ClCompile Include="LocalizationReaderTest.cpp">
-      <Filter>Исходные файлы\localization</Filter>
+    <ClCompile Include="UserManagerTest.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="StudentRepositoryTest.cpp">
-      <Filter>Исходные файлы\users</Filter>
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalizationManagerTest.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="TestManagerTest.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

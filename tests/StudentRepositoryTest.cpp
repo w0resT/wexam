@@ -5,8 +5,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace StudentRepositoryTests {
-
-	TEST_CLASS( StudentRepositoryTest ) {
+    TEST_CLASS( AddStudentTest ) {
 public:
     TEST_METHOD( AddStudent_ValidStudent ) {
         StudentRepository repository;
@@ -39,7 +38,10 @@ public:
         Assert::ExpectException<std::runtime_error>( [ & ] () {
             repository.AddStudent( student2 ); } );
     }
+    };
 
+    TEST_CLASS( AddStudentsTest ) {
+public:
     TEST_METHOD( AddStudents_ValidStudents ) {
         StudentRepository repository;
         std::vector<std::shared_ptr<IStudent>> students{
@@ -68,7 +70,10 @@ public:
         Assert::ExpectException<std::invalid_argument>( [ & ] () {
             repository.AddStudents( students ); } );
     }
+    };
 
+    TEST_CLASS( RemoveStudentTest ) {
+public:
     TEST_METHOD( RemoveStudent_ValidId ) {
         StudentRepository repository;
         std::shared_ptr<IStudent> student1 = std::make_shared<Student>( 0, "nameOne", "group" );
@@ -100,7 +105,7 @@ public:
 
         unsigned int invalidId = 123;
 
-       repository.RemoveStudent( invalidId );
+        repository.RemoveStudent( invalidId );
 
         // Check that no student was removed
         Assert::AreEqual( 3u, repository.GetStudents().size() );
@@ -112,76 +117,85 @@ public:
         Assert::ExpectException<std::logic_error>( [ & ] () {
             repository.RemoveStudent( 123 ); } );
     }
+    };
 
+    TEST_CLASS( GetStudentTest ) {
+    public:
+        TEST_METHOD( GetStudent_ValidIndex ) {
+            StudentRepository repository;
+            std::vector<std::shared_ptr<IStudent>> students = {
+                std::make_shared<Student>(),
+                std::make_shared<Student>(),
+                std::make_shared<Student>()
+            };
+            repository.AddStudents( students );
 
-    TEST_METHOD( GetStudents_ReturnsCorrectStudents ) {
-        StudentRepository repository;
-        std::shared_ptr<IStudent> student1 = std::make_shared<Student>( 0, "nameOne", "group" );
-        std::shared_ptr<IStudent> student2 = std::make_shared<Student>( 1, "nameTwo", "group" );
-        std::shared_ptr<IStudent> student3 = std::make_shared<Student>( 2, "nameThree", "group" );
+            unsigned int validIndex = 1;
+            auto student = repository.GetStudent( validIndex );
 
-        // Add the students to the repository
-        repository.AddStudent( student1 );
-        repository.AddStudent( student2 );
-        repository.AddStudent( student3 );
+            // Check that the returned student is not null
+            Assert::IsNotNull( student.get() );
+        }
 
-        // Call the GetStudents function
-        std::vector<std::shared_ptr<IStudent>> students = repository.GetStudents();
+        TEST_METHOD( GetStudent_InvalidIndex ) {
+            StudentRepository repository;
+            std::vector<std::shared_ptr<IStudent>> students = {
+                std::make_shared<Student>(),
+                std::make_shared<Student>(),
+                std::make_shared<Student>()
+            };
+            repository.AddStudents( students );
 
-        // Check that the returned vector contains the correct students
-        Assert::AreEqual( 3u, students.size() );
-        Assert::IsTrue( student1.get() == students[ 0 ].get() );
-        Assert::IsTrue( student2.get() == students[ 1 ].get() );
-        Assert::IsTrue( student3.get() == students[ 2 ].get() );
-    }
+            unsigned int invalidIndex = 3;
 
-    TEST_METHOD( GetStudents_ReturnsEmptyVector ) {
-        StudentRepository repository;
+            Assert::ExpectException<std::out_of_range>( [ & ] () {
+                repository.GetStudent( invalidIndex ); } );
+        }
 
-        // Call the GetStudents function on an empty repository
-        std::vector<std::shared_ptr<IStudent>> students = repository.GetStudents();
+        TEST_METHOD( GetStudent_EmptyRepository ) {
+            StudentRepository repository;
 
-        // Check that the returned vector is empty
-        Assert::AreEqual( 0u, students.size() );
-    }
-    TEST_METHOD( GetStudent_ValidIndex ) {
-        StudentRepository repository;
-        std::vector<std::shared_ptr<IStudent>> students = {
-            std::make_shared<Student>(),
-            std::make_shared<Student>(),
-            std::make_shared<Student>()
-        };
-        repository.AddStudents( students );
+            Assert::ExpectException<std::logic_error>( [ & ] () {
+                repository.GetStudent( 0 ); } );
+        }
+    };
 
-        unsigned int validIndex = 1;
-        auto student = repository.GetStudent( validIndex );
+    TEST_CLASS( GetStudentsTest ) {
+    public:
+        TEST_METHOD( GetStudents_ReturnsCorrectStudents ) {
+            StudentRepository repository;
+            std::shared_ptr<IStudent> student1 = std::make_shared<Student>( 0, "nameOne", "group" );
+            std::shared_ptr<IStudent> student2 = std::make_shared<Student>( 1, "nameTwo", "group" );
+            std::shared_ptr<IStudent> student3 = std::make_shared<Student>( 2, "nameThree", "group" );
 
-        // Check that the returned student is not null
-        Assert::IsNotNull( student.get() );
-    }
+            // Add the students to the repository
+            repository.AddStudent( student1 );
+            repository.AddStudent( student2 );
+            repository.AddStudent( student3 );
 
-    TEST_METHOD( GetStudent_InvalidIndex ) {
-        StudentRepository repository;
-        std::vector<std::shared_ptr<IStudent>> students = {
-            std::make_shared<Student>(),
-            std::make_shared<Student>(),
-            std::make_shared<Student>()
-        };
-        repository.AddStudents( students );
+            // Call the GetStudents function
+            std::vector<std::shared_ptr<IStudent>> students = repository.GetStudents();
 
-        unsigned int invalidIndex = 3;
+            // Check that the returned vector contains the correct students
+            Assert::AreEqual( 3u, students.size() );
+            Assert::IsTrue( student1.get() == students[ 0 ].get() );
+            Assert::IsTrue( student2.get() == students[ 1 ].get() );
+            Assert::IsTrue( student3.get() == students[ 2 ].get() );
+        }
 
-        Assert::ExpectException<std::out_of_range>( [ & ] () {
-            repository.GetStudent( invalidIndex ); } );
-    }
+        TEST_METHOD( GetStudents_ReturnsEmptyVector ) {
+            StudentRepository repository;
 
-    TEST_METHOD( GetStudent_EmptyRepository ) {
-        StudentRepository repository;
+            // Call the GetStudents function on an empty repository
+            std::vector<std::shared_ptr<IStudent>> students = repository.GetStudents();
 
-        Assert::ExpectException<std::logic_error>( [ & ] () {
-            repository.GetStudent( 0 ); } );
-    }
+            // Check that the returned vector is empty
+            Assert::AreEqual( 0u, students.size() );
+        }
+    };
 
+    TEST_CLASS( FindStudentTest ) {
+public:
     TEST_METHOD( FindStudentById_ValidId ) {
         StudentRepository repository;
         std::shared_ptr<IStudent> student1 = std::make_shared<Student>();
@@ -301,6 +315,5 @@ public:
         Assert::ExpectException<std::logic_error>( [ & ] () {
             repository.FindStudentByName( "John Doe" ); } );
     }
-
-	};
+    };
 }
