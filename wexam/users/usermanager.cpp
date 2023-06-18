@@ -68,8 +68,8 @@ inline std::vector<std::shared_ptr<IStudent>> UserManager::ParseUsersFromFile( s
 	while ( std::getline( issUser, userLine ) ) {
 		// Parse test ID, name and group
 		std::regex idRegex( R"(\[ID:\s*(\d+)\])" );
-		std::regex titleRegex( R"(\[Name:\s*(.*?)\])" );
-		std::regex descriptionRegex( R"(\[Group:\s*(.*?)\])" );
+		std::regex nameRegex( R"(\[Name:\s*(.*?)\])" );
+		std::regex groupRegex( R"(\[Group:\s*(.*?)\])" );
 		std::smatch match;
 
 		// Looking for ID
@@ -86,13 +86,13 @@ inline std::vector<std::shared_ptr<IStudent>> UserManager::ParseUsersFromFile( s
 		}
 
 		// Looking for Name
-		if ( std::regex_search( userLine, match, titleRegex ) ) {
+		if ( std::regex_search( userLine, match, nameRegex ) ) {
 			std::string userName = match[ 1 ].str();
 			user->SetName( userName );
 		}
 
 		// Looking for Group
-		if ( std::regex_search( userLine, match, descriptionRegex ) ) {
+		if ( std::regex_search( userLine, match, groupRegex ) ) {
 			std::string userGroup = match[ 1 ].str();
 			user->SetGroup( userGroup );
 		}
