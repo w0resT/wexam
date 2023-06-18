@@ -107,10 +107,10 @@ inline std::string UserManager::FormatUserLine( const std::shared_ptr<IStudent>&
 	// Format:
 	// [ID: userId][Name: userName][Group: userGroup]
 
-	std::string testLine = "[ID: " + std::to_string( user->GetId() ) + "]";
-	testLine += "[Name: " + user->GetName() + "]";
-	testLine += "[Group: " + user->GetGroup() + "]\n";
+	std::string userLine = "[ID: " + std::to_string( user->GetId() ) + "]";
+	userLine += "[Name: " + user->GetName() + "]";
+	userLine += "[Group: " + user->GetGroup() + "]\n";
 
-	return testLine;
+	return userLine;
 }
 
