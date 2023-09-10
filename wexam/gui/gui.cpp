@@ -752,7 +752,10 @@ void Gui::DrawStudentPage() {
                 ImGui::PopFont();
 
                 ImGui::PushFont( m_SegoeuiBold18 );
-                ImGui::TextWrapped( strDescription.c_str() );
+                // Show description only if it exist
+                if ( !cur_test->GetDescription().empty() ) {
+                    ImGui::TextWrapped( strDescription.c_str() );
+                }
                 ImGui::TextWrapped( strQuestCount.c_str() );
                 ImGui::PopFont();
 
@@ -778,7 +781,7 @@ void Gui::DrawStudentPage() {
 
                 answerBuffer.resize( cur_test->GetQuestionCount() );
 
-                for ( int i = 0; i < cur_test->GetQuestionCount(); ++i ) {
+                for ( unsigned int i = 0; i < cur_test->GetQuestionCount(); ++i ) {
                     auto cur_question = cur_test->GetQuestion( i );
 
                     std::string strCurQuest = std::to_string( i + 1 ) + ". " + cur_question->GetQuestion();
@@ -793,7 +796,7 @@ void Gui::DrawStudentPage() {
                                                   m_LocalizationManager->GetTranslation( "answer" ).c_str(), &answerBuffer[ i ] );
                     }
                     else if ( cur_question->GetQuestionType() == QuestionType::AnswerOptions ) {
-                        for ( int j = 0; j < cur_question->GetAnswerOptions().size(); ++j ) {
+                        for ( unsigned int j = 0; j < cur_question->GetAnswerOptions().size(); ++j ) {
                             const auto& opt = cur_question->GetAnswerOption( j );
                             const bool item_is_selected = ( answerBuffer[ i ] == opt );
 
@@ -822,19 +825,19 @@ void Gui::DrawStudentPage() {
 
             ImGui::Separator();
 
-            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "finish" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.497, 25 ) ) ) {
-                ImGui::OpenPopup( "Test Completion" );
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "finish" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.497f, 25 ) ) ) {
+                ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "testCompletion" ).c_str() );
             }
 
             ImGui::SameLine();
 
-            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "back" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.994, 25 ) ) ) {
-                ImGui::OpenPopup( "Return to main page" );
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "back" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.994f, 25 ) ) ) {
+                ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "returnToMainPage" ).c_str() );
             }
 
             if ( finish_clear_test ) {
                 // Sets user answers
-                for ( int i = 0; i < completed_test->GetQuestionCount(); ++i ) {
+                for ( unsigned int i = 0; i < completed_test->GetQuestionCount(); ++i ) {
                     completed_test->GetQuestion( i )->SetUserAnswer( answerBuffer[ i ] );
                 }
 
@@ -889,43 +892,52 @@ void Gui::DrawStudentPage() {
                 }
             }
 
-            if ( show_result ) {
-                std::shared_ptr<ITestResult> result = std::make_shared<TestResult>( cur_test );
-                result->EvaluateTest();
+            std::string strCurTest = m_LocalizationManager->GetTranslation( "test" ) + ": " + cur_test->GetTitle() /*+ ", ID: " + std::to_string( cur_test->GetId() )*/;
+            std::string strDescription = m_LocalizationManager->GetTranslation( "testDescription" ) + ": " + cur_test->GetDescription();
 
-                std::string strCurTest = "Test: " + cur_test->GetTitle() + ", ID: " + std::to_string( cur_test->GetId() );
-                std::string strDescription = "Description: " + cur_test->GetDescription();
-                std::string strTotalQuest = "Total Questions: " + std::to_string( result->GetTotalQuestions() );
-                std::string strCorAnswers = "Correct Answers: " + std::to_string( result->GetCorrectAnswers() );
-                std::string strIncorAnswers = "Incorrect Answers: " + std::to_string( result->GetIncorrectAnswers() );
-                std::string strUnanswered = "Unanswered Questions: " + std::to_string( result->GetUnansweredQuestions() );
-                std::string strTotal = "Total score: " + std::to_string( static_cast< int >( result->GetScore() ) ) + "%%";
+            ImGui::PushFont( m_SegoeuiBold32 );
+            ImGui::TextWrapped( cur_student->GetName().c_str() );
+            ImGui::Separator();
+            ImGui::TextWrapped( strCurTest.c_str() );
+            ImGui::PopFont();
 
-                ImGui::PushFont( m_SegoeuiBold32 );
-                ImGui::TextWrapped( cur_student->GetName().c_str() );
-                ImGui::Separator();
-                ImGui::TextWrapped( strCurTest.c_str() );
-                ImGui::PopFont();
-
+            // Show description only if it exist
+            if ( !cur_test->GetDescription().empty() ) {
                 ImGui::PushFont( m_SegoeuiBold18 );
                 ImGui::TextWrapped( strDescription.c_str() );
                 ImGui::PopFont();
+            }
 
-                ImGui::Separator();
+            ImGui::Separator();
+
+            if ( show_result ) {
+                std::shared_ptr<ITestResult> result = std::make_shared<TestResult>( cur_test );
+                result->EvaluateTest();
+    
+                std::string strTotalQuest = m_LocalizationManager->GetTranslation( "totalQuestions" ) + ": " + std::to_string( result->GetTotalQuestions() );
+                std::string strCorAnswers = m_LocalizationManager->GetTranslation( "correctAnswers" ) + ": " + std::to_string( result->GetCorrectAnswers() );
+                std::string strIncorAnswers = m_LocalizationManager->GetTranslation( "incorrectAnswers" ) + ": " + std::to_string( result->GetIncorrectAnswers() );
+                std::string strUnanswered = m_LocalizationManager->GetTranslation( "unansweredQuestions" ) + ": " + std::to_string( result->GetUnansweredQuestions() );
+                std::string strTotal = m_LocalizationManager->GetTranslation( "totalScore" ) + ": " + std::to_string( static_cast< int >( result->GetScore() ) ) + "%%";
+                std::string strApproxScore = m_LocalizationManager->GetTranslation( "approxTestScore" ) + ": " + std::string(
+                    static_cast< int >( result->GetScore() ) > 80 ? "5" : 
+                    static_cast< int >( result->GetScore() ) > 60 ? "4" : 
+                    static_cast< int >( result->GetScore() ) > 40 ? "3" : "2");
 
                 ImGui::TextWrapped( strTotalQuest.c_str() );
                 ImGui::TextWrapped( strCorAnswers.c_str() );
                 ImGui::TextWrapped( strIncorAnswers.c_str() );
                 ImGui::TextWrapped( strUnanswered.c_str() );
                 ImGui::TextWrapped( strTotal.c_str() );
+                ImGui::TextWrapped( strApproxScore.c_str() );
             }
             else {
-                ImGui::Text( "Test finished" );
+                ImGui::Text( m_LocalizationManager->GetTranslation( "testFinished" ).c_str() );
             }
 
             ImGui::Separator();
 
-            if ( ImGui::Button( "Return to main page", button_size ) ) {
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "returnToMainPage" ).c_str(), button_size ) ) {
                 current_test_id = -1;
                 current_user_id = -1;
 
@@ -937,19 +949,20 @@ void Gui::DrawStudentPage() {
             }
         }
 
-        // Always center this window when appearing
+        // Always center this window when appearing 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImVec2 center = viewport->GetCenter();
         ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
         ImGui::SetNextWindowSize( ImVec2( 300, 0 ) );
-        if ( ImGui::BeginPopupModal( "Test Completion", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
-            ImGui::TextWrapped( "Are you sure you want to complete the test?" );
-            if ( ImGui::Button( "Yes", ImVec2( -1, 30 ) ) ) {
+        if ( ImGui::BeginPopupModal( m_LocalizationManager->GetTranslation( "testCompletion" ).c_str(), nullptr, 
+                                     ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+            ImGui::TextWrapped( m_LocalizationManager->GetTranslation( "askCompleteTest" ).c_str() );
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "yes" ).c_str(), ImVec2(-1, 30)) ) {
                 finish_clear_test = true;
                 ImGui::CloseCurrentPopup();
             }
 
-            if ( ImGui::Button( "Cancel", ImVec2( -1, 30 ) ) ) {
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "cancel" ).c_str(), ImVec2( -1, 30 ) ) ) {
                 finish_clear_test = false;
                 ImGui::CloseCurrentPopup();
             }
@@ -958,14 +971,15 @@ void Gui::DrawStudentPage() {
 
         ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
         ImGui::SetNextWindowSize( ImVec2( 300, 0 ) );
-        if ( ImGui::BeginPopupModal( "Return to main page", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
-            ImGui::TextWrapped( "Are you sure you want to return to the main page?" );
-            if ( ImGui::Button( "Yes", ImVec2( -1, 30 ) ) ) {
+        if ( ImGui::BeginPopupModal( m_LocalizationManager->GetTranslation( "returnToMainPage" ).c_str(), nullptr, 
+                                     ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
+            ImGui::TextWrapped( m_LocalizationManager->GetTranslation( "askReturnToMainPage" ).c_str() );
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "yes" ).c_str(), ImVec2( -1, 30 ) ) ) {
                 finish_clear_exit = true;
                 ImGui::CloseCurrentPopup();
             }
 
-            if ( ImGui::Button( "Cancel", ImVec2( -1, 30 ) ) ) {
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "cancel" ).c_str(), ImVec2( -1, 30 ) ) ) {
                 finish_clear_exit = false;
                 ImGui::CloseCurrentPopup();
             }
