@@ -254,6 +254,7 @@ void Gui::DrawAuthPage() {
     static std::string userCode;
     static std::unique_ptr<ByteOrderConverter> convertor = std::make_unique<ByteOrderConverter>();
     static int password_attempts = 0;
+    static const int max_password_attempts = 3;
 
     ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, ImVec2( 5, 5 ) );
 
@@ -265,7 +266,8 @@ void Gui::DrawAuthPage() {
     ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
     ImGui::SetNextWindowSize( ImVec2( 300, 295 ) );
     if ( ImGui::BeginPopupModal( "Authorization", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) ) {
-        std::string admin_label = password_attempts != 0 ? "Login [" + std::to_string( password_attempts ) + "/3]" : "Login";
+        std::string admin_label = password_attempts != 0 ? "Login [" + std::to_string( password_attempts ) + 
+            "/" + std::to_string( max_password_attempts ) + "]" : "Login";
 
         ImGui::SeparatorText( "Admin account" );
         ImGui::TextWrapped( "Enter the secret code to login as admininstator:" );
@@ -273,7 +275,7 @@ void Gui::DrawAuthPage() {
         ImGui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::InputText( "##auth_totp_code", &userCode );
 
-        bool need_disable_login = password_attempts >= 3;
+        bool need_disable_login = password_attempts >= max_password_attempts;
         if ( need_disable_login )
             ImGui::BeginDisabled();
 
