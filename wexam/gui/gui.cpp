@@ -459,7 +459,7 @@ void Gui::DrawStudentPage() {
         | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_PadOuterX;
 
     //static ImVec2 outer_size_value = ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.71f );
-    static ImVec2 button_size = ImVec2( 247, 25 );
+    static ImVec2 button_size = ImVec2( 247, 30 );
 
     static std::vector<std::string> answerBuffer;
 
@@ -482,7 +482,7 @@ void Gui::DrawStudentPage() {
                 filter_tests.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
                 ImGui::PopID();
 
-                if ( ImGui::BeginTable( "##table_student_main_tests", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.575f ) ) ) {
+                if ( ImGui::BeginTable( "##table_student_main_tests", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.545f ) ) ) {
                     ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
                     ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "title" ).c_str() );
                     ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "description" ).c_str() );
@@ -544,24 +544,9 @@ void Gui::DrawStudentPage() {
                 // Second columns - test settings
                 ImGui::TableNextColumn();
                 ImGui::PushFont( m_SegoeuiBold32 );
-                ImGui::Text( m_LocalizationManager->GetTranslation( "testManagement" ).c_str() );
+                ImGui::Text( m_LocalizationManager->GetTranslation( "availableUsers" ).c_str() ); // testManagement
                 ImGui::PopFont();
                 ImGui::NewLine();
-
-                bool need_disable_button = current_test_id <= 0
-                    || ( useInput ? bufName.empty() : current_user_id <= 0 )
-                    || !m_TestRepository->FindTestById( current_test_id )->GetQuestionCount();
-
-                if ( need_disable_button )
-                    ImGui::BeginDisabled();
-
-                if ( ImGui::Button( m_LocalizationManager->GetTranslation( "startTest" ).c_str(), ImVec2( ImGui::GetFontSize() * 18, 25 ) ) ) {
-                    show_test_page = true;
-                    show_main_page = false;
-                }
-
-                if ( need_disable_button )
-                    ImGui::EndDisabled();
 
                 //ImGui::Checkbox( m_LocalizationManager->GetTranslation( "inputName" ).c_str(), &useInput );
 
@@ -574,10 +559,10 @@ void Gui::DrawStudentPage() {
                 else {
                     static ImGuiTextFilter filter;
 
-                    ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "availableUsers" ).c_str() );
+                    //ImGui::SeparatorText( m_LocalizationManager->GetTranslation( "availableUsers" ).c_str() );
                     filter.Draw( m_LocalizationManager->GetTranslation( "search" ).c_str(), ImGui::GetFontSize() * 18 );
 
-                    if ( ImGui::BeginTable( "##table_student_main_users", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.575f ) ) ) {
+                    if ( ImGui::BeginTable( "##table_student_main_users", 2, flags, ImVec2( 0.0f, ImGui::GetContentRegionAvail().y * 0.545f ) ) ) {
                         ImGui::TableSetupScrollFreeze( 0, 1 ); // Make top row always visible
                         ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "name" ).c_str() );
                         ImGui::TableSetupColumn( m_LocalizationManager->GetTranslation( "group" ).c_str() );
@@ -638,6 +623,25 @@ void Gui::DrawStudentPage() {
                 }
 
                 ImGui::EndTable();
+            }
+
+            ImGui::Separator();
+
+            bool need_disable_button = current_test_id <= 0
+                || ( useInput ? bufName.empty() : current_user_id <= 0 )
+                || !m_TestRepository->FindTestById( current_test_id )->GetQuestionCount();
+
+            if ( need_disable_button ) {
+                ImGui::BeginDisabled();
+            }
+
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "startTest" ).c_str(), ImVec2( -1, 30 ) ) ) {
+                show_test_page = true;
+                show_main_page = false;
+            }
+
+            if ( need_disable_button ) {
+                ImGui::EndDisabled();
             }
 
             ImGui::Separator();
@@ -825,13 +829,13 @@ void Gui::DrawStudentPage() {
 
             ImGui::Separator();
 
-            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "finish" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.497f, 25 ) ) ) {
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "finish" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.497f, 30 ) ) ) {
                 ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "testCompletion" ).c_str() );
             }
 
             ImGui::SameLine();
 
-            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "back" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.994f, 25 ) ) ) {
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "back" ).c_str(), ImVec2( ImGui::GetContentRegionAvail().x * 0.994f, 30 ) ) ) {
                 ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "returnToMainPage" ).c_str() );
             }
 
@@ -914,12 +918,18 @@ void Gui::DrawStudentPage() {
                 std::shared_ptr<ITestResult> result = std::make_shared<TestResult>( cur_test );
                 result->EvaluateTest();
     
-                std::string strTotalQuest = m_LocalizationManager->GetTranslation( "totalQuestions" ) + ": " + std::to_string( result->GetTotalQuestions() );
-                std::string strCorAnswers = m_LocalizationManager->GetTranslation( "correctAnswers" ) + ": " + std::to_string( result->GetCorrectAnswers() );
-                std::string strIncorAnswers = m_LocalizationManager->GetTranslation( "incorrectAnswers" ) + ": " + std::to_string( result->GetIncorrectAnswers() );
-                std::string strUnanswered = m_LocalizationManager->GetTranslation( "unansweredQuestions" ) + ": " + std::to_string( result->GetUnansweredQuestions() );
-                std::string strTotal = m_LocalizationManager->GetTranslation( "totalScore" ) + ": " + std::to_string( static_cast< int >( result->GetScore() ) ) + "%%";
-                std::string strApproxScore = m_LocalizationManager->GetTranslation( "approxTestScore" ) + ": " + std::string(
+                std::string strTotalQuest = m_LocalizationManager->GetTranslation( "totalQuestions" ) 
+                    + ": " + std::to_string( result->GetTotalQuestions() );
+                std::string strCorAnswers = m_LocalizationManager->GetTranslation( "correctAnswers" ) 
+                    + ": " + std::to_string( result->GetCorrectAnswers() );
+                std::string strIncorAnswers = m_LocalizationManager->GetTranslation( "incorrectAnswers" ) 
+                    + ": " + std::to_string( result->GetIncorrectAnswers() );
+                std::string strUnanswered = m_LocalizationManager->GetTranslation( "unansweredQuestions" ) 
+                    + ": " + std::to_string( result->GetUnansweredQuestions() );
+                std::string strTotal = m_LocalizationManager->GetTranslation( "totalScore" ) 
+                    + ": " + std::to_string( static_cast< int >( result->GetScore() ) ) + "%%";
+                std::string strApproxScore = m_LocalizationManager->GetTranslation( "approxTestScore" ) 
+                    + ": " + std::string(
                     static_cast< int >( result->GetScore() ) > 80 ? "5" : 
                     static_cast< int >( result->GetScore() ) > 60 ? "4" : 
                     static_cast< int >( result->GetScore() ) > 40 ? "3" : "2");
