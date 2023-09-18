@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "test.h"
 #include "question_with_options.h"
 #include "question_with_free_answer.h"
