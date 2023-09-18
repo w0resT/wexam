@@ -8,6 +8,7 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
+#include <random>
 
 #include "../defines.h"
 #include "gui.h"
@@ -34,6 +35,13 @@
 #include "../localization/localization_manager.h"
 
 #include "../FileBrowser/ImGuiFileBrowser.h"
+
+int GenerateRandomNumber(int min, int max) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distribution(min, max);
+    return distribution(gen);
+}
 
 void Gui::Init() {
     // Error callback func
@@ -498,6 +506,7 @@ void Gui::DrawStudentPage() {
                             continue;
                         }
 
+                        // FIXME: Same Id's for tests
                         auto test_id = testPtr->GetId();
 
                         ImGui::TableNextRow();
@@ -638,6 +647,37 @@ void Gui::DrawStudentPage() {
             if ( ImGui::Button( m_LocalizationManager->GetTranslation( "startTest" ).c_str(), ImVec2( -1, 30 ) ) ) {
                 show_test_page = true;
                 show_main_page = false;
+
+                auto cur_test = m_TestRepository->FindTestById(current_test_id);
+                if (!cur_test) {
+                    throw std::runtime_error("Bad current test id");
+                }
+
+                m_currentTest.reset();
+                m_currentTest = std::make_shared<Test>();
+                m_currentTest->SetId(cur_test->GetId());
+                m_currentTest->SetTitle(cur_test->GetTitle());
+                m_currentTest->SetDescription(cur_test->GetDescription());
+
+                int c = 0;
+                while (c < 10)
+                {
+                    auto max = cur_test->GetQuestionCount();
+                    auto cur_id = GenerateRandomNumber(0, max);// rand(0, max);
+                    auto cur = cur_test->FindQuestionById(cur_id);
+
+                    if (!cur) {
+                        continue;
+                    }
+
+                    // We don't add duplicates
+                    if (m_currentTest->GetQuestionCount() > 0 && m_currentTest->FindQuestionById(cur_id) != nullptr) {
+                        continue;
+                    }
+
+                    m_currentTest->AddQuestion(cur);
+                    c++;
+                }
             }
 
             if ( need_disable_button ) {
@@ -742,14 +782,15 @@ void Gui::DrawStudentPage() {
                 throw std::runtime_error( "Bad current student id" );
             }
 
-            std::shared_ptr<ITest> completed_test = std::make_shared<Test>( cur_test );
+            //std::shared_ptr<ITest> completed_test = std::make_shared<Test>( /*cur_test*/ );
+            
 
             if ( ImGui::BeginTable( "##table_test_page_head", 2, ImGuiTableFlags_NoSavedSettings ) ) {
                 ImGui::TableNextColumn();
 
-                std::string strCurTest = m_LocalizationManager->GetTranslation( "test" ) + ": " + cur_test->GetTitle();
-                std::string strDescription = m_LocalizationManager->GetTranslation( "description" ) + ": " + cur_test->GetDescription();
-                std::string strQuestCount = m_LocalizationManager->GetTranslation( "questionsCount" ) + ": " + std::to_string( cur_test->GetQuestionCount() );
+                std::string strCurTest = /*m_LocalizationManager->GetTranslation( "test" ) + ": " + */m_currentTest->GetTitle();
+                std::string strDescription = /*m_LocalizationManager->GetTranslation( "description" ) + ": " +*/ m_currentTest->GetDescription();
+                std::string strQuestCount = m_LocalizationManager->GetTranslation( "questionsCount" ) + ": " + std::to_string(m_currentTest->GetQuestionCount() );
 
                 ImGui::PushFont( m_SegoeuiBold32 );
                 ImGui::TextWrapped( strCurTest.c_str() );
@@ -757,7 +798,7 @@ void Gui::DrawStudentPage() {
 
                 ImGui::PushFont( m_SegoeuiBold18 );
                 // Show description only if it exist
-                if ( !cur_test->GetDescription().empty() ) {
+                if ( !m_currentTest->GetDescription().empty() ) {
                     ImGui::TextWrapped( strDescription.c_str() );
                 }
                 ImGui::TextWrapped( strQuestCount.c_str() );
@@ -783,10 +824,10 @@ void Gui::DrawStudentPage() {
             if ( ImGui::BeginTable( "##table_test_page_main", 1, ImGuiTableFlags_NoSavedSettings, ImVec2( 0, 400 ) ) ) {
                 ImGui::TableNextColumn();
 
-                answerBuffer.resize( cur_test->GetQuestionCount() );
+                answerBuffer.resize(m_currentTest->GetQuestionCount() );
 
-                for ( unsigned int i = 0; i < cur_test->GetQuestionCount(); ++i ) {
-                    auto cur_question = cur_test->GetQuestion( i );
+                for ( unsigned int i = 0; i < m_currentTest->GetQuestionCount(); ++i ) {
+                    auto cur_question = m_currentTest->GetQuestion( i );
 
                     std::string strCurQuest = std::to_string( i + 1 ) + ". " + cur_question->GetQuestion();
 
@@ -805,7 +846,7 @@ void Gui::DrawStudentPage() {
                             const bool item_is_selected = ( answerBuffer[ i ] == opt );
 
                             std::string strOpt = "     " + std::to_string( j + 1 ) + ") " + opt;
-                            if ( ImGui::Selectable( strOpt.c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap ) ) {
+                            if ( ImGui::Selectable( strOpt.c_str(), item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap, ImVec2(0, 0) ) ) {
                                 // Double click - unselect
                                 if ( answerBuffer[ i ] == opt ) {
                                     answerBuffer[ i ].clear();
@@ -841,12 +882,12 @@ void Gui::DrawStudentPage() {
 
             if ( finish_clear_test ) {
                 // Sets user answers
-                for ( unsigned int i = 0; i < completed_test->GetQuestionCount(); ++i ) {
-                    completed_test->GetQuestion( i )->SetUserAnswer( answerBuffer[ i ] );
+                for ( unsigned int i = 0; i < m_currentTest->GetQuestionCount(); ++i ) {
+                    m_currentTest->GetQuestion( i )->SetUserAnswer( answerBuffer[ i ] );
                 }
 
                 std::string strName = useInput ? bufName : cur_student->GetName();
-                m_PassedTest[ strName ] = completed_test;
+                m_PassedTest[ strName ] = m_currentTest;
 
                 bufName.clear();
                 answerBuffer.clear();
@@ -878,7 +919,7 @@ void Gui::DrawStudentPage() {
                 throw std::logic_error( "Current user id is less than zero" );
             }
 
-            auto cur_test = m_TestRepository->FindTestById( current_test_id );
+            auto cur_test = m_currentTest;// m_TestRepository->FindTestById( current_test_id );
             if ( !cur_test ) {
                 throw std::runtime_error( "Bad current test id" );
             }
@@ -895,6 +936,8 @@ void Gui::DrawStudentPage() {
                     show_result = false;
                 }
             }
+
+            static bool once = false;
 
             std::string strCurTest = m_LocalizationManager->GetTranslation( "test" ) + ": " + cur_test->GetTitle() /*+ ", ID: " + std::to_string( cur_test->GetId() )*/;
             std::string strDescription = m_LocalizationManager->GetTranslation( "testDescription" ) + ": " + cur_test->GetDescription();
@@ -940,12 +983,36 @@ void Gui::DrawStudentPage() {
                 ImGui::TextWrapped( strUnanswered.c_str() );
                 ImGui::TextWrapped( strTotal.c_str() );
                 ImGui::TextWrapped( strApproxScore.c_str() );
+
+                
+                if (!once) {
+                    result->SaveResult(cur_student->GetName(), cur_student->GetGroup());
+                    once = true;
+                }
             }
             else {
                 ImGui::Text( m_LocalizationManager->GetTranslation( "testFinished" ).c_str() );
             }
 
             ImGui::Separator();
+
+            static std::string filePath;
+            static imgui_addons::ImGuiFileBrowser file_dialog;
+
+            if ( ImGui::Button( m_LocalizationManager->GetTranslation( "export" ).c_str(), button_size ) ) {
+                ImGui::OpenPopup( m_LocalizationManager->GetTranslation( "exportTest" ).c_str() );
+            }
+
+            if ( file_dialog.showFileDialog( m_LocalizationManager->GetTranslation( "exportTest" ).c_str(),
+                                             imgui_addons::ImGuiFileBrowser::DialogMode::SAVE,
+                                             ImVec2( 700, 310 ), ".wxm" ) ) {
+                filePath = file_dialog.selected_path;
+                std::shared_ptr<ITestRepository> repository = std::make_shared<TestRepository>();
+                repository->AddTest( cur_test );
+                m_TestManager->ExportTests( filePath, repository, false, false, true );
+            }
+
+            ImGui::SameLine();
 
             if ( ImGui::Button( m_LocalizationManager->GetTranslation( "returnToMainPage" ).c_str(), button_size ) ) {
                 current_test_id = -1;
@@ -956,6 +1023,10 @@ void Gui::DrawStudentPage() {
                 show_result_page = false;
 
                 show_result = true;
+
+                once = false;
+
+                m_currentTest.reset();
             }
         }
 

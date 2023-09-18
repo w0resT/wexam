@@ -74,6 +74,8 @@ public:
 	 */
 	double GetScore() const override;
 
+	void SaveResult(const std::string student, const std::string group) override;
+
 private:
 	unsigned int m_testId;                // The ID of the test
 	unsigned int m_totalQuestions;        // The total number of questions in the test
