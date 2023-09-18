@@ -425,7 +425,7 @@ void PageTests::Draw() {
 
 				new_question->SetId( new_question_id );
 				new_question->SetQuestion( bufQuestion );
-				new_question->SetCorrectAnswer( "None" );
+				new_question->SetCorrectAnswer( "" );
 
 				// Add question to the test
 				cur_test->AddQuestion( new_question );

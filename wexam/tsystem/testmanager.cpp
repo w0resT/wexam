@@ -163,7 +163,7 @@ inline std::vector<std::shared_ptr<ITest>> TestManager::ParseTestsFromFile( std:
 			question->SetQuestion( questionText );
 
 			if ( questionType == QuestionType::AnswerOptions ) {
-				question->SetAnswerOptions( SplitString( answerOptions, ',' ) );
+				question->SetAnswerOptions( SplitString( answerOptions, '\\' ) );
 			}
 
 			if ( needCorAnswers ) {
@@ -202,7 +202,7 @@ inline std::string TestManager::FormatTestLine( const std::shared_ptr<ITest>& te
 			for ( size_t j = 0; j < answerOptions.size(); ++j ) {
 				testLine += answerOptions[ j ];
 				if ( j < answerOptions.size() - 1 ) {
-					testLine += ",";
+					testLine += "\\";
 				}
 			}
 		}

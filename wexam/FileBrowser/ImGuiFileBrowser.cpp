@@ -533,17 +533,17 @@ namespace imgui_addons
         ImGui::SetCursorPosY(pw_size.y - frame_height_spacing - style.WindowPadding.y);
 
         //Render Checkbox
-        float label_width = ImGui::CalcTextSize("Show Hidden Files and Folders").x + ImGui::GetCursorPosX() + frame_height;
-        bool show_marker = (label_width >= buttons_xpos);
-        ImGui::Checkbox( (show_marker) ? "##showHiddenFiles" : "Show Hidden Files and Folders", &show_hidden);
-        if(show_marker)
-        {
-            ImGui::SameLine();
-            showHelpMarker("Show Hidden Files and Folders");
-        }
+        //float label_width = ImGui::CalcTextSize("Show Hidden Files and Folders").x + ImGui::GetCursorPosX() + frame_height;
+        //bool show_marker = (label_width >= buttons_xpos);
+        //ImGui::Checkbox( (show_marker) ? "##showHiddenFiles" : "Show Hidden Files and Folders", &show_hidden);
+        //if(show_marker)
+        //{
+        //    ImGui::SameLine();
+        //    showHelpMarker("Show Hidden Files and Folders");
+        //}
 
         //Render an Open Button (in OPEN/SELECT dialog_mode) or Open/Save depending on what's selected in SAVE dialog_mode
-        ImGui::SameLine();
+        //ImGui::SameLine();
         ImGui::SetCursorPosX(buttons_xpos);
         if(dialog_mode == DialogMode::SAVE)
         {

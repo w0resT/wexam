@@ -70,9 +70,9 @@ std::shared_ptr<IQuestion> Test::FindQuestionById( unsigned int id ) const {
 		throw std::logic_error( "No questions in the test" );
 	}
 
-	auto it = std::find_if( m_questions.begin(), m_questions.end(),
-							[ & ] ( const std::shared_ptr<IQuestion>& question ) { 
-								return question->GetId() == id; } );
+	auto it = std::find_if(m_questions.begin(), m_questions.end(),
+							[&](const std::shared_ptr<IQuestion>& question) {
+								if (question) return question->GetId() == id; });
 
 	if ( it != m_questions.end() ) {
 		return *it;

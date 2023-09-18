@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 /**
  * ITestResult is an interface that represents the result of a test evaluation.
@@ -28,4 +29,6 @@ public:
 
 	// Get the score of the test as a percentage
 	virtual double GetScore() const = 0;
+
+	virtual void SaveResult(const std::string, const std::string) = 0;
 };
