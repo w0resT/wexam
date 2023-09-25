@@ -130,13 +130,11 @@ inline std::vector<std::shared_ptr<ITest>> TestManager::ParseTestsFromFile( std:
 			test->SetDescription( testDescription );
 		}
 
-		std::string remainingLine = testLine.substr( match.position() + match.length() );
-
 		// Parse questions
 		// Format:
 		// questionId. [questionType] [questionText] : [answerOptions], [correctAnswer], [userAnswer]
 		std::regex questionRegex( R"((\d+)\.\s+\[(.*?)\]\s+\[(.*?)\]\s+:\s+\[(.*?)\],\s+\[(.*?)\],\s+\[(.*?)\])" );
-		std::sregex_iterator questionIterator( remainingLine.begin(), remainingLine.end(), questionRegex );
+		std::sregex_iterator questionIterator(testLine.begin(), testLine.end(), questionRegex );
 		std::sregex_iterator end;
 
 		for ( ; questionIterator != end; ++questionIterator ) {
