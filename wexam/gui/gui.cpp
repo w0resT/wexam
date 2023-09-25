@@ -659,24 +659,33 @@ void Gui::DrawStudentPage() {
                 m_currentTest->SetTitle(cur_test->GetTitle());
                 m_currentTest->SetDescription(cur_test->GetDescription());
 
-                int c = 0;
-                while (c < 10)
-                {
-                    auto max = cur_test->GetQuestionCount();
-                    auto cur_id = GenerateRandomNumber(0, max);// rand(0, max);
-                    auto cur = cur_test->FindQuestionById(cur_id);
+                unsigned char c = 0;
+                const static unsigned char max_count = 10;
+                if (cur_test->GetQuestionCount() > max_count) {
+                    while (c < 10)
+                    {
+                        auto max = cur_test->GetQuestionCount();
+                        auto cur_id = GenerateRandomNumber(0, max);// rand(0, max);
+                        auto cur = cur_test->FindQuestionById(cur_id);
 
-                    if (!cur) {
-                        continue;
+                        if (!cur) {
+                            continue;
+                        }
+
+                        // We don't add duplicates
+                        if (m_currentTest->GetQuestionCount() > 0 && m_currentTest->FindQuestionById(cur_id) != nullptr) {
+                            continue;
+                        }
+
+                        m_currentTest->AddQuestion(cur);
+                        c++;
                     }
-
-                    // We don't add duplicates
-                    if (m_currentTest->GetQuestionCount() > 0 && m_currentTest->FindQuestionById(cur_id) != nullptr) {
-                        continue;
+                }
+                // Less than 10
+                else {
+                    for (const auto cur : cur_test->GetQuestions()) {
+                        m_currentTest->AddQuestion(cur);
                     }
-
-                    m_currentTest->AddQuestion(cur);
-                    c++;
                 }
             }
 
