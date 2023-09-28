@@ -3,6 +3,8 @@
 #endif
 
 #include <iostream>
+#include <sstream>
+#include <string>
 
 // output data + time
 #include <chrono>
@@ -111,8 +113,9 @@ void Gui::Init() {
     m_TestRepository = std::make_shared<TestRepository>();
 
     // Initializing AES and stuff
-    static const std::string aes_key = "0123456789abcdef";
-    std::unique_ptr<ITextCipher> aes_cipher = std::make_unique<AesTextCipher>( aes_key );
+    static unsigned char predefinedKey[16] = { 'k', 'e', 'y', 'k', 'e', 'y', 'k', 'e', 'y', 'k', 'e', 'y', 'k', 'e', 'y', 'k' };
+    static unsigned char predefinedIV[16] = { 'i', 'n', 'i', 't', 'v', 'e', 'c', 't', 'o', 'r', 'i', 'n', 'i', 't', 'v', 'e' };
+    std::unique_ptr<ITextCipher> aes_cipher = std::make_unique<AesTextCipher>(predefinedKey, predefinedIV);
 
     // Initializing test manager
     m_TestManager = std::make_shared<TestManager>( std::move( aes_cipher ) );

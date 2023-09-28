@@ -3,6 +3,8 @@
 #endif
 
 #include "testresult.h"
+#include <sstream>
+#include <string>
 #include <fstream>
 #include <chrono>
 #include <ctime>
@@ -50,34 +52,40 @@ double TestResult::GetScore() const {
 }
 
 void TestResult::SaveResult(const std::string student, const std::string group) {
-	auto currentTime = std::chrono::system_clock::now();
-	std::time_t currentTime_t = std::chrono::system_clock::to_time_t(currentTime);
+    // Get the current local time as a string
+    auto currentTime = std::chrono::system_clock::now();
+    std::time_t currentTime_t = std::chrono::system_clock::to_time_t(currentTime);
 
-	std::tm* localTime = std::localtime(&currentTime_t);
-	std::ostringstream dateTimeStream;
-	dateTimeStream << std::put_time(localTime, "%Y-%m-%d_%H-%M-%S");
-	std::string dateTimeString = dateTimeStream.str();
+    std::tm* localTime = std::localtime(&currentTime_t);
+    std::ostringstream dateTimeStream;
+    dateTimeStream << std::put_time(localTime, "%Y-%m-%d_%H-%M-%S");
+    std::string dateTimeString = dateTimeStream.str();
 
-	std::string filename = "test_" + dateTimeString + ".txt";
+    // Construct the filename
+    std::string filename = "test_" + dateTimeString + ".txt";
 
-	// Open the file for writing
-	std::ofstream file(filename, std::ios::binary);
-	if (!file.is_open()) {
-		throw std::runtime_error("Failed to open file for writing: " + filename);
-	}
-	std::string str;
-	str += "[Name: " + student + ", group: " + group + "]\n";
-	str += "[Test: " + m_test->GetTitle() + "]\n";
-	str += "Total questions: " + std::to_string(m_totalQuestions);
-	str += "\nCorrect: " + std::to_string(m_correctAnswers);
-	str += "\nIncorrect: " + std::to_string(m_incorrectAnswers);
-	str += "\nUnanswered: " + std::to_string(m_unansweredQuestions);
-	str += "\nScore: " + std::to_string(m_score) + "%%; Approximate test score: " + (
-		static_cast<int>(m_score) > 80 ? "5" :
-		static_cast<int>(m_score) > 60 ? "4" :
-		static_cast<int>(m_score) > 40 ? "3" : "2");
+    // Open the file for writing
+    std::ofstream file(filename, std::ios::binary);
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open file for writing: " + filename);
+    }
 
-	file << str;
+    // Compose the result string
+    std::ostringstream resultStream;
+    resultStream << "[Name: " << student << ", group: " << group << "]\n";
+    resultStream << "[Test: " << m_test->GetTitle() << "]\n";
+    resultStream << "Total questions: " << m_totalQuestions << "\n";
+    resultStream << "Correct: " << m_correctAnswers << "\n";
+    resultStream << "Incorrect: " << m_incorrectAnswers << "\n";
+    resultStream << "Unanswered: " << m_unansweredQuestions << "\n";
+    resultStream << "Score: " << m_score << "%; Approximate test score: ";
+    resultStream << (static_cast<int>(m_score) > 80 ? "5" :
+                        static_cast<int>(m_score) > 60 ? "4" :
+                        static_cast<int>(m_score) > 40 ? "3" : "2");
 
-	file.close();
+    // Write the result string to the file
+    file << resultStream.str();
+
+    // Close the file
+    file.close();
 }
