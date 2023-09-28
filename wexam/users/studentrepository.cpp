@@ -23,9 +23,9 @@ void StudentRepository::AddStudents( const std::vector<std::shared_ptr<IStudent>
 		if ( !student ) {
 			throw std::invalid_argument( "Invalid student pointer" );
 		}
-	}
 
-	m_students = students;
+		m_students.emplace_back(student);
+	}
 }
 
 void StudentRepository::RemoveStudent( const unsigned int id ) {

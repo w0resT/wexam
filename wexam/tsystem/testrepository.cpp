@@ -23,10 +23,8 @@ void TestRepository::AddTests( const std::vector<std::shared_ptr<ITest>>& tests 
 		if ( !test ) {
 			throw std::invalid_argument( "Invalid test pointer" );
 		}
-	}
 
-	for ( const auto& test : tests ) {
-		m_tests.emplace_back( test );
+		m_tests.emplace_back(test);
 	}
 }
 
