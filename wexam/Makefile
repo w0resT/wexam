@@ -55,6 +55,7 @@ ifeq ($(UNAME_S), Linux) #LINUX
 
 	CXXFLAGS += `pkg-config --cflags glfw3`
 	CXXFLAGS += -I/usr/include
+    CXXFLAGS += -pthread
 	CFLAGS = $(CXXFLAGS)
 endif
 
